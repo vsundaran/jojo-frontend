@@ -48,10 +48,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FADAFF', // Light pink from gradientColors or similar
         borderColor: '#8B12B6', // Matching border
         elevation: 10,
+        borderWidth: 0,
     },
     unselectedContainer: {
         backgroundColor: '#F3F4F6', // nonActiveChip
         borderColor: '#D9D9D9;', // border
+        borderWidth: 0,
     },
     text: {
         fontSize: scale(14),
