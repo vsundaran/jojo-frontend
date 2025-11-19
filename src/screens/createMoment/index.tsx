@@ -4,7 +4,11 @@ import Container from '../../automic-elements/container';
 import { lightTheme } from '../../theme';
 import { CategoryCard } from './category';
 
-export default function CreateMomentScreen() {
+export default function CreateMomentScreen({ navigation }: any) {
+  const navigateToMomentCreatingForm = () => {
+    console.log('navigateToMomentCreatingForm');
+    navigation.navigate('MomentCreatingForm');
+  };
   return (
     <Container style={{ paddingHorizontal: 24, paddingVertical: 32 }}>
       <Text
@@ -44,12 +48,7 @@ export default function CreateMomentScreen() {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <CategoryCard
             title="Wishes"
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            onPress={navigateToMomentCreatingForm}
             primaryColor={lightTheme.colors.wishesColor}
             borderColor={lightTheme.colors.wishesBorderColor}
             bgColor="#FBEFFF"
@@ -62,12 +61,7 @@ export default function CreateMomentScreen() {
           />
           <CategoryCard
             title="Motivation"
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            onPress={navigateToMomentCreatingForm}
             primaryColor={lightTheme.colors.motivationColor}
             borderColor={lightTheme.colors.motivationBorderColor}
             bgColor="#EDF3FF"
@@ -82,12 +76,7 @@ export default function CreateMomentScreen() {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <CategoryCard
             title="Song"
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            onPress={navigateToMomentCreatingForm}
             primaryColor={lightTheme.colors.songColor}
             borderColor={lightTheme.colors.songBorderColor}
             bgColor="#E7F9EC"
@@ -100,12 +89,7 @@ export default function CreateMomentScreen() {
           />
           <CategoryCard
             title="Blessings"
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            onPress={navigateToMomentCreatingForm}
             primaryColor={lightTheme.colors.blessingsColor}
             borderColor={lightTheme.colors.blessingsBorderColor}
             bgColor="#FFF8EA"
@@ -120,12 +104,7 @@ export default function CreateMomentScreen() {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <CategoryCard
             title="Celebration"
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            onPress={navigateToMomentCreatingForm}
             primaryColor={lightTheme.colors.celebrationColor}
             borderColor={lightTheme.colors.celebrationBorderColor}
             bgColor="#FFEBEB"

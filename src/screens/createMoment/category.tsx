@@ -8,18 +8,13 @@ import {
   TextStyle,
   Image,
 } from 'react-native';
-import { Button, Card, Chip } from 'react-native-paper';
+import { Button, Card, Chip, TouchableRipple } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { lightTheme } from '../../theme';
 
 export interface WishCardProps {
   title: string;
-  callCount?: number;
-  likeCount?: number;
-  onIconPress?: () => void;
-  onLikePress?: () => void;
-  onCallPress?: () => void;
-  onTagPress?: (tag: string) => void;
+  onPress?: () => void;
   primaryColor?: string;
   borderColor?: string;
   bgColor?: string;
@@ -28,12 +23,7 @@ export interface WishCardProps {
 
 export const CategoryCard: React.FC<WishCardProps> = ({
   title,
-  callCount = 0,
-  likeCount = 0,
-  onIconPress,
-  onLikePress,
-  onCallPress,
-  onTagPress,
+  onPress,
   primaryColor = lightTheme.colors.wishesColor,
   borderColor = lightTheme.colors.wishesColor,
   bgColor = '',
@@ -53,32 +43,38 @@ export const CategoryCard: React.FC<WishCardProps> = ({
         { ...containerStyle, elevation: 0 },
       ]}
     >
-      <View style={styles.headerSection}>
-        <View
-          style={[
-            styles.iconButton,
-            {
-              backgroundColor: primaryColor,
-              elevation: 10,
-            },
-          ]}
-        >
-          <Image
-            source={
-              title == 'Motivation'
-                ? require('../../assets/fire.png')
-                : title == 'Song'
-                ? require('../../assets/song.png')
-                : title == 'Blessings'
-                ? require('../../assets/blessing.png')
-                : title == 'Celebration'
-                ? require('../../assets/celebration.png')
-                : require('../../assets/giftIcon.png')
-            }
-            style={{ width: 34, height: 34 }}
-          />
+      <TouchableRipple
+        onPress={onPress}
+        rippleColor="rgba(0, 0, 0, .32)"
+      >
+
+        <View style={styles.headerSection}>
+          <View
+            style={[
+              styles.iconButton,
+              {
+                backgroundColor: primaryColor,
+                elevation: 10,
+              },
+            ]}
+          >
+            <Image
+              source={
+                title == 'Motivation'
+                  ? require('../../assets/fire.png')
+                  : title == 'Song'
+                    ? require('../../assets/song.png')
+                    : title == 'Blessings'
+                      ? require('../../assets/blessing.png')
+                      : title == 'Celebration'
+                        ? require('../../assets/celebration.png')
+                        : require('../../assets/giftIcon.png')
+              }
+              style={{ width: 34, height: 34 }}
+            />
+          </View>
         </View>
-      </View>
+      </TouchableRipple>
       <View>
         <Text
           style={{
@@ -92,7 +88,7 @@ export const CategoryCard: React.FC<WishCardProps> = ({
           {title}
         </Text>
       </View>
-    </View>
+    </View >
   );
 };
 

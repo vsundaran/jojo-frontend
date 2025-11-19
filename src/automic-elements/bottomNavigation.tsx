@@ -3,27 +3,11 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { BottomNavigation, Text, Provider } from 'react-native-paper';
 import WallOfJoyScreen from '../screens/wallOfJoy';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { lightTheme } from '../theme';
 import Givejoy from '../screens/giveJoy';
 import CreateMomentScreen from '../screens/createMoment';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import CreateMomentStack from '../navigation/createMoment';
 
 export default function FooterNavigation() {
   const [index, setIndex] = useState(0);
@@ -56,7 +40,7 @@ export default function FooterNavigation() {
       case 'create-moment':
         return (
           <View style={{ flex: 1 }}>
-            <CreateMomentScreen />
+            <CreateMomentStack />
           </View>
         );
       default:

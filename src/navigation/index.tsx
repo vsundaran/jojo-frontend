@@ -11,23 +11,11 @@ import { MomentCreatingForm } from '../screens/createMoment/momentcreatingForm';
 export const AppNavigator = () => {
   const Stack = createNativeStackNavigator();
 
-  // export default function HomeScreen({ navigation }) {
-  //   return (
-  //     <View>
-  //       <Text>Home Screen</Text>
-  //       <Button
-  //         title="Go to Profile"
-  //         onPress={() => navigation.navigate("Profile")}
-  //       />
-  //     </View>
-  //   );
-  // }
-
   return (
     <Surface style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="moment-creating-form"
+          initialRouteName="app-layout"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="home" component={HomeScreen} />
