@@ -6,8 +6,7 @@ import { CategoryCard } from './category';
 
 export default function CreateMomentScreen({ navigation }: any) {
   const navigateToMomentCreatingForm = () => {
-    console.log('navigateToMomentCreatingForm');
-    navigation.navigate('MomentCreatingForm');
+    navigation.navigate('ChoosingSubCategory');
   };
   return (
     <Container style={{ paddingHorizontal: 24, paddingVertical: 32 }}>

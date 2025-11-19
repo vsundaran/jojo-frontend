@@ -14,6 +14,7 @@ export const MomentCreatingForm = () => {
     const [duration, setDuration] = useState(60);
     const [language, setLanguage] = useState('Tamil');
     const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+    const [scheduledTime, setScheduledTime] = useState('');
 
     const languages = ['Tamil', 'English', 'Hindi', 'Malayalam'];
 
@@ -65,7 +66,26 @@ export const MomentCreatingForm = () => {
                         <Text style={[styles.toggleText, !isImmediate && styles.toggleTextActive]}>Later</Text>
                     </TouchableOpacity>
                 </View>
+
+                {/* Date/Time Selection for Later */}
+                {!isImmediate && (
+                    <View style={styles.dateTimeContainer}>
+                        <TextInput
+                            mode="outlined"
+                            placeholder="dd-mm-yyyy --:--"
+                            placeholderTextColor="#9CA3AF"
+                            value={scheduledTime}
+                            onChangeText={setScheduledTime}
+                            style={styles.dateTimeInput}
+                            outlineStyle={styles.dateTimeOutline}
+                            right={<TextInput.Icon icon="calendar-blank-outline" color="#8B12B6" />}
+                            theme={{ colors: { primary: lightTheme.colors.primary, background: '#FFFFFF' } }}
+                        // editable={false} // Currently just UI
+                        />
+                    </View>
+                )}
             </View>
+
 
             {/* Duration Selection */}
             <View style={styles.section}>
@@ -134,7 +154,7 @@ export const MomentCreatingForm = () => {
                     'Stay online to receive calls!',
                 ]}
             />
-        </ScrollView>
+        </ScrollView >
     );
 };
 
@@ -202,6 +222,17 @@ const styles = StyleSheet.create({
     toggleTextActive: {
         color: '#8B12B6', // Active pink text
         fontWeight: '600',
+    },
+    dateTimeContainer: {
+        marginTop: verticalScale(20),
+    },
+    dateTimeInput: {
+        backgroundColor: '#FFFFFF',
+        fontSize: scale(14),
+    },
+    dateTimeOutline: {
+        borderRadius: scale(8),
+        borderColor: '#9A9797',
     },
     chipsContainer: {
         flexDirection: 'row',

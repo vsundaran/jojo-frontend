@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 export default function CreateMomentStack() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="ChoosingSubCategory">
+        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="CreateMomentMain">
             <Stack.Screen name="CreateMomentMain" component={CreateMomentScreen} />
             <Stack.Screen name="MomentCreatingForm" component={MomentCreatingForm} />
             <Stack.Screen name="ChoosingSubCategory" component={ChoosingSubCategory} />
