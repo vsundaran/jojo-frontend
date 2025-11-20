@@ -13,6 +13,7 @@ import Signup from '../signup';
 import LanguageSelectionScreen from '../languageSelection';
 import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export default function WallOfJoyScreen() {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -38,13 +39,13 @@ export default function WallOfJoyScreen() {
       )} */}
       {/* <Signup /> */}
       {/* <LanguageSelectionScreen /> */}
-      <View style={{ paddingVertical: 3, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
         <ScrollingCategory />
       </View>
-      <View style={{ marginBottom: 6 }}>
+      <View style={{ marginBottom: verticalScale(6) }}>
         <Divider />
       </View>
-      <View style={{ paddingHorizontal: 6, flex: 1 }}>
+      <View style={{ paddingHorizontal: scale(6), flex: 1 }}>
         <CustomTabs
           tabs={tabs}
           activeTab={activeTab}
@@ -59,38 +60,176 @@ export default function WallOfJoyScreen() {
 }
 
 const WallOfJoyContent = () => {
+  const wishesData = [
+    {
+      title: "Wishes",
+      description: "My fifth wedding anniversary ! I would like a heartfelt wishes.",
+      tags: ['Wishes', 'Birthday'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.wishesColor,
+      borderColor: lightTheme.colors.wishesBorderColor,
+    },
+    {
+      title: "Motivation",
+      description: "I have an interview tomorrow and I am bit nervous.",
+      tags: ['Motivation', 'Interview'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.motivationColor,
+      borderColor: lightTheme.colors.motivationBorderColor,
+    },
+    {
+      title: "Song",
+      description: "I would love to hear a  song",
+      tags: ['Song', 'Old Song'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.songColor,
+      borderColor: lightTheme.colors.songBorderColor,
+    },
+    {
+      title: "Blessings",
+      description: "My fifth wedding anniversary !!!",
+      tags: ['Blessings', 'Anniversary'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.blessingsColor,
+      borderColor: lightTheme.colors.blessingsBorderColor,
+    },
+    {
+      title: "Wishes",
+      description: "My fifth wedding anniversary ! I would like a heartfelt wishes.",
+      tags: ['Wishes', 'Birthday'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.wishesColor,
+      borderColor: lightTheme.colors.wishesBorderColor,
+    },
+    {
+      title: "Motivation",
+      description: "I have an interview tomorrow and I am bit nervous.",
+      tags: ['Motivation', 'Interview'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.motivationColor,
+      borderColor: lightTheme.colors.motivationBorderColor,
+    },
+    {
+      title: "Song",
+      description: "I would love to hear a  song",
+      tags: ['Song', 'Old Song'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.songColor,
+      borderColor: lightTheme.colors.songBorderColor,
+    },
+    {
+      title: "Blessings",
+      description: "My fifth wedding anniversary !!!",
+      tags: ['Blessings', 'Anniversary'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.blessingsColor,
+      borderColor: lightTheme.colors.blessingsBorderColor,
+    },
+    {
+      title: "Song",
+      description: "I would love to hear a  song",
+      tags: ['Song', 'Old Song'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.songColor,
+      borderColor: lightTheme.colors.songBorderColor,
+    },
+    {
+      title: "Motivation",
+      description: "I have an interview tomorrow and I am bit nervous.",
+      tags: ['Motivation', 'Interview'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.motivationColor,
+      borderColor: lightTheme.colors.motivationBorderColor,
+    },
+    {
+      title: "Song",
+      description: "I would love to hear a  song",
+      tags: ['Song', 'Old Song'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.songColor,
+      borderColor: lightTheme.colors.songBorderColor,
+    },
+    {
+      title: "Blessings",
+      description: "My fifth wedding anniversary !!!",
+      tags: ['Blessings', 'Anniversary'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.blessingsColor,
+      borderColor: lightTheme.colors.blessingsBorderColor,
+    },
+    {
+      title: "Blessings",
+      description: "My fifth wedding anniversary !!!",
+      tags: ['Blessings', 'Anniversary'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.blessingsColor,
+      borderColor: lightTheme.colors.blessingsBorderColor,
+    },
+    {
+      title: "Song",
+      description: "I would love to hear a  song",
+      tags: ['Song', 'Old Song'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.songColor,
+      borderColor: lightTheme.colors.songBorderColor,
+    },
+    {
+      title: "Blessings",
+      description: "My fifth wedding anniversary !!!",
+      tags: ['Blessings', 'Anniversary'],
+      callCount: 15,
+      likeCount: 12,
+      primaryColor: lightTheme.colors.blessingsColor,
+      borderColor: lightTheme.colors.blessingsBorderColor,
+    },
+  ];
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={
           {
-            paddingBottom: 130,
+            paddingBottom: verticalScale(130),
           }
         }
       >
-        <Container style={{ paddingVertical: 16, paddingHorizontal: 8 }}>
+        <Container style={{ paddingVertical: verticalScale(16), paddingHorizontal: scale(8) }}>
           <LinearGradient
             colors={lightTheme.colors.gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={{
-              borderRadius: 16,
-              paddingHorizontal: 22,
-              paddingVertical: 18,
+              borderRadius: moderateScale(16),
+              paddingHorizontal: scale(22),
+              paddingVertical: verticalScale(18),
               alignItems: 'center',
               justifyContent: 'center',
-              height: 100,
+              minHeight: verticalScale(100),
             }}
           >
             <View style={{ height: 'auto' }}>
               <Text
                 style={{
                   color: lightTheme.colors.text,
-                  fontSize: 17,
+                  fontSize: moderateScale(17),
                   textAlign: 'center',
-                  fontWeight: 600,
-                  lineHeight: 20,
+                  fontWeight: '600',
+                  lineHeight: verticalScale(20),
                 }}
               >
                 💫 Join JoJo to Create moments & Give Joy
@@ -100,10 +239,10 @@ const WallOfJoyContent = () => {
                 style={{
                   color: lightTheme.colors.text,
                   textAlign: 'center',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  lineHeight: 16,
-                  marginTop: 8,
+                  fontSize: moderateScale(14),
+                  fontWeight: '500',
+                  lineHeight: verticalScale(16),
+                  marginTop: verticalScale(8),
                 }}
               >
                 Sign up to connect with real people to add joy to their moments
@@ -111,292 +250,26 @@ const WallOfJoyContent = () => {
             </View>
           </LinearGradient>
 
-          <WishCard
-            title="Wishes"
-            description="My fifth wedding anniversary ! I would like a heartfelt wishes."
-            tags={['Wishes', 'Birthday']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.wishesColor}
-            borderColor={lightTheme.colors.wishesBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Motivation"
-            description="I have an interview tomorrow and I am bit nervous."
-            tags={['Motivation', 'Interview']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.motivationColor}
-            borderColor={lightTheme.colors.motivationBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Song"
-            description="I would love to hear a  song"
-            tags={['Song', 'Old Song']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Blessings"
-            description="My fifth wedding anniversary !!!"
-            tags={['Blessings', 'Anniversary']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Wishes"
-            description="My fifth wedding anniversary ! I would like a heartfelt wishes."
-            tags={['Wishes', 'Birthday']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.wishesColor}
-            borderColor={lightTheme.colors.wishesBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Motivation"
-            description="I have an interview tomorrow and I am bit nervous."
-            tags={['Motivation', 'Interview']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.motivationColor}
-            borderColor={lightTheme.colors.motivationBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Song"
-            description="I would love to hear a  song"
-            tags={['Song', 'Old Song']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Blessings"
-            description="My fifth wedding anniversary !!!"
-            tags={['Blessings', 'Anniversary']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Song"
-            description="I would love to hear a  song"
-            tags={['Song', 'Old Song']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-
-          <WishCard
-            title="Motivation"
-            description="I have an interview tomorrow and I am bit nervous."
-            tags={['Motivation', 'Interview']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.motivationColor}
-            borderColor={lightTheme.colors.motivationBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Song"
-            description="I would love to hear a  song"
-            tags={['Song', 'Old Song']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Blessings"
-            description="My fifth wedding anniversary !!!"
-            tags={['Blessings', 'Anniversary']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Blessings"
-            description="My fifth wedding anniversary !!!"
-            tags={['Blessings', 'Anniversary']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Song"
-            description="I would love to hear a  song"
-            tags={['Song', 'Old Song']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
-          <WishCard
-            title="Blessings"
-            description="My fifth wedding anniversary !!!"
-            tags={['Blessings', 'Anniversary']}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            containerStyle={{
-              height: 'auto',
-              minHeight: 190,
-              justifyContent: 'center',
-              marginTop: 16,
-            }}
-          />
+          {wishesData.map((wish, index) => (
+            <WishCard
+              key={index}
+              title={wish.title}
+              description={wish.description}
+              tags={wish.tags}
+              callCount={wish.callCount}
+              likeCount={wish.likeCount}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={wish.primaryColor}
+              borderColor={wish.borderColor}
+              containerStyle={{
+                height: 'auto',
+                marginTop: verticalScale(16),
+              }}
+            />
+          ))}
         </Container>
       </ScrollView>
     </View>

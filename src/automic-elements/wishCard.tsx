@@ -3,17 +3,13 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   ViewStyle,
-  TextStyle,
   Image,
 } from 'react-native';
-import { Button, Card, Chip } from 'react-native-paper';
+import { Button, Chip } from 'react-native-paper';
 import { lightTheme } from '../theme';
-// import MaterialIcon from 'react-native-vector-icons/MaterialDesignIcons';
-// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
 export interface WishCardProps {
   title: string;
@@ -49,8 +45,8 @@ export const WishCard: React.FC<WishCardProps> = ({
       style={[
         styles.container,
         {
-          borderWidth: 2,
-          borderTopWidth: 5,
+          borderWidth: moderateScale(2),
+          borderTopWidth: moderateScale(5),
           borderColor: borderColor,
         },
         { ...containerStyle, elevation: 0 },
@@ -64,12 +60,12 @@ export const WishCard: React.FC<WishCardProps> = ({
               title == 'Motivation'
                 ? require('../assets/fire.png')
                 : title == 'Song'
-                ? require('../assets/song.png')
-                : title == 'Blessings'
-                ? require('../assets/blessing.png')
-                : require('../assets/giftIcon.png')
+                  ? require('../assets/song.png')
+                  : title == 'Blessings'
+                    ? require('../assets/blessing.png')
+                    : require('../assets/giftIcon.png')
             }
-            style={{ width: 34, height: 34 }}
+            style={{ width: scale(24), height: scale(24) }}
           />
         </View>
 
@@ -77,7 +73,6 @@ export const WishCard: React.FC<WishCardProps> = ({
           {tags.map((tag, index) => (
             <Chip
               key={index}
-              //   label={tag}
               onPress={() => onTagPress?.(tag)}
               mode="outlined"
               style={[
@@ -107,25 +102,25 @@ export const WishCard: React.FC<WishCardProps> = ({
 
       {/* Footer Section with Stats */}
       <View style={styles.footerSection}>
-        {/* <MaterialIcons name="phone" size={20} color="#10B981" /> */}
-        {/* <Text style={styles.statText}>{callCount}</Text> */}
         <Chip
           style={{
-            borderRadius: 25,
+            borderRadius: moderateScale(25),
             backgroundColor: lightTheme.colors.greenSurface,
+            alignItems: 'center',
           }}
-          icon={() => <MaterialIcons name="phone" size={20} color="#10B981" />}
+          icon={() => <MaterialIcons name="phone" size={moderateScale(14)} color="#10B981" />}
           onPress={() => console.log('Pressed')}
-          textStyle={{ color: '#000' }}
+          textStyle={{ color: '#000', fontSize: moderateScale(13) }}
         >
           {callCount}
         </Chip>
-        {/* </Button> */}
 
         <Button
-          icon="heart-outline"
+          icon={() => <MaterialIcons name="cards-heart-outline" size={moderateScale(24)} />}
           style={styles.statItem}
+          labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(2) }}
           onPress={onLikePress}
+
         >
           {likeCount}
         </Button>
@@ -136,65 +131,81 @@ export const WishCard: React.FC<WishCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 24,
-    paddingHorizontal: 22,
-    paddingVertical: 18,
+    borderRadius: moderateScale(24),
+    paddingHorizontal: scale(22),
+    paddingVertical: verticalScale(18),
   },
   headerSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 7,
-    gap: 12,
+    marginBottom: verticalScale(7),
+    gap: scale(12),
   },
   iconButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
+    width: scale(48),
+    height: scale(48),
+    borderRadius: moderateScale(16),
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    backgroundColor: '#fff',
   },
   tagsContainer: {
     flexDirection: 'row',
-    gap: 8,
+    gap: scale(8),
     flex: 1,
+    flexWrap: 'wrap',
   },
   chip: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
+    height: verticalScale(22),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   chipText: {
-    fontSize: 18,
+    fontSize: moderateScale(12),
     fontWeight: '600',
+    lineHeight: verticalScale(18),
+    marginVertical: 0,
+    marginHorizontal: 0,
   },
   contentSection: {
-    marginBottom: 7,
-    paddingHorizontal: 4,
+    marginBottom: verticalScale(7),
+    paddingHorizontal: scale(4),
   },
   title: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: '600',
     color: lightTheme.colors.text,
-    marginBottom: 4,
+    marginBottom: verticalScale(4),
   },
   description: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: '500',
     color: lightTheme.colors.text,
-    lineHeight: 24,
+    lineHeight: verticalScale(24),
   },
   footerSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: verticalScale(8),
   },
   statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
   },
   statText: {
-    fontSize: 14,
-    fontWeight: 600,
+    fontSize: moderateScale(14),
+    fontWeight: '600',
     color: lightTheme.colors.text,
-    minWidth: 24,
+    minWidth: scale(24),
   },
 });
