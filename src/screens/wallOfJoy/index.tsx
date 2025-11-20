@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,10 +11,21 @@ import OTPVerification from '../otpVerification';
 import LoginScreen from '../login';
 
 export default function WallOfJoyScreen() {
+  const [isLoginCompleted, setIsLoginCompleted] = useState(false);
+
+  const handleLoginComplete = () => {
+    setIsLoginCompleted(true);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
       {/* <OTPVerification /> */}
-      <LoginScreen />
+
+      {isLoginCompleted ? (
+        <OTPVerification />
+      ) : (
+        <LoginScreen handleLogin={handleLoginComplete} />
+      )}
       {/* <Header /> */}
       <ScrollingCategory />
       <Divider />
