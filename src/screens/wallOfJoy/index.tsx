@@ -11,15 +11,16 @@ import OTPVerification from '../otpVerification';
 import LoginScreen from '../login';
 import Signup from '../signup';
 import LanguageSelectionScreen from '../languageSelection';
-import CustomTabs, { TabItem } from '../../automic-elements/customTabs';
+import CustomTabs from '../../automic-elements/customTabs';
+import MyMomentsScreen from '../myMoments';
 
 export default function WallOfJoyScreen() {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState('1');
 
-  const tabs: TabItem[] = [
-    { key: '1', label: 'JoJo Moments', icon: require('../../assets/pinkStar.png') },
-    { key: '2', label: 'My Moments', icon: require('../../assets/loveHeart.png') },
+  const tabs: any[] = [
+    { key: '1', label: 'JoJo Moments', icon: 'creation' },
+    { key: '2', label: 'My Moments', icon: 'home-outline' },
   ];
 
   const handleLoginComplete = () => {
@@ -43,13 +44,13 @@ export default function WallOfJoyScreen() {
       <View style={{ marginBottom: 6 }}>
         <Divider />
       </View>
-      <View style={{ paddingHorizontal: 6 }}>
+      <View style={{ paddingHorizontal: 6, flex: 1 }}>
         <CustomTabs
           tabs={tabs}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent /> : <WallOfJoyContent />
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent /> : <MyMomentsScreen />
           )}
         />
       </View>
@@ -59,12 +60,12 @@ export default function WallOfJoyScreen() {
 
 const WallOfJoyContent = () => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={
           {
-            // paddingBottom: 130,
+            paddingBottom: 130,
           }
         }
       >

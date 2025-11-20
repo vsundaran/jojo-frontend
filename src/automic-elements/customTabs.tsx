@@ -4,15 +4,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Divider, Text, TouchableRipple } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { lightTheme } from '../theme';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export interface TabItem {
-    key: string;
-    label: string;
-    icon: ImageSourcePropType;
-}
 
 interface CustomTabsProps {
-    tabs: TabItem[];
+    tabs: any[];
     activeTab: string;
     onTabChange: (key: string) => void;
     renderContent?: (activeTab: string) => React.ReactNode;
@@ -32,13 +28,14 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
 
                     const TabContent = () => (
                         <View style={[styles.tabContent, isActive && styles.activeTabContent]}>
-                            <Image
-                                source={tab.icon}
-                                style={[
-                                    styles.icon,
-                                    { tintColor: isActive ? lightTheme.colors.text : lightTheme.colors.textSecondary },
-                                ]}
-                                resizeMode="contain"
+                            <Icon
+                                name={tab.icon}
+                                // style={[
+                                //     styles.icon,
+                                //     { tintColor: isActive ? lightTheme.colors.text : lightTheme.colors.textSecondary },
+                                // ]}
+                                // resizeMode="contain"
+                                size={26}
                             />
                             <Text
                                 style={[
@@ -78,6 +75,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                     );
                 })}
             </View>
+            <Divider style={{ marginTop: 10 }} />
             {renderContent && <View style={styles.contentContainer}>{renderContent(activeTab)}</View>}
         </View>
     );
@@ -86,6 +84,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        flex: 1,
     },
     tabsContainer: {
         flexDirection: 'row',
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
         fontSize: scale(14),
     },
     contentContainer: {
+        flex: 1,
     },
 });
 
