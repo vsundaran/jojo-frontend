@@ -3,37 +3,31 @@ import { View, StyleSheet, ScrollView, TouchableOpacity, ViewStyle } from 'react
 import { Text } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { lightTheme } from '../../theme';
-import { SelectionChip } from '../../automic-elements/selectionChip';
 import Container from '../../automic-elements/container';
+import { Category } from '../../data/momentCategories';
 
-export const ChoosingSubCategory = ({ navigation }: any) => {
-    const [selectedCategory, setSelectedCategory] = useState<string | null>('Birthday');
+export const ChoosingSubCategory = ({ navigation, route }: any) => {
+    const category: Category = route.params?.category;
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
 
-    const categories = [
-        'Birthday',
-        'Wedding anniversary',
-        'Work Anniversary',
-        'Sweet 16',
-        '60th Wedding',
-        'Others',
-    ];
-
-    const handlePress = (category: string) => {
-        setSelectedCategory(category);
-        navigation.navigate('MomentCreatingForm', { category });
+    const handlePress = (subCategory: string) => {
+        setSelectedSubCategory(subCategory);
+        navigation.navigate('MomentCreatingForm', { category, subCategory });
     };
 
     return (
         <Container style={styles.container}>
             <Text style={styles.title}>Choose sub Category</Text>
             <View style={styles.chipsContainer}>
-                {categories.map((category) => (
+                {category?.subCategories.map((subCategory) => (
                     <SelectionChipTwo
-                        key={category}
-                        label={category}
-                        selected={selectedCategory === category}
-                        onPress={() => handlePress(category)}
+                        key={subCategory}
+                        label={subCategory}
+                        selected={selectedSubCategory === subCategory}
+                        onPress={() => handlePress(subCategory)}
                         style={styles.chip}
+                        primaryColor={category.primaryColor}
+                        bgColor={category.bgColor}
                     />
                 ))}
             </View>
@@ -59,28 +53,28 @@ const styles = StyleSheet.create({
         gap: scale(12),
     },
     chip: {
-        borderRadius: scale(20), // More rounded for this screen as per design
+        borderRadius: scale(20),
         paddingHorizontal: scale(20),
-        minWidth: 0, // Allow auto width
+        minWidth: 0,
     },
 });
-
-
 
 interface SelectionChipProps {
     label: string;
     selected: boolean;
     onPress: () => void;
     style?: ViewStyle;
+    primaryColor: string;
+    bgColor: string;
 }
 
-export const SelectionChipTwo = ({ label, selected, onPress, style }: SelectionChipProps) => {
+export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor, bgColor }: SelectionChipProps) => {
     return (
         <TouchableOpacity
             onPress={onPress}
             style={[
                 stylesChips.container,
-                selected ? stylesChips.selectedContainer : stylesChips.unselectedContainer,
+                selected ? { backgroundColor: bgColor, borderColor: bgColor } : { backgroundColor: lightTheme.colors.nonActiveChip, borderColor: lightTheme.colors.nonActiveChip },
                 style,
             ]}
             activeOpacity={0.8}
@@ -88,7 +82,7 @@ export const SelectionChipTwo = ({ label, selected, onPress, style }: SelectionC
             <Text
                 style={[
                     stylesChips.text,
-                    selected ? stylesChips.selectedText : stylesChips.unselectedText,
+                    selected ? { color: primaryColor, fontWeight: '600' } : { color: lightTheme.colors.text },
                 ]}
             >
                 {label}
@@ -107,25 +101,9 @@ const stylesChips = StyleSheet.create({
         justifyContent: 'center',
         minWidth: scale(60),
     },
-    selectedContainer: {
-        backgroundColor: '#FADAFF', // Light pink from gradientColors or similar
-        borderWidth: 0,
-        elevation: 10,
-    },
-    unselectedContainer: {
-        backgroundColor: '#FADAFF', // nonActiveChip
-        borderWidth: 0,
-    },
     text: {
         fontSize: scale(14),
         fontWeight: '500',
         fontFamily: 'Poppins',
-    },
-    selectedText: {
-        color: '#8B12B6', // wishesColor or similar pink/purple
-        fontWeight: '600',
-    },
-    unselectedText: {
-        color: lightTheme.colors.text,
     },
 });

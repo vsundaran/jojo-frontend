@@ -9,15 +9,26 @@ interface SelectionChipProps {
     selected: boolean;
     onPress: () => void;
     style?: ViewStyle;
+    primaryColor?: string;
+    bgColor?: string;
 }
 
-export const SelectionChip = ({ label, selected, onPress, style }: SelectionChipProps) => {
+export const SelectionChip = ({
+    label,
+    selected,
+    onPress,
+    style,
+    primaryColor = '#8B12B6',
+    bgColor = '#FADAFF'
+}: SelectionChipProps) => {
     return (
         <TouchableOpacity
             onPress={onPress}
             style={[
                 styles.container,
-                selected ? styles.selectedContainer : styles.unselectedContainer,
+                selected
+                    ? { backgroundColor: bgColor, borderColor: bgColor, elevation: 10, borderWidth: 0 }
+                    : styles.unselectedContainer,
                 style,
             ]}
             activeOpacity={0.8}
@@ -25,7 +36,9 @@ export const SelectionChip = ({ label, selected, onPress, style }: SelectionChip
             <Text
                 style={[
                     styles.text,
-                    selected ? styles.selectedText : styles.unselectedText,
+                    selected
+                        ? { color: primaryColor, fontWeight: '600' }
+                        : styles.unselectedText,
                 ]}
             >
                 {label}
@@ -44,25 +57,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         minWidth: scale(60),
     },
-    selectedContainer: {
-        backgroundColor: '#FADAFF', // Light pink from gradientColors or similar
-        borderColor: '#8B12B6', // Matching border
-        elevation: 10,
-        borderWidth: 0,
-    },
     unselectedContainer: {
         backgroundColor: '#F3F4F6', // nonActiveChip
-        borderColor: '#D9D9D9;', // border
+        borderColor: '#D9D9D9', // border
         borderWidth: 0,
     },
     text: {
         fontSize: scale(14),
         fontWeight: '500',
         fontFamily: 'Poppins',
-    },
-    selectedText: {
-        color: '#8B12B6', // wishesColor or similar pink/purple
-        fontWeight: '600',
     },
     unselectedText: {
         color: lightTheme.colors.text,

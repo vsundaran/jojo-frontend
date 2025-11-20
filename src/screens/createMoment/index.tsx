@@ -1,122 +1,82 @@
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import { lightTheme } from '../../theme';
 import { CategoryCard } from './category';
+import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
+import { scale, verticalScale } from 'react-native-size-matters';
 
 export default function CreateMomentScreen({ navigation }: any) {
-  const navigateToMomentCreatingForm = () => {
-    navigation.navigate('ChoosingSubCategory');
+  const navigateToMomentCreatingForm = (category: Category) => {
+    navigation.navigate('ChoosingSubCategory', { category });
   };
+
   return (
-    <Container style={{ paddingHorizontal: 24, paddingVertical: 32 }}>
-      <Text
-        style={{
-          color: lightTheme.colors.darkText,
-          fontSize: 30,
-          fontWeight: 500,
-          lineHeight: 36,
-        }}
-      >
-        Create your moment
-      </Text>
-      <Text
-        style={{
-          color: lightTheme.colors.darkText,
-          fontSize: 16,
-          fontWeight: 500,
-          lineHeight: 20,
-          marginTop: 10,
-          marginBottom: 48,
-        }}
-      >
-        Create your moment to let someone share your Joy for 30 seconds.
-      </Text>
-      <Text
-        style={{
-          color: lightTheme.colors.darkText,
-          fontSize: 16,
-          fontWeight: 500,
-          lineHeight: 20,
-          marginTop: 10,
-        }}
-      >
-        Choose Category
-      </Text>
-      <View>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <CategoryCard
-            title="Wishes"
-            onPress={navigateToMomentCreatingForm}
-            primaryColor={lightTheme.colors.wishesColor}
-            borderColor={lightTheme.colors.wishesBorderColor}
-            bgColor="#FBEFFF"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          />
-          <CategoryCard
-            title="Motivation"
-            onPress={navigateToMomentCreatingForm}
-            primaryColor={lightTheme.colors.motivationColor}
-            borderColor={lightTheme.colors.motivationBorderColor}
-            bgColor="#EDF3FF"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          />
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Container>
+        <Text
+          style={{
+            color: lightTheme.colors.darkText,
+            fontSize: scale(30),
+            fontWeight: '500',
+            lineHeight: verticalScale(36),
+          }}
+        >
+          Create your moment
+        </Text>
+
+        <Text
+          style={{
+            color: lightTheme.colors.darkText,
+            fontSize: scale(16),
+            fontWeight: '500',
+            lineHeight: verticalScale(20),
+            marginTop: verticalScale(10),
+            marginBottom: verticalScale(48),
+          }}
+        >
+          Create your moment to let someone share your Joy for 30 seconds.
+        </Text>
+
+        <Text
+          style={{
+            color: lightTheme.colors.darkText,
+            fontSize: scale(16),
+            fontWeight: '500',
+            lineHeight: verticalScale(20),
+            marginTop: verticalScale(10),
+            marginBottom: verticalScale(10),
+          }}
+        >
+          Choose Category
+        </Text>
+
+        {/* Render categories manually */}
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+          }}
+        >
+          {MOMENT_CATEGORIES.map((item) => (
+            <View key={item.id} style={{ width: '48%', marginBottom: scale(10) }}>
+              <CategoryCard
+                title={item.title}
+                onPress={() => navigateToMomentCreatingForm(item)}
+                primaryColor={item.primaryColor}
+                borderColor={item.borderColor}
+                bgColor={item.bgColor}
+                containerStyle={{
+                  height: 'auto',
+                  minHeight: verticalScale(110),
+                  justifyContent: 'center',
+                }}
+              />
+            </View>
+          ))}
         </View>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <CategoryCard
-            title="Song"
-            onPress={navigateToMomentCreatingForm}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            bgColor="#E7F9EC"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          />
-          <CategoryCard
-            title="Blessings"
-            onPress={navigateToMomentCreatingForm}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            bgColor="#FFF8EA"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          />
-        </View>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <CategoryCard
-            title="Celebration"
-            onPress={navigateToMomentCreatingForm}
-            primaryColor={lightTheme.colors.celebrationColor}
-            borderColor={lightTheme.colors.celebrationBorderColor}
-            bgColor="#FFEBEB"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: 10,
-            }}
-          />
-          <View style={{ flex: 1, marginLeft: 45 }}></View>
-        </View>
-      </View>
-    </Container>
+      </Container>
+    </ScrollView>
   );
 }

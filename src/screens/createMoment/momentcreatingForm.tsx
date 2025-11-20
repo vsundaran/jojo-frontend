@@ -8,8 +8,16 @@ import { SelectionChip } from '../../automic-elements/selectionChip';
 import { InfoCard } from '../../automic-elements/infoCard';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from '../../automic-elements/customButton';
+import { Category } from '../../data/momentCategories';
 
-export const MomentCreatingForm = ({ navigation }: any) => {
+export const MomentCreatingForm = ({ navigation, route }: any) => {
+    const category: Category = route.params?.category;
+    const subCategory = route.params?.subCategory;
+
+    // Default colors if no category selected (fallback)
+    const primaryColor = category?.primaryColor || lightTheme.colors.wishesColor;
+    const bgColor = category?.bgColor || '#FADAFF';
+
     const [momentText, setMomentText] = useState('');
     const [isImmediate, setIsImmediate] = useState(true);
     const [duration, setDuration] = useState(60);
@@ -21,7 +29,7 @@ export const MomentCreatingForm = ({ navigation }: any) => {
 
     const handleCreateMoment = () => {
         // Handle creation logic
-        console.log({ momentText, isImmediate, duration, language });
+        console.log({ momentText, isImmediate, duration, language, category: category?.title, subCategory });
     };
 
     return (
@@ -42,7 +50,7 @@ export const MomentCreatingForm = ({ navigation }: any) => {
                         style={styles.textInput}
                         outlineStyle={styles.inputOutline}
                         contentStyle={styles.inputContent}
-                        theme={{ colors: { primary: lightTheme.colors.primary, background: '#FFFFFF' } }}
+                        theme={{ colors: { primary: primaryColor, background: '#FFFFFF' } }}
                     />
                     <Text style={styles.charCount}>{momentText.length}/60</Text>
                 </View>
@@ -53,18 +61,24 @@ export const MomentCreatingForm = ({ navigation }: any) => {
                 <FormLabel>When do you want your moment to go live?</FormLabel>
                 <View style={styles.toggleContainer}>
                     <TouchableOpacity
-                        style={[styles.toggleButton, isImmediate && styles.toggleButtonActive]}
+                        style={[
+                            styles.toggleButton,
+                            isImmediate && { backgroundColor: bgColor, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 1, elevation: 4 }
+                        ]}
                         onPress={() => setIsImmediate(true)}
                         activeOpacity={0.9}
                     >
-                        <Text style={[styles.toggleText, isImmediate && styles.toggleTextActive]}>Immediate</Text>
+                        <Text style={[styles.toggleText, isImmediate && { color: primaryColor, fontWeight: '600' }]}>Immediate</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={[styles.toggleButton, !isImmediate && styles.toggleButtonActive]}
+                        style={[
+                            styles.toggleButton,
+                            !isImmediate && { backgroundColor: bgColor, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 1, elevation: 4 }
+                        ]}
                         onPress={() => setIsImmediate(false)}
                         activeOpacity={0.9}
                     >
-                        <Text style={[styles.toggleText, !isImmediate && styles.toggleTextActive]}>Later</Text>
+                        <Text style={[styles.toggleText, !isImmediate && { color: primaryColor, fontWeight: '600' }]}>Later</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -79,8 +93,8 @@ export const MomentCreatingForm = ({ navigation }: any) => {
                             onChangeText={setScheduledTime}
                             style={styles.dateTimeInput}
                             outlineStyle={styles.dateTimeOutline}
-                            right={<TextInput.Icon icon="calendar-blank-outline" color="#8B12B6" />}
-                            theme={{ colors: { primary: lightTheme.colors.primary, background: '#FFFFFF' } }}
+                            right={<TextInput.Icon icon="calendar-blank-outline" color={primaryColor} />}
+                            theme={{ colors: { primary: primaryColor, background: '#FFFFFF' } }}
                         // editable={false} // Currently just UI
                         />
                     </View>
@@ -99,6 +113,8 @@ export const MomentCreatingForm = ({ navigation }: any) => {
                             selected={duration === mins}
                             onPress={() => setDuration(mins)}
                             style={styles.chip}
+                            primaryColor={primaryColor}
+                            bgColor={bgColor}
                         />
                     ))}
                 </View>
@@ -116,7 +132,7 @@ export const MomentCreatingForm = ({ navigation }: any) => {
                             style={styles.dropdownTrigger}
                         >
                             <Text style={styles.dropdownText}>{language}</Text>
-                            <Icon name="chevron-down" size={24} color="#D459FF" />
+                            <Icon name="chevron-down" size={24} color={primaryColor} />
                         </TouchableOpacity>
                     }
                     contentStyle={{ backgroundColor: '#FFFFFF' }}
@@ -202,22 +218,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: scale(34),
     },
-    toggleButtonActive: {
-        backgroundColor: '#FADAFF', // Pink background
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 1,
-        elevation: 4,
-    },
     toggleText: {
         fontSize: scale(14),
         color: lightTheme.colors.text,
         fontWeight: '500',
-    },
-    toggleTextActive: {
-        color: '#8B12B6', // Active pink text
-        fontWeight: '600',
     },
     dateTimeContainer: {
         marginTop: verticalScale(20),
