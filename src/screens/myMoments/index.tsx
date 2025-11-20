@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
+import { NoMoments } from './NoMoments';
 
 interface MomentData {
     id: string;
@@ -133,6 +134,7 @@ export default function MyMomentsScreen() {
                         onToggle={() => handleToggle(moment.id)}
                     />
                 ))}
+                <NoMoments />
             </ScrollView>
         </View>
     );
