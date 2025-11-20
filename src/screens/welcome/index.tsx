@@ -1,10 +1,6 @@
 import { Button, Surface, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
-import WelcomeScreen from './welcome';
 import { View } from 'react-native';
-import MomentsScreen from './moments';
-import GiveJoyScreen from './giveGoy';
-import SafePrivateScreen from './safePrivate';
 import JojoCarousel from '../../automic-elements/slider';
 
 export default function Welcome({ navigation }: any) {

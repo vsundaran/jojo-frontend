@@ -47,20 +47,6 @@ const OTPVerification = () => {
     <CustomModal visible={visible} onDismiss={onDismiss}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          {/* Lock Icon Section */}
-          {/* <View style={styles.iconContainer}>
-                        <ImageBackground
-                            source={require('../../assets/iconsBackground.png')}
-                            style={styles.iconBackground}
-                            resizeMode="contain"
-                        >
-                            <Image
-                                source={require('../../assets/lockIcon.png')}
-                                style={styles.lockIcon}
-                                resizeMode="contain"
-                            />
-                        </ImageBackground>
-                    </View> */}
 
           <View style={styles.iconContainer}>
             {/* Background Icon */}

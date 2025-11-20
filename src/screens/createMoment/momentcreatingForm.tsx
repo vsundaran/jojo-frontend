@@ -7,8 +7,9 @@ import { FormLabel } from '../../automic-elements/formLabel';
 import { SelectionChip } from '../../automic-elements/selectionChip';
 import { InfoCard } from '../../automic-elements/infoCard';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomButton from '../../automic-elements/customButton';
 
-export const MomentCreatingForm = () => {
+export const MomentCreatingForm = ({ navigation }: any) => {
     const [momentText, setMomentText] = useState('');
     const [isImmediate, setIsImmediate] = useState(true);
     const [duration, setDuration] = useState(60);
@@ -134,15 +135,10 @@ export const MomentCreatingForm = () => {
             </View>
 
             {/* Create Button */}
-            <Button
-                mode="contained"
+            <CustomButton
                 onPress={handleCreateMoment}
-                style={styles.createButton}
-                labelStyle={styles.createButtonLabel}
-                contentStyle={styles.createButtonContent}
-            >
-                Create Moment
-            </Button>
+                title="Create Moment"
+            />
 
             {/* Info Card */}
             <InfoCard

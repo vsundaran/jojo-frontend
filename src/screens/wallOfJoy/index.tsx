@@ -9,6 +9,8 @@ import Container from '../../automic-elements/container';
 import { WishCard } from '../../automic-elements/wishCard';
 import OTPVerification from '../otpVerification';
 import LoginScreen from '../login';
+import Signup from '../signup';
+import LanguageSelectionScreen from '../languageSelection';
 
 export default function WallOfJoyScreen() {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -19,14 +21,17 @@ export default function WallOfJoyScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-      {/* <OTPVerification /> */}
 
-      {isLoginCompleted ? (
+
+      {/* {isLoginCompleted ? (
         <OTPVerification />
       ) : (
         <LoginScreen handleLogin={handleLoginComplete} />
-      )}
-      {/* <Header /> */}
+      )} */}
+      {/* <Signup /> */}
+      <LanguageSelectionScreen />
+
+
       <ScrollingCategory />
       <Divider />
       <ScrollView
