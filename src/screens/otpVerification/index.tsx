@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
     },
     innerCircle: {
-        width: 74,
-        height: 74,
+        width: 64,
+        height: 64,
         borderRadius: 16,
         backgroundColor: lightTheme.colors.background,
         justifyContent: 'center',

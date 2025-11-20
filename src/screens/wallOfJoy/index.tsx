@@ -8,11 +8,13 @@ import ScrollingCategory from './scrollingCategory';
 import Container from '../../automic-elements/container';
 import { WishCard } from '../../automic-elements/wishCard';
 import OTPVerification from '../otpVerification';
+import LoginScreen from '../login';
 
 export default function WallOfJoyScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-      <OTPVerification />
+      {/* <OTPVerification /> */}
+      <LoginScreen />
       {/* <Header /> */}
       <ScrollingCategory />
       <Divider />
