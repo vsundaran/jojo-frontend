@@ -82,7 +82,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                         onClose={() => toggleLanguage(lang)}
                         style={styles.chip}
                         textStyle={styles.chipText}
-                        closeIcon="close"
+                        closeIcon={({ size }) => <Icon name="close" size={size} color="#FFF" />}
                     >
                         {lang.name}
                     </Chip>
@@ -116,7 +116,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     };
 
     return (
-        <CustomModal visible={visible} onDismiss={onDismiss} contentContainerStyle={{ maxHeight: '85%' }}>
+        <CustomModal visible={visible} onDismiss={onDismiss}>
             <View style={styles.container}>
                 {/* Header */}
                 <View style={styles.header}>
@@ -149,7 +149,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                     data={filteredLanguages}
                     renderItem={renderLanguageItem}
                     keyExtractor={(item) => item.id}
-                    style={styles.list}
+                    style={{ maxHeight: selectedLanguages.length > 0 ? "30%" : "48%" }}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={{ height: verticalScale(12) }} />}
@@ -162,7 +162,6 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                     onPress={handleComplete}
                     style={styles.button}
                     contentStyle={styles.buttonContent}
-                    labelStyle={styles.buttonLabel}
                 />
             </View>
         </CustomModal>
@@ -171,9 +170,6 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        // paddingHorizontal: scale(4),
-        paddingBottom: verticalScale(10),
-        flex: 1, // Ensure container takes available space
     },
     header: {
         alignItems: 'center',
@@ -200,14 +196,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: scale(20),
-        fontWeight: 'bold',
         color: '#1F2937',
         marginBottom: verticalScale(8),
         textAlign: 'center',
     },
     subtitle: {
         fontSize: scale(12),
-        color: '#6B7280',
+        color: lightTheme.colors.text,
         textAlign: 'center',
         paddingHorizontal: scale(20),
     },
@@ -231,9 +226,12 @@ const styles = StyleSheet.create({
         marginRight: scale(8),
         backgroundColor: lightTheme.colors.primary, // Use theme primary color
         height: verticalScale(32),
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#ffff'
     },
     chipText: {
-        color: '#FFF',
+        color: '#ffffffff',
         fontSize: scale(12),
     },
     searchInput: {
@@ -247,7 +245,8 @@ const styles = StyleSheet.create({
         borderRadius: scale(12),
     },
     list: {
-        flex: 1, // Allow list to take available space and scroll
+        // flex: 1, // Allow list to take available space and scroll
+        maxHeight: '30%',
     },
     listContent: {
         paddingBottom: verticalScale(10),

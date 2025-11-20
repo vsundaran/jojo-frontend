@@ -6,10 +6,10 @@ import LanguageSelectionModal from "../../automic-elements/languageSelectionModa
 export default function LanguageSelectionScreen() {
     const [modalVisible, setModalVisible] = useState(true);
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <LanguageSelectionModal
                 visible={modalVisible}
-                onDismiss={() => setModalVisible(false)}
+                onDismiss={() => setModalVisible(true)}
                 onComplete={(selectedLanguages) => {
                     console.log('Selected:', selectedLanguages);
                     setModalVisible(false);
