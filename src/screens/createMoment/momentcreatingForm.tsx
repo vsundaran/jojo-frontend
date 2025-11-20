@@ -9,6 +9,7 @@ import { InfoCard } from '../../automic-elements/infoCard';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from '../../automic-elements/customButton';
 import { Category } from '../../data/momentCategories';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export const MomentCreatingForm = ({ navigation, route }: any) => {
     const category: Category = route.params?.category;
@@ -32,9 +33,66 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
         console.log({ momentText, isImmediate, duration, language, category: category?.title, subCategory });
     };
 
+
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [finalISOTime, setFinalISOTime] = useState('');
+    const [pickedDate, setPickedDate] = useState<Date | null>(null);
+    const [pickedTime, setPickedTime] = useState<Date | null>(null);
+
+    const onSelectDate = (event: any, selectedDate?: Date) => {
+        setShowDatePicker(false);
+        if (selectedDate) {
+            setPickedDate(selectedDate);
+            setShowTimePicker(true); // open time picker next
+        }
+    };
+
+    const onSelectTime = (event: any, selectedTime?: Date) => {
+        setShowTimePicker(false);
+        if (selectedTime) {
+            setPickedTime(selectedTime);
+
+            if (pickedDate) {
+                const final = new Date(
+                    pickedDate.getFullYear(),
+                    pickedDate.getMonth(),
+                    pickedDate.getDate(),
+                    selectedTime.getHours(),
+                    selectedTime.getMinutes()
+                );
+
+                const iso = final.toISOString();
+                setFinalISOTime(iso);
+                setScheduledTime(iso); // <-- set inside your UI input box
+            }
+        }
+    };
+
+
+
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             {/* Description Input */}
+
+            {showDatePicker && (
+                <DateTimePicker
+                    value={new Date()}
+                    mode="date"
+                    display="calendar"
+                    onChange={onSelectDate}
+                />
+            )}
+
+            {showTimePicker && (
+                <DateTimePicker
+                    value={new Date()}
+                    mode="time"
+                    display="spinner"
+                    onChange={onSelectTime}
+                />
+            )}
+
             <View style={{ ...styles.section, marginBottom: verticalScale(35) }}>
                 <FormLabel optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
                 <View style={styles.inputContainer}>
@@ -84,20 +142,20 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
 
                 {/* Date/Time Selection for Later */}
                 {!isImmediate && (
-                    <View style={styles.dateTimeContainer}>
+                    <TouchableOpacity
+                        onPress={() => setShowDatePicker(true)}
+                        activeOpacity={0.8}
+                    >
                         <TextInput
                             mode="outlined"
-                            placeholder="dd-mm-yyyy --:--"
-                            placeholderTextColor="#9CA3AF"
+                            placeholder="Pick date & time"
                             value={scheduledTime}
-                            onChangeText={setScheduledTime}
+                            editable={false}
+                            right={<TextInput.Icon icon="calendar-blank-outline" color={primaryColor} />}
                             style={styles.dateTimeInput}
                             outlineStyle={styles.dateTimeOutline}
-                            right={<TextInput.Icon icon="calendar-blank-outline" color={primaryColor} />}
-                            theme={{ colors: { primary: primaryColor, background: '#FFFFFF' } }}
-                        // editable={false} // Currently just UI
                         />
-                    </View>
+                    </TouchableOpacity>
                 )}
             </View>
 
