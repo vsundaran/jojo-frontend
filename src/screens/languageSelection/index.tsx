@@ -9,7 +9,7 @@ export default function LanguageSelectionScreen() {
         <View style={{ flex: 1 }}>
             <LanguageSelectionModal
                 visible={modalVisible}
-                onDismiss={() => setModalVisible(true)}
+                onDismiss={() => setModalVisible(false)}
                 onComplete={(selectedLanguages) => {
                     console.log('Selected:', selectedLanguages);
                     setModalVisible(false);

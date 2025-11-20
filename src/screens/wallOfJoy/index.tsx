@@ -11,9 +11,16 @@ import OTPVerification from '../otpVerification';
 import LoginScreen from '../login';
 import Signup from '../signup';
 import LanguageSelectionScreen from '../languageSelection';
+import CustomTabs, { TabItem } from '../../automic-elements/customTabs';
 
 export default function WallOfJoyScreen() {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
+  const [activeTab, setActiveTab] = useState('1');
+
+  const tabs: TabItem[] = [
+    { key: '1', label: 'JoJo Moments', icon: require('../../assets/pinkStar.png') },
+    { key: '2', label: 'My Moments', icon: require('../../assets/loveHeart.png') },
+  ];
 
   const handleLoginComplete = () => {
     setIsLoginCompleted(true);
@@ -29,11 +36,30 @@ export default function WallOfJoyScreen() {
         <LoginScreen handleLogin={handleLoginComplete} />
       )} */}
       {/* <Signup /> */}
-      <LanguageSelectionScreen />
+      {/* <LanguageSelectionScreen /> */}
+      <View style={{ paddingVertical: 3, justifyContent: 'center', alignItems: 'center' }}>
+        <ScrollingCategory />
+      </View>
+      <View style={{ marginBottom: 6 }}>
+        <Divider />
+      </View>
+      <View style={{ paddingHorizontal: 6 }}>
+        <CustomTabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          renderContent={(key) => (
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent /> : <WallOfJoyContent />
+          )}
+        />
+      </View>
+    </View>
+  );
+}
 
-
-      <ScrollingCategory />
-      <Divider />
+const WallOfJoyContent = () => {
+  return (
+    <View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={
