@@ -93,7 +93,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                 />
             )}
 
-            <View style={{ ...styles.section, marginBottom: verticalScale(35) }}>
+            <View style={{ ...styles.section }}>
                 <FormLabel optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -245,6 +245,7 @@ const styles = StyleSheet.create({
     textInput: {
         backgroundColor: '#FFFFFF',
         fontSize: scale(14),
+        paddingVertical: verticalScale(10)
     },
     inputOutline: {
         height: verticalScale(68),
