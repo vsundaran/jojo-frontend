@@ -7,23 +7,34 @@ import WallOfJoyScreen from '../screens/wallOfJoy';
 import FooterNavigation from '../automic-elements/bottomNavigation';
 import AppLayout from '../automic-elements/appLayout';
 import { MomentCreatingForm } from '../screens/createMoment/momentcreatingForm';
+import Signup from '../screens/signup';
+import LoginScreen from '../screens/login';
+import LanguageSelectionScreen from '../screens/languageSelection';
+import OTPVerification from '../screens/otpVerification';
+import { AuthProvider } from '../context/AuthContext';
 
 export const AppNavigator = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-    <Surface style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="app-layout"
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="home" component={HomeScreen} />
-          <Stack.Screen name="welcome" component={Welcome} />
-          <Stack.Screen name="app-layout" component={AppLayout} />
-          <Stack.Screen name="moment-creating-form" component={MomentCreatingForm} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Surface>
+    <AuthProvider>
+      <Surface style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="login"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="home" component={HomeScreen} />
+            <Stack.Screen name="welcome" component={Welcome} />
+            <Stack.Screen name="app-layout" component={AppLayout} />
+            <Stack.Screen name="moment-creating-form" component={MomentCreatingForm} />
+            <Stack.Screen name="signup" component={Signup} />
+            <Stack.Screen name="language-selection" component={LanguageSelectionScreen} />
+            <Stack.Screen name="login" component={LoginScreen} />
+            <Stack.Screen name="otp-verification" component={OTPVerification} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Surface>
+    </AuthProvider>
   );
 };

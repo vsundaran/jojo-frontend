@@ -1,5 +1,4 @@
-// src/services/api/authApi.ts
-
+import { AxiosResponse } from "axios";
 import { ApiResponse, User } from "../types";
 import apiClient from "./client";
 
@@ -10,6 +9,7 @@ export interface SendOTPRequest {
 export interface VerifyOTPRequest {
     mobileNumber: string;
     otp: string;
+    name?: string;
 }
 
 export interface CompleteProfileRequest {
@@ -17,15 +17,15 @@ export interface CompleteProfileRequest {
 }
 
 class AuthApi {
-    async sendOTP(data: SendOTPRequest): Promise<ApiResponse<{ isNewUser: boolean }>> {
+    async sendOTP(data: SendOTPRequest): Promise<AxiosResponse<ApiResponse<{ isNewUser: boolean }>>> {
         return apiClient.post('/auth/send-otp', data);
     }
 
-    async verifyOTP(data: VerifyOTPRequest): Promise<ApiResponse<{ user: User; token: string; profileCompleted: boolean }>> {
+    async verifyOTP(data: VerifyOTPRequest): Promise<AxiosResponse<ApiResponse<{ user: User; token: string; profileCompleted: boolean }>>> {
         return apiClient.post('/auth/verify-otp', data);
     }
 
-    async completeProfile(data: CompleteProfileRequest): Promise<ApiResponse<{ user: User }>> {
+    async completeProfile(data: CompleteProfileRequest): Promise<AxiosResponse<ApiResponse<{ user: User }>>> {
         return apiClient.post('/auth/complete-profile', data);
     }
 

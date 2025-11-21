@@ -3,20 +3,36 @@ import {
   StyleSheet,
   View,
   Image,
-  ImageBackground,
   TextInput,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
-import { Text, Button, Avatar } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
+import { useVerifyOTP, useSendOTP } from '../../hooks/useAuthQuery';
+import { useAuth } from '../../context/AuthContext';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState('');
   const inputRef = useRef<TextInput>(null);
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { mobileNumber, name } = route.params || {};
+  const { mutate: verifyOTP, isPending: isVerifying } = useVerifyOTP();
+  const { mutate: sendOTP, isPending: isResending } = useSendOTP();
+  const { login } = useAuth();
+
+  const [visible, setVisible] = useState(true);
+
+  const onDismiss = () => {
+    setVisible(false);
+    navigation.goBack();
+  };
 
   const handleOtpChange = (text: string) => {
     if (/^\d*$/.test(text) && text.length <= 6) {
@@ -28,19 +44,44 @@ const OTPVerification = () => {
   };
 
   const handleVerify = () => {
-    console.log('Verify OTP:', otp);
-    onDismiss();
-    // Add verification logic here
+    console.log('Verify OTP:', otp, 'Mobile:', mobileNumber, 'Name:', name);
+
+    const verifyData: any = {
+      mobileNumber,
+      otp,
+    };
+    if (name) {
+      verifyData.name = name;
+    }
+
+    verifyOTP(verifyData, {
+      onSuccess: async (response) => {
+        console.log('Verify OTP Success:', response.data);
+        const { token, user } = response.data;
+        await login(token, user);
+        setVisible(false);
+        navigation.navigate('app-layout');
+      },
+      onError: (error: any) => {
+        console.error('Verify OTP Error:', error);
+        Alert.alert('Error', error.response?.data?.message || 'Failed to verify OTP');
+      },
+    });
   };
 
   const handleResend = () => {
-    console.log('Resend OTP');
-    // Add resend logic here
-  };
-
-  const [visible, setIsvisible] = useState(true);
-  const onDismiss = () => {
-    setIsvisible(false);
+    console.log('Resend OTP to:', mobileNumber);
+    sendOTP(
+      { mobileNumber },
+      {
+        onSuccess: () => {
+          Alert.alert('Success', 'OTP resent successfully');
+        },
+        onError: (error: any) => {
+          Alert.alert('Error', error.response?.data?.message || 'Failed to resend OTP');
+        },
+      }
+    );
   };
 
   return (
@@ -69,7 +110,7 @@ const OTPVerification = () => {
           <Text style={styles.title}>Welcome back</Text>
           <Text style={styles.subtitle}>Verify OTP</Text>
           <Text style={styles.instruction}>
-            Enter the code we sent to +91 *****50284
+            Enter the code we sent to {mobileNumber}
           </Text>
 
           {/* OTP Input Section */}
@@ -104,8 +145,8 @@ const OTPVerification = () => {
 
           <View style={styles.resendContainer}>
             {/* Resend Link */}
-            <TouchableOpacity onPress={handleResend}>
-              <Text style={styles.resendText}>Resend</Text>
+            <TouchableOpacity onPress={handleResend} disabled={isResending}>
+              <Text style={styles.resendText}>{isResending ? "Resending..." : "Resend"}</Text>
             </TouchableOpacity>
           </View>
 
@@ -116,10 +157,10 @@ const OTPVerification = () => {
             style={styles.verifyButton}
             contentStyle={styles.verifyButtonContent}
             labelStyle={styles.verifyButtonLabel}
-            disabled={otp.length !== 6}
+            disabled={otp.length !== 6 || isVerifying}
             buttonColor={lightTheme.colors.primary}
           >
-            Verify
+            {isVerifying ? "Verifying..." : "Verify"}
           </Button>
         </View>
       </TouchableWithoutFeedback>

@@ -3,30 +3,54 @@ import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  Text as RNText,
+  Alert,
 } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
 import CustomButton from '../../automic-elements/customButton';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSendOTP } from '../../hooks/useAuthQuery';
 
-const LoginScreen = ({ handleLogin }: any) => {
+const LoginScreen = () => {
   const [visible, setVisible] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const navigation = useNavigation<any>();
+  const { mutate: sendOTP, isPending } = useSendOTP();
 
   const onDismiss = () => {
     setVisible(false);
+    navigation.goBack();
   };
 
   const handleSendOtp = () => {
-    console.log('Send OTP to:', phoneNumber);
-    handleLogin();
-    // Logic to send OTP
+    if (phoneNumber.length < 10) return;
+
+    const formattedNumber = `+91${phoneNumber}`;
+    console.log('Send OTP to:', formattedNumber);
+
+    sendOTP(
+      { mobileNumber: formattedNumber },
+      {
+        onSuccess: (response) => {
+          console.log('Send OTP Success:', response.data);
+          const { isNewUser } = response.data;
+          setVisible(false);
+          if (isNewUser) {
+            navigation.navigate('signup', { mobileNumber: formattedNumber });
+          } else {
+            navigation.navigate('otp-verification', { mobileNumber: formattedNumber });
+          }
+        },
+        onError: (error: any) => {
+          console.error('Send OTP Error:', error);
+          Alert.alert('Error', error.response?.data?.message || 'Failed to send OTP');
+        },
+      }
+    );
   };
 
   return (
@@ -68,11 +92,6 @@ const LoginScreen = ({ handleLogin }: any) => {
                       icon={() => (
                         <View style={styles.countryCodeContainer}>
                           <Text style={styles.countryCode}>+91</Text>
-                          {/* <Icon
-                                                        name="chevron-down"
-                                                        size={20}
-                                                        color={lightTheme.colors.textSecondary}
-                                                    /> */}
                         </View>
                       )}
                     />
@@ -91,10 +110,10 @@ const LoginScreen = ({ handleLogin }: any) => {
 
           {/* Send OTP Button */}
           <CustomButton
-            title="Send OTP"
+            title={isPending ? "Sending..." : "Send OTP"}
             onPress={handleSendOtp}
             style={styles.sendButton}
-            disabled={phoneNumber.length < 10}
+            disabled={phoneNumber.length < 10 || isPending}
           />
 
           {/* Footer Text */}

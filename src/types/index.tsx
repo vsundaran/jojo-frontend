@@ -56,13 +56,10 @@ export interface Review {
   createdAt: string;
 }
 
-export interface ApiResponse<T = any> {
+export type ApiResponse<T = {}> = {
   success: boolean;
   message: string;
-  data?: T;
-  token?: string;
-  user?: User;
-}
+} & T;
 
 export interface AuthState {
   user: User | null;
