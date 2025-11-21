@@ -29,6 +29,10 @@ class AuthApi {
         return apiClient.post('/auth/complete-profile', data);
     }
 
+    async getLanguages(): Promise<AxiosResponse<{ success: boolean; languages: string[] }>> {
+        return apiClient.get('/auth/languages');
+    }
+
     async logout(): Promise<void> {
         // Clear local storage is handled in context
         return Promise.resolve();

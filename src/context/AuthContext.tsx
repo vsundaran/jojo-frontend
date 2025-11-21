@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
             await AsyncStorage.removeItem(StorageKeys.AUTH_TOKEN);
             await AsyncStorage.removeItem(StorageKeys.USER_DATA);
+            await AsyncStorage.removeItem(StorageKeys.SELECTED_LANGUAGES);
             setToken(null);
             setUser(null);
         } catch (error) {

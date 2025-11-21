@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { TextInput, Button, Text, Menu, Chip } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -13,6 +13,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { LANGUAGES } from '../../constants/flag';
 import CountryFlag from "react-native-country-flag";
 import { useCreateMoment } from '../../hooks/useCreateMoment';
+import { authApi } from '../../api/authApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StorageKeys } from '../../constants/StorageKeys';
 
 interface Language {
     id: string;
@@ -38,6 +41,34 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
     const [scheduledTime, setScheduledTime] = useState('');
+
+    useEffect(() => {
+        const loadLanguages = async () => {
+            try {
+                const storedLanguages = await AsyncStorage.getItem(StorageKeys.SELECTED_LANGUAGES);
+                if (storedLanguages) {
+                    const parsedLanguages = JSON.parse(storedLanguages);
+                    const mappedLanguages = LANGUAGES.filter(l =>
+                        parsedLanguages.some((pl: string) => pl.toLowerCase() === l.name.toLowerCase())
+                    );
+                    setSelectedLanguages(mappedLanguages);
+                } else {
+                    const response = await authApi.getLanguages();
+                    if (response.data.success && response.data.languages) {
+                        const serverLanguages = response.data.languages;
+                        const mappedLanguages = LANGUAGES.filter(l =>
+                            serverLanguages.some(sl => sl.toLowerCase() === l.name.toLowerCase())
+                        );
+                        setSelectedLanguages(mappedLanguages);
+                        await AsyncStorage.setItem(StorageKeys.SELECTED_LANGUAGES, JSON.stringify(serverLanguages));
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load languages', error);
+            }
+        };
+        loadLanguages();
+    }, []);
 
     /* FILTER LANGUAGES */
     const filteredLanguages = useMemo(() => {

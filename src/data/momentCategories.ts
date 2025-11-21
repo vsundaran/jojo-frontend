@@ -85,8 +85,8 @@ export const MOMENT_CATEGORIES: Category[] = [
         ],
     },
     {
-        id: 'celebration',
-        title: 'Celebration',
+        id: 'celebrations',
+        title: 'Celebrations',
         primaryColor: lightTheme.colors.celebrationColor,
         borderColor: lightTheme.colors.celebrationBorderColor,
         bgColor: '#FFEBEB',
