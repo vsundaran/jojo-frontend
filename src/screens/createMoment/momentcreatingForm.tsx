@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { TextInput, Button, Text, Menu } from 'react-native-paper';
+import React, { useState, useMemo } from 'react';
+import { View, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { TextInput, Button, Text, Menu, Chip } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { lightTheme } from '../../theme';
 import { FormLabel } from '../../automic-elements/formLabel';
@@ -10,6 +10,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from '../../automic-elements/customButton';
 import { Category } from '../../data/momentCategories';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { LANGUAGES } from '../../constants/flag';
+import CountryFlag from "react-native-country-flag";
+
+interface Language {
+    id: string;
+    name: string;
+    flagCode: string;
+}
 
 export const MomentCreatingForm = ({ navigation, route }: any) => {
     const category: Category = route.params?.category;
@@ -22,15 +30,43 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
     const [momentText, setMomentText] = useState('');
     const [isImmediate, setIsImmediate] = useState(true);
     const [duration, setDuration] = useState(60);
-    const [language, setLanguage] = useState('Tamil');
-    const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+
+    // Language Selection State
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
     const [scheduledTime, setScheduledTime] = useState('');
 
-    const languages = ['Tamil', 'English', 'Hindi', 'Malayalam'];
+    /* FILTER LANGUAGES */
+    const filteredLanguages = useMemo(() => {
+        if (!searchQuery) return LANGUAGES;
+        return LANGUAGES.filter((lang) =>
+            lang.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery]);
+
+    /* SELECT / UNSELECT LANGUAGE */
+    const toggleLanguage = (language: Language) => {
+        setSelectedLanguages((prev) => {
+            const exists = prev.find((l) => l.id === language.id);
+            if (exists) {
+                return prev.filter((l) => l.id !== language.id);
+            }
+            return [...prev, language];
+        });
+    };
+
+    const isSelected = (id: string) => selectedLanguages.some((l) => l.id === id);
 
     const handleCreateMoment = () => {
         // Handle creation logic
-        console.log({ momentText, isImmediate, duration, language, category: category?.title, subCategory });
+        console.log({
+            momentText,
+            isImmediate,
+            duration,
+            selectedLanguages,
+            category: category?.title,
+            subCategory
+        });
     };
 
 
@@ -69,30 +105,39 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
         }
     };
 
+    /* RENDER ONE LANGUAGE ROW */
+    const renderLanguageItem = ({ item }: { item: Language }) => {
+        const selected = isSelected(item.id);
 
+        return (
+            <TouchableOpacity
+                onPress={() => toggleLanguage(item)}
+                activeOpacity={0.7}
+                style={[
+                    styles.languageItem,
+                    selected && { borderColor: "#FF9C01", backgroundColor: "#FFF8F0", borderWidth: 1 }
+                ]}
+            >
+                <View style={styles.languageRow}>
+                    <CountryFlag isoCode={item.flagCode} size={20} />
+
+                    <Text style={styles.languageName}>
+                        {item.name}
+                    </Text>
+                </View>
+
+                {selected && (
+                    <View style={styles.checkIconContainer}>
+                        <Icon name="check" size={16} color="#FFF" />
+                    </View>
+                )}
+            </TouchableOpacity>
+        );
+    };
 
     return (
-        <View>
+        <View style={styles.container}>
             {/* Description Input */}
-
-            {/* {showDatePicker && (
-                <DateTimePicker
-                    value={new Date()}
-                    mode="date"
-                    display="calendar"
-                    onChange={onSelectDate}
-                />
-            )}
-
-            {showTimePicker && (
-                <DateTimePicker
-                    value={new Date()}
-                    mode="time"
-                    display="spinner"
-                    onChange={onSelectTime}
-                />
-            )} */}
-
             <View style={{ ...styles.section, marginBottom: 15 }}>
                 <FormLabel optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
                 <View style={styles.inputContainer}>
@@ -114,97 +159,59 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                 </View>
             </View>
 
-            {/* Go Live Time Toggle */}
-            {/* <View style={styles.section}>
-                <FormLabel>When do you want your moment to go live?</FormLabel>
-                <View style={styles.toggleContainer}>
-                    <TouchableOpacity
-                        style={[
-                            styles.toggleButton,
-                            isImmediate && { backgroundColor: bgColor, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 1, elevation: 4 }
-                        ]}
-                        onPress={() => setIsImmediate(true)}
-                        activeOpacity={0.9}
-                    >
-                        <Text style={[styles.toggleText, isImmediate && { color: primaryColor, fontWeight: '600' }]}>Immediate</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            styles.toggleButton,
-                            !isImmediate && { backgroundColor: bgColor, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 1, elevation: 4 }
-                        ]}
-                        onPress={() => setIsImmediate(false)}
-                        activeOpacity={0.9}
-                    >
-                        <Text style={[styles.toggleText, !isImmediate && { color: primaryColor, fontWeight: '600' }]}>Later</Text>
-                    </TouchableOpacity>
-                </View>
-
-                {!isImmediate && (
-                    <TouchableOpacity
-                        onPress={() => setShowDatePicker(true)}
-                        activeOpacity={0.8}
-                    >
-                        <TextInput
-                            mode="outlined"
-                            placeholder="Pick date & time"
-                            value={scheduledTime}
-                            editable={false}
-                            right={<TextInput.Icon icon="calendar-blank-outline" color={primaryColor} />}
-                            style={styles.dateTimeInput}
-                            outlineStyle={styles.dateTimeOutline}
-                        />
-                    </TouchableOpacity>
-                )}
-            </View> */}
-
-
-            {/* Duration Selection */}
-            {/* <View style={styles.section}>
-                <FormLabel>How many mins should this moment be active?</FormLabel>
-                <View style={styles.chipsContainer}>
-                    {[30, 60, 90, 120].map((mins) => (
-                        <SelectionChip
-                            key={mins}
-                            label={mins.toString()}
-                            selected={duration === mins}
-                            onPress={() => setDuration(mins)}
-                            style={styles.chip}
-                            primaryColor={primaryColor}
-                            bgColor={bgColor}
-                        />
-                    ))}
-                </View>
-            </View> */}
-
             {/* Language Selection */}
             <View style={styles.section}>
                 <FormLabel>What language do you prefer?</FormLabel>
-                <Menu
-                    visible={showLanguageMenu}
-                    onDismiss={() => setShowLanguageMenu(false)}
-                    anchor={
-                        <TouchableOpacity
-                            onPress={() => setShowLanguageMenu(true)}
-                            style={styles.dropdownTrigger}
-                        >
-                            <Text style={styles.dropdownText}>{language}</Text>
-                            <Icon name="chevron-down" size={24} color={primaryColor} />
-                        </TouchableOpacity>
-                    }
-                    contentStyle={{ backgroundColor: '#FFFFFF' }}
-                >
-                    {languages.map((lang) => (
-                        <Menu.Item
-                            key={lang}
-                            onPress={() => {
-                                setLanguage(lang);
-                                setShowLanguageMenu(false);
-                            }}
-                            title={lang}
-                        />
-                    ))}
-                </Menu>
+
+                {/* SELECTED TAGS */}
+                {selectedLanguages.length > 0 && (
+                    <View style={styles.selectedContainer}>
+                        <Text style={styles.selectedLabel}>
+                            Selected ({selectedLanguages.length}):
+                        </Text>
+
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            {selectedLanguages.map((lang) => (
+                                <Chip
+                                    key={lang.id}
+                                    onClose={() => toggleLanguage(lang)}
+                                    style={[styles.chip, { backgroundColor: primaryColor }]}
+                                    textStyle={styles.chipText}
+                                    closeIcon={() => <Icon name="close-circle" size={16} color="#FFF" />}
+                                >
+                                    {lang.name}
+                                </Chip>
+                            ))}
+                        </ScrollView>
+                    </View>
+                )}
+
+                {/* SEARCH */}
+                <TextInput
+                    placeholder="Search languages..."
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    mode="outlined"
+                    style={styles.searchInput}
+                    left={<TextInput.Icon icon="magnify" />}
+                    theme={{ colors: { primary: primaryColor, background: '#FFFFFF' } }}
+                />
+
+                {/* LIST */}
+                <View style={styles.listContainer}>
+                    <FlatList
+                        data={filteredLanguages}
+                        renderItem={renderLanguageItem}
+                        keyExtractor={(item) => item.id}
+                        nestedScrollEnabled={true}
+                        style={{ height: verticalScale(200) }}
+                        contentContainerStyle={styles.listContent}
+                        showsVerticalScrollIndicator={true}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ height: verticalScale(8) }} />
+                        )}
+                    />
+                </View>
             </View>
 
             {/* Create Button */}
@@ -297,9 +304,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     chip: {
-        flex: 1,
-        marginHorizontal: scale(4),
-        minWidth: 0, // Allow shrinking
+        marginRight: 8,
+    },
+    chipText: {
+        fontSize: 12,
+        color: '#FFF',
     },
     dropdownTrigger: {
         flexDirection: 'row',
@@ -329,5 +338,58 @@ const styles = StyleSheet.create({
         fontSize: scale(16),
         fontWeight: '700',
         color: '#FFFFFF',
+    },
+    selectedContainer: {
+        backgroundColor: '#FFF8F0',
+        borderRadius: 12,
+        padding: 12,
+        borderColor: '#FF9C01',
+        borderWidth: 1,
+        marginBottom: 16,
+    },
+    selectedLabel: {
+        fontSize: 12,
+        color: '#6B7280',
+        marginBottom: 8,
+    },
+    searchInput: {
+        backgroundColor: '#FFFFFF',
+        marginBottom: 16,
+    },
+    listContainer: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        borderRadius: 12,
+        overflow: 'hidden',
+    },
+    listContent: {
+        padding: 10,
+    },
+    languageItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 12,
+        backgroundColor: '#FFF',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+    },
+    languageRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+    },
+    languageName: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    checkIconContainer: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        backgroundColor: '#FF9C01', // Using a fixed color or could be primaryColor
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
