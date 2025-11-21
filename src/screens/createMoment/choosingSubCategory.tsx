@@ -5,6 +5,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { lightTheme } from '../../theme';
 import Container from '../../automic-elements/container';
 import { Category } from '../../data/momentCategories';
+import { MomentCreatingForm } from './momentcreatingForm';
 
 export const ChoosingSubCategory = ({ navigation, route }: any) => {
     const category: Category = route.params?.category;
@@ -16,22 +17,27 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
     };
 
     return (
-        <Container style={styles.container}>
-            <Text style={styles.title}>Choose sub Category</Text>
-            <View style={styles.chipsContainer}>
-                {category?.subCategories.map((subCategory) => (
-                    <SelectionChipTwo
-                        key={subCategory}
-                        label={subCategory}
-                        selected={selectedSubCategory === subCategory}
-                        onPress={() => handlePress(subCategory)}
-                        style={styles.chip}
-                        primaryColor={category.primaryColor}
-                        bgColor={category.bgColor}
-                    />
-                ))}
-            </View>
-        </Container>
+        <ScrollView>
+            <Container style={styles.container}>
+                <Text style={styles.title}>Choose sub Category</Text>
+                <View style={styles.chipsContainer}>
+                    {category?.subCategories.map((subCategory) => (
+                        <SelectionChipTwo
+                            key={subCategory}
+                            label={subCategory}
+                            selected={selectedSubCategory === subCategory}
+                            onPress={() => handlePress(subCategory)}
+                            style={styles.chip}
+                            primaryColor={category.primaryColor}
+                            bgColor={category.bgColor}
+                        />
+                    ))}
+                </View>
+                <View style={{ marginTop: 30 }}>
+                    <MomentCreatingForm route={route} />
+                </View>
+            </Container>
+        </ScrollView>
     );
 };
 

@@ -72,7 +72,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
 
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <View>
             {/* Description Input */}
 
             {showDatePicker && (
@@ -115,7 +115,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
             </View>
 
             {/* Go Live Time Toggle */}
-            <View style={styles.section}>
+            {/* <View style={styles.section}>
                 <FormLabel>When do you want your moment to go live?</FormLabel>
                 <View style={styles.toggleContainer}>
                     <TouchableOpacity
@@ -140,7 +140,6 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Date/Time Selection for Later */}
                 {!isImmediate && (
                     <TouchableOpacity
                         onPress={() => setShowDatePicker(true)}
@@ -157,11 +156,11 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                         />
                     </TouchableOpacity>
                 )}
-            </View>
+            </View> */}
 
 
             {/* Duration Selection */}
-            <View style={styles.section}>
+            {/* <View style={styles.section}>
                 <FormLabel>How many mins should this moment be active?</FormLabel>
                 <View style={styles.chipsContainer}>
                     {[30, 60, 90, 120].map((mins) => (
@@ -176,7 +175,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                         />
                     ))}
                 </View>
-            </View>
+            </View> */}
 
             {/* Language Selection */}
             <View style={styles.section}>
@@ -224,7 +223,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                     'Stay online to receive calls!',
                 ]}
             />
-        </ScrollView >
+        </View >
     );
 };
 
