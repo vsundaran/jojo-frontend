@@ -13,3 +13,9 @@ export const useVerifyOTP = () => {
         mutationFn: (data: VerifyOTPRequest) => authApi.verifyOTP(data),
     });
 };
+
+export const useCompleteProfile = () => {
+    return useMutation({
+        mutationFn: (data: { languages: string[] }) => authApi.completeProfile(data),
+    });
+};

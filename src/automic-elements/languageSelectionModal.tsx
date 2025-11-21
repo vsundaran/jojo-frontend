@@ -29,7 +29,8 @@ interface Language {
 -------------------------------------------------------*/
 interface LanguageSelectionModalProps {
     visible: boolean;
-    onDismiss: () => void;
+    isCompleting: boolean;
+    onDismiss?: () => void;
     onComplete: (selectedLanguages: Language[]) => void;
     initialSelectedLanguages?: Language[];
 }
@@ -39,8 +40,9 @@ interface LanguageSelectionModalProps {
 -------------------------------------------------------*/
 const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     visible,
-    onDismiss,
+    onDismiss = () => { },
     onComplete,
+    isCompleting,
     initialSelectedLanguages = [],
 }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -72,7 +74,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     /* SUBMIT */
     const handleComplete = () => {
         onComplete(selectedLanguages);
-        onDismiss();
+        onDismiss()
     };
 
 
@@ -184,10 +186,11 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
 
                 {/* BUTTON */}
                 <CustomButton
-                    title="Complete Setup"
+                    title={isCompleting ? "Completing..." : "Complete Setup"}
                     mode="contained"
                     onPress={handleComplete}
-                    style={styles.button}
+                    // style={styles.button}
+                    disabled={isCompleting}
                 />
             </View>
         </CustomModal>
