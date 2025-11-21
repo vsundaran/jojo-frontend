@@ -199,18 +199,18 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
 
                 {/* LIST */}
                 <View style={styles.listContainer}>
-                    <FlatList
-                        data={filteredLanguages}
-                        renderItem={renderLanguageItem}
-                        keyExtractor={(item) => item.id}
-                        nestedScrollEnabled={true}
+                    <ScrollView
                         style={{ height: verticalScale(200) }}
                         contentContainerStyle={styles.listContent}
-                        showsVerticalScrollIndicator={true}
-                        ItemSeparatorComponent={() => (
-                            <View style={{ height: verticalScale(8) }} />
-                        )}
-                    />
+                        nestedScrollEnabled={true}
+                    >
+                        {filteredLanguages.map((item) => (
+                            <React.Fragment key={item.id}>
+                                {renderLanguageItem({ item })}
+                                <View style={{ height: verticalScale(8) }} />
+                            </React.Fragment>
+                        ))}
+                    </ScrollView>
                 </View>
             </View>
 
