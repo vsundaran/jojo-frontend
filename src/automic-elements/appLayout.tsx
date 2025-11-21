@@ -5,6 +5,8 @@ import WallOfJoyScreen from '../screens/wallOfJoy';
 
 export default function AppLayout({ route }: any) {
   const initialTab = route?.params?.initialTab;
+
+  console.log(initialTab, "inital")
   return (
     <View style={{ flex: 1 }}>
       <Header />

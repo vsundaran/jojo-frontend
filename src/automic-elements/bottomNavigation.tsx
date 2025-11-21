@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { BottomNavigation, Text, Provider } from 'react-native-paper';
@@ -22,6 +22,13 @@ export default function FooterNavigation({ initialTab }: any) {
     // { key: 'Give-Joy', title: 'Give Joy', icon: 'creation' },
     { key: 'Give-Joy', title: 'Give Joy', icon: 'heart-outline' },
   ];
+
+  //when create moments happens, selection the wall of joy tab
+  useEffect(() => {
+    if (initialTab === '2') {
+      setIndex(0)
+    }
+  }, [initialTab])
 
   const renderScene = ({ route }: any) => {
     switch (route.key) {
