@@ -48,8 +48,8 @@ export const MOMENT_CATEGORIES: Category[] = [
         ],
     },
     {
-        id: 'song',
-        title: 'Song',
+        id: 'songs',
+        title: 'Songs',
         primaryColor: lightTheme.colors.songColor,
         borderColor: lightTheme.colors.songBorderColor,
         bgColor: '#E7F9EC',

@@ -72,7 +72,7 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
 
         createMoment(payload, {
             onSuccess: () => {
-                navigation.navigate('app-layout', { initialTab: '2' });
+                navigation.navigate('app-layout', { initialTab: '2', timestamp: Date.now() });
             },
             onError: (error) => {
                 console.error("Failed to create moment", error);

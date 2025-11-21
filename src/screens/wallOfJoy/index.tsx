@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,9 +15,15 @@ import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
-export default function WallOfJoyScreen({ route, initialTab }: any) {
+export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab);
+    }
+  }, [initialTab, timestamp]);
 
   const tabs: any[] = [
     { key: '1', label: 'JoJo Moments', icon: 'creation' },

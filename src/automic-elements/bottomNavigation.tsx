@@ -1,41 +1,38 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { BottomNavigation, Text, Provider } from 'react-native-paper';
+import { BottomNavigation, Text } from 'react-native-paper';
 import WallOfJoyScreen from '../screens/wallOfJoy';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { lightTheme } from '../theme';
 import Givejoy from '../screens/giveJoy';
-import CreateMomentScreen from '../screens/createMoment';
 import CreateMomentStack from '../navigation/createMoment';
 
-export default function FooterNavigation({ initialTab }: any) {
+export default function FooterNavigation({ initialTab, timestamp }: any) {
   const [index, setIndex] = useState(0);
 
-  const routes = [
+  const [routes] = useState([
     { key: 'home', title: 'Wall of Joy', icon: 'home-outline' },
     {
       key: 'create-moment',
       title: 'Create Moment',
       icon: 'plus-circle-outline',
     },
-    // { key: 'Give-Joy', title: 'Give Joy', icon: 'creation' },
     { key: 'Give-Joy', title: 'Give Joy', icon: 'heart-outline' },
-  ];
+  ]);
 
   //when create moments happens, selection the wall of joy tab
   useEffect(() => {
     if (initialTab === '2') {
-      setIndex(0)
+      setIndex(0);
     }
-  }, [initialTab])
+  }, [initialTab, timestamp]);
 
   const renderScene = ({ route }: any) => {
     switch (route.key) {
       case 'home':
         return (
           <View style={{ flex: 1 }}>
-            <WallOfJoyScreen initialTab={initialTab} />
+            <WallOfJoyScreen initialTab={initialTab} timestamp={timestamp} />
           </View>
         );
       case 'Give-Joy':
@@ -104,7 +101,7 @@ export default function FooterNavigation({ initialTab }: any) {
               style={{
                 fontSize: 12,
                 textAlign: 'center',
-                fontWeight: isActive ? 'bold' : 500,
+                fontWeight: isActive ? 'bold' : '500',
                 color: isActive
                   ? lightTheme.colors.text
                   : lightTheme.colors.iconDefaultColor,

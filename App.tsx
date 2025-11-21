@@ -25,7 +25,7 @@ function App() {
     <PaperProvider theme={paperTheme}>
       <SafeAreaProvider>
         {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
-        <StatusBar barStyle={isDarkMode ? 'dark-content' : 'dark-content'} />
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'light-content'} />
         <AppContent />
       </SafeAreaProvider>
     </PaperProvider>
