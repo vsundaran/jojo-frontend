@@ -7,13 +7,15 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Button, Text, TextInput } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
 import CustomButton from '../../automic-elements/customButton';
 import { useSendOTP } from '../../hooks/useAuthQuery';
+
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = () => {
   const [visible, setVisible] = useState(true);
@@ -44,6 +46,11 @@ const LoginScreen = () => {
           } else {
             navigation.navigate('otp-verification', { mobileNumber: formattedNumber });
           }
+
+          Toast.show({
+            type: 'success',
+            text1: 'OTP sent successfully',
+          });
         },
         onError: (error: any) => {
           console.error('Send OTP Error:', error);
@@ -210,7 +217,6 @@ const styles = StyleSheet.create({
   },
   sendButton: {
     marginBottom: lightTheme.spacing.lg,
-    backgroundColor: '#4A4A4A', // Dark grey color from design
   },
   footerText: {
     fontSize: scale(10),

@@ -133,7 +133,7 @@ const Signup = () => {
 
                     <Divider style={{ width: '100%', height: verticalScale(2), marginBottom: lightTheme.spacing.md, backgroundColor: "#E2E8F0" }} />
                     <Text style={styles.instruction}>
-                        Enter the code we sent to {mobileNumber}
+                        Enter the code we sent to {mobileNumber.split("").slice(0, 3).join("") + "*****" + mobileNumber.split("").slice(8).join("")}
                     </Text>
                     <View style={styles.otpContainer}>
                         <TextInput

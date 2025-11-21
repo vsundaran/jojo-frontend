@@ -116,12 +116,25 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     };
 
     return (
-        <CustomModal visible={visible} onDismiss={onDismiss}>
+        <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon>
             <View style={styles.container}>
                 {/* Header */}
                 <View style={styles.header}>
+
                     <View style={styles.iconContainer}>
-                        <Image source={require('../assets/globe.png')} style={styles.globeIcon} resizeMode="contain" />
+                        {/* Background Icon */}
+                        <Image
+                            source={require('../assets/iconsBackground.png')}
+                            style={styles.backgroundImage}
+                        />
+
+                        {/* Inner White Circle */}
+                        <View style={styles.innerCircle}>
+                            <Image
+                                style={{ backgroundColor: 'transparent' }}
+                                source={require('../assets/globe.png')}
+                            />
+                        </View>
                     </View>
                     <Text style={styles.title}>Choose Languages</Text>
                     <Text style={styles.subtitle}>
@@ -171,9 +184,25 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
 const styles = StyleSheet.create({
     container: {
     },
+    backgroundImage: {
+        position: 'absolute',
+        width: 250,
+        height: 250,
+        borderRadius: 16,
+    },
+    innerCircle: {
+        width: 64,
+        height: 64,
+        borderRadius: 16,
+        backgroundColor: lightTheme.colors.background,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 10,
+    },
     header: {
         alignItems: 'center',
         marginBottom: verticalScale(20),
+        width: "100%"
     },
     iconContainer: {
         width: scale(60),

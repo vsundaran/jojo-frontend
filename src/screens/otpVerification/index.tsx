@@ -85,7 +85,7 @@ const OTPVerification = () => {
   };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon>
+    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon onBack={() => { navigation.navigate("login"); setVisible(false); }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
 
@@ -110,7 +110,7 @@ const OTPVerification = () => {
           <Text style={styles.title}>Welcome back</Text>
           <Text style={styles.subtitle}>Verify OTP</Text>
           <Text style={styles.instruction}>
-            Enter the code we sent to {mobileNumber}
+            Enter the code we sent to {mobileNumber.split("").slice(0, 3).join("") + "*****" + mobileNumber.split("").slice(8).join("")}
           </Text>
 
           {/* OTP Input Section */}

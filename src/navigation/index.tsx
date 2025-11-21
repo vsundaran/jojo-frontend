@@ -19,7 +19,7 @@ import { StorageKeys } from '../constants/StorageKeys';
 import { View } from 'react-native';
 import { Image } from 'react-native';
 
-import logo from '../assets/images/logo.png';
+import Toast from 'react-native-toast-message';
 
 
 export const AppNavigator = () => {
@@ -55,10 +55,11 @@ export const AppNavigator = () => {
 
   return (
     <AuthProvider>
+      <Toast />
       <Surface style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={initialRouteName}
+            initialRouteName={"language-selection"}
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="home" component={HomeScreen} />
