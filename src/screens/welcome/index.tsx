@@ -26,7 +26,7 @@ export default function Welcome({ navigation }: any) {
         >
           <Button
             mode="text"
-            onPress={() => navigation.navigate('app-layout')}
+            onPress={() => navigation.navigate('login')}
             style={{
               padding: 0,
               margin: 0,

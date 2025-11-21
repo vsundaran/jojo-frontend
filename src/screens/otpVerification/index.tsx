@@ -85,7 +85,7 @@ const OTPVerification = () => {
   };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss}>
+    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
 

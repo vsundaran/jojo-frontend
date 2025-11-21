@@ -54,7 +54,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss}>
+    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           {/* Icon Section */}

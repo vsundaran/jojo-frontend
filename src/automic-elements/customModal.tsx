@@ -7,7 +7,10 @@ import { scale } from 'react-native-size-matters';
 
 interface CustomModalProps {
     visible: boolean;
+    disableCloseIcon?: boolean;
+    enableBackIcon?: boolean;
     onDismiss: () => void;
+    onBack?: () => void;
     children: React.ReactNode;
     contentContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -16,24 +19,34 @@ const CustomModal: React.FC<CustomModalProps> = ({
     visible,
     onDismiss,
     children,
+    disableCloseIcon = false,
     contentContainerStyle,
+    enableBackIcon = false,
+    onBack = () => { }
 }) => {
     return (
         <Portal>
             <Modal
                 visible={visible}
-                onDismiss={onDismiss}
+                // onDismiss={onDismiss}
                 contentContainerStyle={[styles.modalContainer, contentContainerStyle]}
                 theme={{ colors: { backdrop: lightTheme.colors.modalBackground } }}
             >
                 <View style={styles.content}>
-                    <TouchableOpacity
+                    {enableBackIcon && <TouchableOpacity
+                        style={styles.backIcon}
+                        onPress={onBack}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                        <Icon name="arrow-left" size={scale(20)} color={lightTheme.colors.text} />
+                    </TouchableOpacity>}
+                    {!disableCloseIcon && <TouchableOpacity
                         style={styles.closeButton}
                         onPress={onDismiss}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
                         <Icon name="close" size={scale(20)} color={lightTheme.colors.text} />
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                     {children}
                 </View>
             </Modal>
@@ -58,6 +71,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -scale(10),
         right: -scale(10),
+        padding: scale(5),
+        zIndex: 1,
+        backgroundColor: lightTheme.colors.nonActiveChip,
+        borderRadius: scale(15),
+    },
+    backIcon: {
+        position: 'absolute',
+        top: -scale(10),
+        left: -scale(10),
         padding: scale(5),
         zIndex: 1,
         backgroundColor: lightTheme.colors.nonActiveChip,
