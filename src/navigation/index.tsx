@@ -13,15 +13,52 @@ import LanguageSelectionScreen from '../screens/languageSelection';
 import OTPVerification from '../screens/otpVerification';
 import { AuthProvider } from '../context/AuthContext';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { StorageKeys } from '../constants/StorageKeys';
+import { View } from 'react-native';
+import { Image } from 'react-native';
+
+import logo from '../assets/images/logo.png';
+
+
 export const AppNavigator = () => {
   const Stack = createNativeStackNavigator();
+  const [isLoading, setIsLoading] = useState(true);
+  const [initialRouteName, setInitialRouteName] = useState("welcome");
+
+  const loadStorageData = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem(StorageKeys.AUTH_TOKEN);
+      const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
+
+      if (storedToken && storedUser) {
+        setInitialRouteName("app-layout")
+      }
+    } catch (error) {
+      console.error('Failed to load auth data', error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    loadStorageData()
+  }, [])
+
+  if (isLoading) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Image source={require('../assets/logo.png')} style={{ width: 100, height: 100 }} />
+    </View>
+  }
+
 
   return (
     <AuthProvider>
       <Surface style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName="login"
+            initialRouteName={initialRouteName}
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="home" component={HomeScreen} />
