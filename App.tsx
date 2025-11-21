@@ -15,6 +15,10 @@ import { PaperProvider } from 'react-native-paper';
 import { paperTheme } from './src/theme/paperTheme';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -31,10 +35,12 @@ function App() {
 function AppContent() {
   const insets = useSafeAreaInsets();
   return (
-    <View style={styles.container}>
-      <View style={{ height: insets.top }}></View>
-      <AppNavigator />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={styles.container}>
+        <View style={{ height: insets.top }}></View>
+        <AppNavigator />
+      </View>
+    </QueryClientProvider>
   );
 }
 
