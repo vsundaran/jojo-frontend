@@ -75,7 +75,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
         <View>
             {/* Description Input */}
 
-            {showDatePicker && (
+            {/* {showDatePicker && (
                 <DateTimePicker
                     value={new Date()}
                     mode="date"
@@ -91,9 +91,9 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                     display="spinner"
                     onChange={onSelectTime}
                 />
-            )}
+            )} */}
 
-            <View style={{ ...styles.section }}>
+            <View style={{ ...styles.section, marginBottom: 15 }}>
                 <FormLabel optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
                 <View style={styles.inputContainer}>
                     <TextInput
