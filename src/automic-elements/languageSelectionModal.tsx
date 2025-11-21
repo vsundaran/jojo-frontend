@@ -12,7 +12,7 @@ import { LANGUAGES } from '../constants/flag';
 /* ------------------------------------------------------
    1. LANGUAGE INTERFACE
 -------------------------------------------------------*/
-interface Language {
+export interface Language {
     id: string;
     name: string;
     flagCode: string; // IMPORTANT: ISO code for react-native-country-flag
@@ -190,7 +190,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                     mode="contained"
                     onPress={handleComplete}
                     // style={styles.button}
-                    disabled={isCompleting}
+                    disabled={selectedLanguages.length == 0 || isCompleting}
                 />
             </View>
         </CustomModal>

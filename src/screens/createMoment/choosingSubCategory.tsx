@@ -12,7 +12,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
 
     const handlePress = (subCategory: string) => {
         setSelectedSubCategory(subCategory);
-        navigation.navigate('MomentCreatingForm', { category, subCategory });
+        // navigation.navigate('MomentCreatingForm', { category, subCategory });
     };
 
     return (
@@ -74,7 +74,7 @@ export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor
             onPress={onPress}
             style={[
                 stylesChips.container,
-                selected ? { backgroundColor: bgColor, borderColor: bgColor } : { backgroundColor: lightTheme.colors.nonActiveChip, borderColor: lightTheme.colors.nonActiveChip },
+                selected ? { backgroundColor: bgColor, borderColor: bgColor, elevation: 5 } : { backgroundColor: bgColor, borderColor: lightTheme.colors.nonActiveChip },
                 style,
             ]}
             activeOpacity={0.8}
