@@ -9,7 +9,7 @@ import Givejoy from '../screens/giveJoy';
 import CreateMomentScreen from '../screens/createMoment';
 import CreateMomentStack from '../navigation/createMoment';
 
-export default function FooterNavigation() {
+export default function FooterNavigation({ initialTab }: any) {
   const [index, setIndex] = useState(0);
 
   const routes = [
@@ -28,7 +28,7 @@ export default function FooterNavigation() {
       case 'home':
         return (
           <View style={{ flex: 1 }}>
-            <WallOfJoyScreen />
+            <WallOfJoyScreen initialTab={initialTab} />
           </View>
         );
       case 'Give-Joy':

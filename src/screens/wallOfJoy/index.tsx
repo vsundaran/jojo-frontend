@@ -15,9 +15,9 @@ import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 
-export default function WallOfJoyScreen() {
+export default function WallOfJoyScreen({ route, initialTab }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
-  const [activeTab, setActiveTab] = useState('1');
+  const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
 
   const tabs: any[] = [
     { key: '1', label: 'JoJo Moments', icon: 'creation' },

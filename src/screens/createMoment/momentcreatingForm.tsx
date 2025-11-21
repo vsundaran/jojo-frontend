@@ -12,6 +12,7 @@ import { Category } from '../../data/momentCategories';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LANGUAGES } from '../../constants/flag';
 import CountryFlag from "react-native-country-flag";
+import { useCreateMoment } from '../../hooks/useCreateMoment';
 
 interface Language {
     id: string;
@@ -19,13 +20,15 @@ interface Language {
     flagCode: string;
 }
 
-export const MomentCreatingForm = ({ navigation, route }: any) => {
+export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: any) => {
     const category: Category = route.params?.category;
     const subCategory = route.params?.subCategory;
+    const { mutate: createMoment, isPending } = useCreateMoment();
 
     // Default colors if no category selected (fallback)
     const primaryColor = category?.primaryColor || lightTheme.colors.wishesColor;
     const bgColor = category?.bgColor || '#FADAFF';
+    const borderColor = category?.borderColor || '#FADAFF';
 
     const [momentText, setMomentText] = useState('');
     const [isImmediate, setIsImmediate] = useState(true);
@@ -58,14 +61,22 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
     const isSelected = (id: string) => selectedLanguages.some((l) => l.id === id);
 
     const handleCreateMoment = () => {
-        // Handle creation logic
-        console.log({
-            momentText,
-            isImmediate,
-            duration,
-            selectedLanguages,
-            category: category?.title,
-            subCategory
+        const payload = {
+            category: category?.title.toLocaleLowerCase() || 'wishes',
+            subCategory: selectedSubCategory || 'birthday',
+            content: momentText,
+            languages: selectedLanguages.map(l => l.name),
+            scheduleType: 'immediate' as const,
+            activeTime: 1440
+        };
+
+        createMoment(payload, {
+            onSuccess: () => {
+                navigation.navigate('app-layout', { initialTab: '2' });
+            },
+            onError: (error) => {
+                console.error("Failed to create moment", error);
+            }
         });
     };
 
@@ -165,7 +176,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
 
                 {/* SELECTED TAGS */}
                 {selectedLanguages.length > 0 && (
-                    <View style={styles.selectedContainer}>
+                    <View style={[styles.selectedContainer, { backgroundColor: bgColor, borderColor: borderColor, borderWidth: 1 }]}>
                         <Text style={styles.selectedLabel}>
                             Selected ({selectedLanguages.length}):
                         </Text>
@@ -175,7 +186,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
                                 <Chip
                                     key={lang.id}
                                     onClose={() => toggleLanguage(lang)}
-                                    style={[styles.chip, { backgroundColor: primaryColor }]}
+                                    style={[styles.chip, { backgroundColor: lightTheme.colors.primary }]}
                                     textStyle={styles.chipText}
                                     closeIcon={() => <Icon name="close-circle" size={16} color="#FFF" />}
                                 >
@@ -218,6 +229,7 @@ export const MomentCreatingForm = ({ navigation, route }: any) => {
             <CustomButton
                 onPress={handleCreateMoment}
                 title="Create Moment"
+                disabled={!selectedSubCategory || !momentText || isPending}
             />
 
             {/* Info Card */}
@@ -340,10 +352,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
     },
     selectedContainer: {
-        backgroundColor: '#FFF8F0',
         borderRadius: 12,
         padding: 12,
-        borderColor: '#FF9C01',
         borderWidth: 1,
         marginBottom: 16,
     },

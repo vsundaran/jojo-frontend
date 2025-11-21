@@ -17,7 +17,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
     };
 
     return (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <Container style={styles.container}>
                 <Text style={styles.title}>Choose sub Category</Text>
                 <View style={styles.chipsContainer}>
@@ -34,7 +34,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
                     ))}
                 </View>
                 <View style={{ marginTop: 30 }}>
-                    <MomentCreatingForm route={route} />
+                    <MomentCreatingForm navigation={navigation} route={route} selectedSubCategory={selectedSubCategory} />
                 </View>
             </Container>
         </ScrollView>

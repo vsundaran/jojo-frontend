@@ -59,7 +59,7 @@ export const AppNavigator = () => {
       <Surface style={{ flex: 1 }}>
         <NavigationContainer>
           <Stack.Navigator
-            initialRouteName={"app-layout"}
+            initialRouteName={initialRouteName}
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="home" component={HomeScreen} />
