@@ -57,13 +57,8 @@ export const NoMoments = () => {
                 Create and enjoy your moment with JoJo
             </Text>
 
-            <CustomButton title='Create Your First Moment' onPress={() => { }} />
-            {/* Create Your First Moment */}
-            {/* <Text style={styles.buttonText}>Create Your First Moment</Text> */}
-            {/* <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-                    <MaterialIcons name="add" size={scale(24)} color="#F7941D" />
-                </TouchableOpacity> */}
-            {/* </CustomButton> */}
+            <CustomButton title='Create Your First Moment' onPress={() => { }} icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />} />
+
         </View >
     );
 };

@@ -13,6 +13,7 @@ interface CustomButtonProps {
     labelStyle?: StyleProp<TextStyle>;
     contentStyle?: StyleProp<ViewStyle>;
     mode?: 'text' | 'outlined' | 'contained' | 'elevated' | 'contained-tonal';
+    icon?: any
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -24,9 +25,11 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     labelStyle,
     contentStyle,
     mode = 'contained',
+    icon = ""
 }) => {
     return (
         <Button
+            icon={icon}
             mode={mode}
             onPress={onPress}
             style={[styles.button, style]}
