@@ -215,7 +215,7 @@ const WallOfJoyContent = () => {
         }
       >
         <Container style={{ paddingVertical: verticalScale(16), paddingHorizontal: scale(8) }}>
-          <LinearGradient
+          {/* <LinearGradient
             colors={lightTheme.colors.gradientColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -254,7 +254,7 @@ const WallOfJoyContent = () => {
                 Sign up to connect with real people to add joy to their moments
               </Text>
             </View>
-          </LinearGradient>
+          </LinearGradient> */}
 
           {wishesData.map((wish, index) => (
             <WishCard
