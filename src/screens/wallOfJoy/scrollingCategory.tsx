@@ -5,9 +5,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../automic-elements/header';
 import { lightTheme } from '../../theme';
 
-export default function ScrollingCategory() {
-  const categories = ['All', 'Wishes', 'Motivation', 'Song', 'Blessings'];
-  const [active, setActive] = useState('All');
+interface ScrollingCategoryProps {
+  activeCategory: string;
+  onCategorySelect: (category: string) => void;
+}
+
+export default function ScrollingCategory({ activeCategory, onCategorySelect }: ScrollingCategoryProps) {
+  const categories = ['All', 'wishes', 'motivation', 'songs', 'blessings', 'celebrations'];
+
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View
@@ -20,7 +25,7 @@ export default function ScrollingCategory() {
         }}
       >
         {categories.map(item => {
-          const isActive = active === item;
+          const isActive = activeCategory === item;
 
           return (
             <View key={item}>
@@ -42,7 +47,7 @@ export default function ScrollingCategory() {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
-                    onPress={() => setActive(item)}
+                    onPress={() => onCategorySelect(item)}
                   >
                     {item}
                   </Chip>
@@ -60,7 +65,7 @@ export default function ScrollingCategory() {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  onPress={() => setActive(item)}
+                  onPress={() => onCategorySelect(item)}
                 >
                   {item}
                 </Chip>

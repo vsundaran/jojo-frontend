@@ -22,6 +22,7 @@ import { ActivityIndicator } from 'react-native-paper';
 export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
     if (initialTab) {
@@ -41,7 +42,10 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
       <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
-        <ScrollingCategory />
+        <ScrollingCategory
+          activeCategory={selectedCategory}
+          onCategorySelect={setSelectedCategory}
+        />
       </View>
       <View style={{ marginBottom: verticalScale(6) }}>
         <Divider />
@@ -52,7 +56,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent /> : <MyMomentsScreen />
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen />
           )}
         />
       </View>
@@ -60,7 +64,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
   );
 }
 
-const WallOfJoyContent = () => {
+const WallOfJoyContent = ({ category }: { category: string }) => {
   const {
     data,
     isLoading,
@@ -69,7 +73,7 @@ const WallOfJoyContent = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useActiveMoments();
+  } = useActiveMoments(category === 'All' ? '' : category);
 
   const { toggleHeart } = useMomentInteractions();
 
