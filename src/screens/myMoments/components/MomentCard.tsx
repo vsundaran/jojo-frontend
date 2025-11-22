@@ -125,7 +125,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                         <View style={styles.statIconWrapper}>
                             <MaterialIcons name="call" size={14} color="#10B981" />
                         </View>
-                        <Text style={styles.statText}>{15}</Text>
+                        <Text style={styles.statText}>{callCount}</Text>
                     </View>
                     <View style={styles.statItem}>
                         <View style={styles.statIconWrapper}>

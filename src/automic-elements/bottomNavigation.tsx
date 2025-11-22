@@ -27,12 +27,23 @@ export default function FooterNavigation({ initialTab, timestamp }: any) {
     }
   }, [initialTab, timestamp]);
 
+  const handleNavigateToCreateMoment = () => {
+    const createMomentIndex = routes.findIndex(r => r.key === 'create-moment');
+    if (createMomentIndex !== -1) {
+      setIndex(createMomentIndex);
+    }
+  };
+
   const renderScene = ({ route }: any) => {
     switch (route.key) {
       case 'home':
         return (
           <View style={{ flex: 1 }}>
-            <WallOfJoyScreen initialTab={initialTab} timestamp={timestamp} />
+            <WallOfJoyScreen
+              initialTab={initialTab}
+              timestamp={timestamp}
+              onNavigateToCreateMoment={handleNavigateToCreateMoment}
+            />
           </View>
         );
       case 'Give-Joy':

@@ -7,7 +7,7 @@ import { useUserMoments } from '../../hooks/useUserMoments';
 import { momentApi } from '../../api/momentsApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export default function MyMomentsScreen() {
+export default function MyMomentsScreen({ onCreateMoment }: { onCreateMoment?: () => void }) {
     const { data, isLoading, error } = useUserMoments();
     const queryClient = useQueryClient();
 
@@ -56,7 +56,7 @@ export default function MyMomentsScreen() {
     if (moments.length === 0) {
         return (
             <View style={styles.container}>
-                <NoMoments />
+                <NoMoments onCreateMoment={onCreateMoment} />
             </View>
         );
     }

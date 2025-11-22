@@ -38,7 +38,11 @@ const categories = [
     },
 ];
 
-export const NoMoments = () => {
+interface NoMomentsProps {
+    onCreateMoment?: () => void;
+}
+
+export const NoMoments = ({ onCreateMoment }: NoMomentsProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.iconsContainer}>
@@ -57,7 +61,11 @@ export const NoMoments = () => {
                 Create and enjoy your moment with JoJo
             </Text>
 
-            <CustomButton title='Create Your First Moment' onPress={() => { }} icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />} />
+            <CustomButton
+                title='Create Your First Moment'
+                onPress={onCreateMoment || (() => { })}
+                icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />}
+            />
 
         </View >
     );

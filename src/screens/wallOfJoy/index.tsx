@@ -19,7 +19,7 @@ import { useMomentInteractions } from '../../hooks/useMomentInteractions';
 import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
 
-export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
+export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -56,7 +56,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen />
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen onCreateMoment={onNavigateToCreateMoment} />
           )}
         />
       </View>
