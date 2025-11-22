@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ViewStyle,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Button, Chip } from 'react-native-paper';
 import { lightTheme } from '../theme';
@@ -25,6 +26,7 @@ export interface WishCardProps {
   primaryColor?: string;
   borderColor?: string;
   containerStyle?: ViewStyle;
+  isLoading?: boolean;
 }
 
 export const WishCard: React.FC<WishCardProps> = ({
@@ -41,6 +43,7 @@ export const WishCard: React.FC<WishCardProps> = ({
   primaryColor = lightTheme.colors.wishesColor,
   borderColor = lightTheme.colors.wishesColor,
   containerStyle,
+  isLoading = false,
 }) => {
   return (
     <View
@@ -119,15 +122,19 @@ export const WishCard: React.FC<WishCardProps> = ({
 
         <Button
           icon={() => (
-            <MaterialIcons
-              name={isLiked ? "cards-heart" : "cards-heart-outline"}
-              size={moderateScale(24)}
-              color={isLiked ? "#EB4848" : undefined}
-            />
+            isLoading ? (
+              <ActivityIndicator size={moderateScale(14)} color={isLiked ? "#EB4848" : lightTheme.colors.text} />
+            ) : (
+              <MaterialIcons
+                name={isLiked ? "cards-heart" : "cards-heart-outline"}
+                size={moderateScale(24)}
+                color={isLiked ? "#EB4848" : undefined}
+              />
+            )
           )}
           style={styles.statItem}
           labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(2) }}
-          onPress={onLikePress}
+          onPress={isLoading ? undefined : onLikePress}
         >
           {likeCount}
         </Button>

@@ -75,7 +75,7 @@ const WallOfJoyContent = ({ category }: { category: string }) => {
     isFetchingNextPage
   } = useActiveMoments(category === 'All' ? '' : category);
 
-  const { toggleHeart } = useMomentInteractions();
+  const { toggleHeart, loadingMomentId } = useMomentInteractions();
 
   const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
   // const moments = data?.pages.flatMap(page => page.moments || []) || [];
@@ -152,6 +152,7 @@ const WallOfJoyContent = ({ category }: { category: string }) => {
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
               primaryColor={primaryColor}
               borderColor={borderColor}
+              isLoading={loadingMomentId === item._id}
               containerStyle={{
                 height: 'auto',
                 marginTop: verticalScale(16),
