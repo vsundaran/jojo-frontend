@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native';
 import { Card, Chip, Switch } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,6 +17,7 @@ export interface MomentCardProps {
     onToggle: () => void;
     containerStyle?: ViewStyle;
     showToggle?: boolean;
+    isLoading?: boolean;
 }
 
 const getVariantStyles = (variant: MomentVariant) => {
@@ -70,6 +71,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
     onToggle,
     containerStyle,
     showToggle = true,
+    isLoading = false,
 }) => {
     const { primary, border, icon } = getVariantStyles(title);
 
@@ -140,10 +142,14 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                         style={[
                             styles.toggleButton,
                             { backgroundColor: isOn ? '#10B981' : '#6B7280' },
+                            isLoading && { opacity: 0.7 }
                         ]}
                         onPress={onToggle}
+                        disabled={isLoading}
                     >
-                        {isOn ? (
+                        {isLoading ? (
+                            <ActivityIndicator size="small" color="#FFFFFF" style={{ marginRight: 0 }} />
+                        ) : isOn ? (
                             <>
                                 <Text style={styles.toggleText}>on</Text>
                                 <View style={styles.toggleIconCircle}>

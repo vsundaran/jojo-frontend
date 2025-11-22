@@ -11,11 +11,19 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
     const { data, isLoading, error } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
 
+    const [togglingId, setTogglingId] = React.useState<string | null>(null);
+
     const toggleMutation = useMutation({
         mutationFn: (momentId: string) => momentApi.toggleMoment(momentId),
+        onMutate: (momentId) => {
+            setTogglingId(momentId);
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         },
+        onSettled: () => {
+            setTogglingId(null);
+        }
     });
 
     const handleToggle = (momentId: string) => {
@@ -78,6 +86,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
                         isOn={moment.status === 'active'}
                         onToggle={() => handleToggle(moment._id)}
                         showToggle={moment.status !== 'expired'}
+                        isLoading={togglingId === moment._id}
                     />
                 ))}
             </ScrollView>
