@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator, Text, RefreshControl } from 'react-native';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
 import { NoMoments } from './NoMoments';
@@ -8,8 +8,15 @@ import { momentApi } from '../../api/momentsApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function MyMomentsScreen({ onCreateMoment, category }: { onCreateMoment?: () => void, category?: string }) {
-    const { data, isLoading, error } = useUserMoments(undefined, category);
+    const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        await refetch();
+        setRefreshing(false);
+    }, [refetch]);
 
     const [togglingId, setTogglingId] = React.useState<string | null>(null);
 
@@ -41,7 +48,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
         return categoryMap[category.toLowerCase()] || 'Wishes';
     };
 
-    if (isLoading) {
+    if (isLoading && !refreshing) {
         return (
             <View style={[styles.container, styles.centerContent]}>
                 <ActivityIndicator size="large" color={lightTheme.colors.primary} />
@@ -64,7 +71,14 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
     if (moments.length === 0) {
         return (
             <View style={styles.container}>
-                <NoMoments onCreateMoment={onCreateMoment} />
+                <ScrollView
+                    contentContainerStyle={styles.scrollContent}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                >
+                    <NoMoments onCreateMoment={onCreateMoment} />
+                </ScrollView>
             </View>
         );
     }
@@ -74,6 +88,9 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
                 {moments.map((moment) => (
                     <MomentCard
