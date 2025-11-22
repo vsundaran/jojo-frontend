@@ -7,8 +7,8 @@ import { useUserMoments } from '../../hooks/useUserMoments';
 import { momentApi } from '../../api/momentsApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export default function MyMomentsScreen({ onCreateMoment }: { onCreateMoment?: () => void }) {
-    const { data, isLoading, error } = useUserMoments();
+export default function MyMomentsScreen({ onCreateMoment, category }: { onCreateMoment?: () => void, category?: string }) {
+    const { data, isLoading, error } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
 
     const toggleMutation = useMutation({

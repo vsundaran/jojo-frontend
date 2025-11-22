@@ -25,8 +25,13 @@ class MomentApi {
         return apiClient.post('/moments', data);
     }
 
-    async getUserMoments(status?: string): Promise<ApiResponse<{ data: { moments: Moment[] } }>> {
-        const url = status ? `/moments?status=${status}` : '/moments';
+    async getUserMoments(status?: string, category?: string): Promise<ApiResponse<{ data: { moments: Moment[] } }>> {
+        const params = new URLSearchParams();
+        if (status) params.append('status', status);
+        if (category && category !== 'All') params.append('category', category);
+
+        const queryString = params.toString();
+        const url = queryString ? `/moments?${queryString}` : '/moments';
         return apiClient.get(url);
     }
 

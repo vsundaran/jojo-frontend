@@ -56,7 +56,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
           activeTab={activeTab}
           onTabChange={setActiveTab}
           renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen onCreateMoment={onNavigateToCreateMoment} />
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} />
           )}
         />
       </View>
