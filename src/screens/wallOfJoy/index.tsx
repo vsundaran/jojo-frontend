@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, RefreshControl, FlatList } from 'react-native';
 import { Divider } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../automic-elements/header';
@@ -14,7 +14,7 @@ import LanguageSelectionScreen from '../languageSelection';
 import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-import { useAvailableMoments } from '../../hooks/useAvailableMoments';
+import { useActiveMoments } from '../../hooks/useActiveMoments';
 import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -60,8 +60,18 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
 }
 
 const WallOfJoyContent = () => {
-  const { data, isLoading } = useAvailableMoments();
-  const moments = data?.data?.moments || [];
+  const {
+    data,
+    isLoading,
+    refetch,
+    isRefetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useActiveMoments();
+
+  const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
+  // const moments = data?.pages.flatMap(page => page.moments || []) || [];
 
   const getCategoryColors = (categoryName: string) => {
     const category = MOMENT_CATEGORIES.find(
@@ -83,40 +93,65 @@ const WallOfJoyContent = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView
+      <FlatList
+        data={moments}
+        keyExtractor={(item, index) => item._id || index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={
-          {
-            paddingBottom: verticalScale(130),
-          }
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={refetch}
+            colors={[lightTheme.colors.primary]}
+            tintColor={lightTheme.colors.primary}
+          />
         }
-      >
-        <Container style={{ paddingVertical: verticalScale(16), paddingHorizontal: scale(8) }}>
-          {moments.map((moment: any, index: number) => {
-            const { primaryColor, borderColor } = getCategoryColors(moment.category);
-            return (
-              <WishCard
-                key={moment._id || index}
-                title={moment.category}
-                description={moment.content}
-                tags={[moment.category, moment.subCategory]}
-                callCount={moment.callCount || 0}
-                likeCount={moment.hearts || 0}
-                onIconPress={() => console.log('Icon pressed')}
-                onLikePress={() => console.log('Like pressed')}
-                onCallPress={() => console.log('Call pressed')}
-                onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-                primaryColor={primaryColor}
-                borderColor={borderColor}
-                containerStyle={{
-                  height: 'auto',
-                  marginTop: verticalScale(16),
-                }}
-              />
-            );
-          })}
-        </Container>
-      </ScrollView>
+        contentContainerStyle={{
+          paddingBottom: verticalScale(130),
+          paddingVertical: verticalScale(16),
+          paddingHorizontal: scale(8),
+        }}
+        onEndReached={() => {
+          if (hasNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isFetchingNextPage ? (
+            <View style={{ paddingVertical: 20 }}>
+              <ActivityIndicator size="small" color={lightTheme.colors.primary} />
+            </View>
+          ) : !hasNextPage && moments.length > 0 ? (
+            <View style={{ paddingVertical: 20, alignItems: 'center' }}>
+              <Text style={{ color: lightTheme.colors.text, fontSize: moderateScale(14) }}>
+                You have reached the end
+              </Text>
+            </View>
+          ) : null
+        }
+        renderItem={({ item, index }) => {
+          const { primaryColor, borderColor } = getCategoryColors(item.category);
+          return (
+            <WishCard
+              title={item.category}
+              description={item.content}
+              tags={[item.category, item.subCategory]}
+              callCount={item.callCount || 0}
+              likeCount={item.hearts || 0}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={primaryColor}
+              borderColor={borderColor}
+              containerStyle={{
+                height: 'auto',
+                marginTop: verticalScale(16),
+              }}
+            />
+          );
+        }}
+      />
     </View>
   );
 }
