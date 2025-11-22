@@ -2,6 +2,7 @@
 
 import { ApiResponse, Moment, User } from "../types";
 import apiClient from "./client";
+import { AxiosResponse } from "axios";
 
 
 export interface CreateMomentRequest {
@@ -37,7 +38,7 @@ class MomentApi {
         return apiClient.delete(`/moments/${momentId}`);
     }
 
-    async getAvailableMoments(category?: string): Promise<ApiResponse<{ moments: Moment[]; categoryCounts: any[] }>> {
+    async getAvailableMoments(category?: string): Promise<AxiosResponse<ApiResponse<{ moments: Moment[] }>>> {
         const url = category ? `/moments/available?category=${category}` : '/moments/available';
         return apiClient.get(url);
     }

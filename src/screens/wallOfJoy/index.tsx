@@ -14,6 +14,9 @@ import LanguageSelectionScreen from '../languageSelection';
 import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import { useAvailableMoments } from '../../hooks/useAvailableMoments';
+import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
+import { ActivityIndicator } from 'react-native-paper';
 
 export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -36,15 +39,6 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
 
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-
-
-      {/* {isLoginCompleted ? (
-        <OTPVerification />
-      ) : (
-        <LoginScreen handleLogin={handleLoginComplete} />
-      )} */}
-      {/* <Signup /> */}
-      {/* <LanguageSelectionScreen /> */}
       <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
         <ScrollingCategory />
       </View>
@@ -66,143 +60,26 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp }: any) {
 }
 
 const WallOfJoyContent = () => {
-  const wishesData = [
-    {
-      title: "Wishes",
-      description: "My fifth wedding anniversary ! I would like a heartfelt wishes.",
-      tags: ['Wishes', 'Birthday'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.wishesColor,
-      borderColor: lightTheme.colors.wishesBorderColor,
-    },
-    {
-      title: "Motivation",
-      description: "I have an interview tomorrow and I am bit nervous.",
-      tags: ['Motivation', 'Interview'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.motivationColor,
-      borderColor: lightTheme.colors.motivationBorderColor,
-    },
-    {
-      title: "Song",
-      description: "I would love to hear a  song",
-      tags: ['Song', 'Old Song'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.songColor,
-      borderColor: lightTheme.colors.songBorderColor,
-    },
-    {
-      title: "Blessings",
-      description: "My fifth wedding anniversary !!!",
-      tags: ['Blessings', 'Anniversary'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.blessingsColor,
-      borderColor: lightTheme.colors.blessingsBorderColor,
-    },
-    {
-      title: "Wishes",
-      description: "My fifth wedding anniversary ! I would like a heartfelt wishes.",
-      tags: ['Wishes', 'Birthday'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.wishesColor,
-      borderColor: lightTheme.colors.wishesBorderColor,
-    },
-    {
-      title: "Motivation",
-      description: "I have an interview tomorrow and I am bit nervous.",
-      tags: ['Motivation', 'Interview'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.motivationColor,
-      borderColor: lightTheme.colors.motivationBorderColor,
-    },
-    {
-      title: "Song",
-      description: "I would love to hear a  song",
-      tags: ['Song', 'Old Song'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.songColor,
-      borderColor: lightTheme.colors.songBorderColor,
-    },
-    {
-      title: "Blessings",
-      description: "My fifth wedding anniversary !!!",
-      tags: ['Blessings', 'Anniversary'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.blessingsColor,
-      borderColor: lightTheme.colors.blessingsBorderColor,
-    },
-    {
-      title: "Song",
-      description: "I would love to hear a  song",
-      tags: ['Song', 'Old Song'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.songColor,
-      borderColor: lightTheme.colors.songBorderColor,
-    },
-    {
-      title: "Motivation",
-      description: "I have an interview tomorrow and I am bit nervous.",
-      tags: ['Motivation', 'Interview'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.motivationColor,
-      borderColor: lightTheme.colors.motivationBorderColor,
-    },
-    {
-      title: "Song",
-      description: "I would love to hear a  song",
-      tags: ['Song', 'Old Song'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.songColor,
-      borderColor: lightTheme.colors.songBorderColor,
-    },
-    {
-      title: "Blessings",
-      description: "My fifth wedding anniversary !!!",
-      tags: ['Blessings', 'Anniversary'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.blessingsColor,
-      borderColor: lightTheme.colors.blessingsBorderColor,
-    },
-    {
-      title: "Blessings",
-      description: "My fifth wedding anniversary !!!",
-      tags: ['Blessings', 'Anniversary'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.blessingsColor,
-      borderColor: lightTheme.colors.blessingsBorderColor,
-    },
-    {
-      title: "Song",
-      description: "I would love to hear a  song",
-      tags: ['Song', 'Old Song'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.songColor,
-      borderColor: lightTheme.colors.songBorderColor,
-    },
-    {
-      title: "Blessings",
-      description: "My fifth wedding anniversary !!!",
-      tags: ['Blessings', 'Anniversary'],
-      callCount: 15,
-      likeCount: 12,
-      primaryColor: lightTheme.colors.blessingsColor,
-      borderColor: lightTheme.colors.blessingsBorderColor,
-    },
-  ];
+  const { data, isLoading } = useAvailableMoments();
+  const moments = data?.data?.moments || [];
+
+  const getCategoryColors = (categoryName: string) => {
+    const category = MOMENT_CATEGORIES.find(
+      (c: Category) => c.id.toLowerCase() === categoryName?.toLowerCase()
+    );
+    return {
+      primaryColor: category?.primaryColor || lightTheme.colors.wishesColor,
+      borderColor: category?.borderColor || lightTheme.colors.wishesBorderColor,
+    };
+  };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: verticalScale(50) }}>
+        <ActivityIndicator size="large" color={lightTheme.colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -215,67 +92,29 @@ const WallOfJoyContent = () => {
         }
       >
         <Container style={{ paddingVertical: verticalScale(16), paddingHorizontal: scale(8) }}>
-          {/* <LinearGradient
-            colors={lightTheme.colors.gradientColors}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={{
-              borderRadius: moderateScale(16),
-              paddingHorizontal: scale(22),
-              paddingVertical: verticalScale(18),
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: verticalScale(100),
-            }}
-          >
-            <View style={{ height: 'auto' }}>
-              <Text
-                style={{
-                  color: lightTheme.colors.text,
-                  fontSize: moderateScale(17),
-                  textAlign: 'center',
-                  fontWeight: '600',
-                  lineHeight: verticalScale(20),
+          {moments.map((moment: any, index: number) => {
+            const { primaryColor, borderColor } = getCategoryColors(moment.category);
+            return (
+              <WishCard
+                key={moment._id || index}
+                title={moment.category}
+                description={moment.content}
+                tags={[moment.category, moment.subCategory]}
+                callCount={moment.callCount || 0}
+                likeCount={moment.hearts || 0}
+                onIconPress={() => console.log('Icon pressed')}
+                onLikePress={() => console.log('Like pressed')}
+                onCallPress={() => console.log('Call pressed')}
+                onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+                primaryColor={primaryColor}
+                borderColor={borderColor}
+                containerStyle={{
+                  height: 'auto',
+                  marginTop: verticalScale(16),
                 }}
-              >
-                💫 Join JoJo to Create moments & Give Joy
-              </Text>
-
-              <Text
-                style={{
-                  color: lightTheme.colors.text,
-                  textAlign: 'center',
-                  fontSize: moderateScale(14),
-                  fontWeight: '500',
-                  lineHeight: verticalScale(16),
-                  marginTop: verticalScale(8),
-                }}
-              >
-                Sign up to connect with real people to add joy to their moments
-              </Text>
-            </View>
-          </LinearGradient> */}
-
-          {wishesData.map((wish, index) => (
-            <WishCard
-              key={index}
-              title={wish.title}
-              description={wish.description}
-              tags={wish.tags}
-              callCount={wish.callCount}
-              likeCount={wish.likeCount}
-              onIconPress={() => console.log('Icon pressed')}
-              onLikePress={() => console.log('Like pressed')}
-              onCallPress={() => console.log('Call pressed')}
-              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-              primaryColor={wish.primaryColor}
-              borderColor={wish.borderColor}
-              containerStyle={{
-                height: 'auto',
-                marginTop: verticalScale(16),
-              }}
-            />
-          ))}
+              />
+            );
+          })}
         </Container>
       </ScrollView>
     </View>

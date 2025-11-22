@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: moderateScale(24),
     paddingHorizontal: scale(22),
-    paddingVertical: verticalScale(18),
+    paddingVertical: verticalScale(10),
   },
   headerSection: {
     flexDirection: 'row',
