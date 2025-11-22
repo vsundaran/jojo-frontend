@@ -25,7 +25,7 @@ class MomentApi {
         return apiClient.post('/moments', data);
     }
 
-    async getUserMoments(status?: string): Promise<ApiResponse<{ moments: Moment[] }>> {
+    async getUserMoments(status?: string): Promise<ApiResponse<{ data: { moments: Moment[] } }>> {
         const url = status ? `/moments?status=${status}` : '/moments';
         return apiClient.get(url);
     }
@@ -36,6 +36,10 @@ class MomentApi {
 
     async deleteMoment(momentId: string): Promise<ApiResponse> {
         return apiClient.delete(`/moments/${momentId}`);
+    }
+
+    async toggleMoment(momentId: string): Promise<ApiResponse> {
+        return apiClient.patch(`/moments/${momentId}/toggle-pause`);
     }
 
     async getAvailableMoments(category?: string): Promise<AxiosResponse<ApiResponse<{ moments: Moment[] }>>> {

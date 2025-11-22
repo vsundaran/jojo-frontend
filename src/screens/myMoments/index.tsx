@@ -1,120 +1,65 @@
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, ScrollView, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
 import { NoMoments } from './NoMoments';
-
-interface MomentData {
-    id: string;
-    title: MomentVariant;
-    subTag: string;
-    description: string;
-    callCount: number;
-    likeCount: number;
-    isOn: boolean;
-}
+import { useUserMoments } from '../../hooks/useUserMoments';
+import { momentApi } from '../../api/momentsApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function MyMomentsScreen() {
-    const [moments, setMoments] = useState<MomentData[]>([
-        {
-            id: '1',
-            title: 'Wishes',
-            subTag: 'Birthday',
-            description: 'My 60th birthday ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: true,
-        },
-        {
-            id: '2',
-            title: 'Motivation',
-            subTag: 'Interview',
-            description: 'I have an interview tomorrow and I am bit nervous.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false,
-        },
-        {
-            id: '3',
-            title: 'Song',
-            subTag: 'Songs',
-            description: 'I want to hear the song',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false,
-        },
-        {
-            id: '4',
-            title: 'Wishes',
-            subTag: 'Birthday',
-            description: 'My fifth wedding anniversary ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false, // As per design, the third card has a grey toggle which implies off or disabled. Assuming off for now.
-        },
-        {
-            id: '5',
-            title: 'Celebration',
-            subTag: 'Birthday',
-            description: 'My fifth birthday ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false, // As per design, the third card has a grey toggle which implies off or disabled. Assuming off for now.
-        },
-        {
-            id: '6',
-            title: 'Wishes',
-            subTag: 'Birthday',
-            description: 'My 60th birthday ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: true,
-        },
-        {
-            id: '7',
-            title: 'Motivation',
-            subTag: 'Interview',
-            description: 'I have an interview tomorrow and I am bit nervous.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false,
-        },
-        {
-            id: '8',
-            title: 'Song',
-            subTag: 'Songs',
-            description: 'I want to hear the song',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false,
-        },
-        {
-            id: '9',
-            title: 'Wishes',
-            subTag: 'Birthday',
-            description: 'My fifth wedding anniversary ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false, // As per design, the third card has a grey toggle which implies off or disabled. Assuming off for now.
-        },
-        {
-            id: '10',
-            title: 'Celebration',
-            subTag: 'Birthday',
-            description: 'My fifth birthday ! I would like a heartfelt wishes.',
-            callCount: 20,
-            likeCount: 20,
-            isOn: false, // As per design, the third card has a grey toggle which implies off or disabled. Assuming off for now.
-        },
-    ]);
+    const { data, isLoading, error } = useUserMoments();
+    const queryClient = useQueryClient();
 
-    const handleToggle = (id: string) => {
-        setMoments((prevMoments) =>
-            prevMoments.map((moment) =>
-                moment.id === id ? { ...moment, isOn: !moment.isOn } : moment
-            )
-        );
+    const toggleMutation = useMutation({
+        mutationFn: (momentId: string) => momentApi.toggleMoment(momentId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['userMoments'] });
+        },
+    });
+
+    const handleToggle = (momentId: string) => {
+        toggleMutation.mutate(momentId);
     };
+
+    const getCategoryVariant = (category: string): MomentVariant => {
+        const categoryMap: Record<string, MomentVariant> = {
+            wishes: 'Wishes',
+            motivation: 'Motivation',
+            songs: 'Song',
+            blessings: 'Blessings',
+            celebrations: 'Celebration',
+        };
+        return categoryMap[category.toLowerCase()] || 'Wishes';
+    };
+
+    if (isLoading) {
+        return (
+            <View style={[styles.container, styles.centerContent]}>
+                <ActivityIndicator size="large" color={lightTheme.colors.primary} />
+            </View>
+        );
+    }
+
+    if (error) {
+        return (
+            <View style={[styles.container, styles.centerContent]}>
+                <Text style={styles.errorText}>Failed to load moments</Text>
+            </View>
+        );
+    }
+
+    console.log(data, "data useUserMoments");
+
+    const moments = data?.moments || [];
+
+    if (moments.length === 0) {
+        return (
+            <View style={styles.container}>
+                <NoMoments />
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -124,17 +69,17 @@ export default function MyMomentsScreen() {
             >
                 {moments.map((moment) => (
                     <MomentCard
-                        key={moment.id}
-                        title={moment.title}
-                        subTag={moment.subTag}
-                        description={moment.description}
+                        key={moment._id}
+                        title={getCategoryVariant(moment.category)}
+                        subTag={moment.subCategory}
+                        description={moment.content}
                         callCount={moment.callCount}
-                        likeCount={moment.likeCount}
-                        isOn={moment.isOn}
-                        onToggle={() => handleToggle(moment.id)}
+                        likeCount={moment.hearts}
+                        isOn={moment.status === 'active'}
+                        onToggle={() => handleToggle(moment._id)}
+                        showToggle={moment.status !== 'expired'}
                     />
                 ))}
-                <NoMoments />
             </ScrollView>
         </View>
     );
@@ -147,6 +92,14 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         padding: 16,
-        paddingBottom: 100, // Add padding for bottom navigation or other elements
+        paddingBottom: 100,
+    },
+    centerContent: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 16,
+        color: lightTheme.colors.error,
     },
 });

@@ -16,6 +16,7 @@ export interface MomentCardProps {
     isOn: boolean;
     onToggle: () => void;
     containerStyle?: ViewStyle;
+    showToggle?: boolean;
 }
 
 const getVariantStyles = (variant: MomentVariant) => {
@@ -68,6 +69,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
     isOn,
     onToggle,
     containerStyle,
+    showToggle = true,
 }) => {
     const { primary, border, icon } = getVariantStyles(title);
 
@@ -113,12 +115,12 @@ export const MomentCard: React.FC<MomentCardProps> = ({
             {/* Footer */}
             <View style={styles.footer}>
                 <View style={styles.statsContainer}>
-                    <View style={styles.statItem}>
+                    {/* <View style={styles.statItem}>
                         <View style={styles.statIconWrapper}>
                             <MaterialIcons name="call-end" size={14} color="#FF5858" style={{ transform: [{ rotate: '220deg' }] }} />
                         </View>
                         <Text style={styles.statText}>{callCount}</Text>
-                    </View>
+                    </View> */}
                     <View style={styles.statItem}>
                         <View style={styles.statIconWrapper}>
                             <MaterialIcons name="call" size={14} color="#10B981" />
@@ -133,29 +135,31 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     </View>
                 </View>
 
-                <TouchableOpacity
-                    style={[
-                        styles.toggleButton,
-                        { backgroundColor: isOn ? '#10B981' : '#6B7280' },
-                    ]}
-                    onPress={onToggle}
-                >
-                    {isOn ? (
-                        <>
-                            <Text style={styles.toggleText}>on</Text>
-                            <View style={styles.toggleIconCircle}>
-                                <MaterialCommunityIcons name="access-point" size={14} color="#10B981" />
-                            </View>
-                        </>
-                    ) : (
-                        <>
-                            <View style={styles.toggleIconCircle}>
-                                <MaterialCommunityIcons name="access-point" size={14} color="#6B7280" />
-                            </View>
-                            <Text style={styles.toggleText}>off</Text>
-                        </>
-                    )}
-                </TouchableOpacity>
+                {showToggle && (
+                    <TouchableOpacity
+                        style={[
+                            styles.toggleButton,
+                            { backgroundColor: isOn ? '#10B981' : '#6B7280' },
+                        ]}
+                        onPress={onToggle}
+                    >
+                        {isOn ? (
+                            <>
+                                <Text style={styles.toggleText}>on</Text>
+                                <View style={styles.toggleIconCircle}>
+                                    <MaterialCommunityIcons name="access-point" size={14} color="#10B981" />
+                                </View>
+                            </>
+                        ) : (
+                            <>
+                                <View style={styles.toggleIconCircle}>
+                                    <MaterialCommunityIcons name="access-point" size={14} color="#6B7280" />
+                                </View>
+                                <Text style={styles.toggleText}>off</Text>
+                            </>
+                        )}
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );

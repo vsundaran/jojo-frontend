@@ -21,7 +21,7 @@ export interface Moment {
   scheduledTime?: string;
   activeTime: number;
   expiresAt: string;
-  status: 'active' | 'expired' | 'cancelled';
+  status: 'active' | 'paused' | 'expired' | 'cancelled';
   hearts: number;
   callCount: number;
   isAvailable: boolean;
