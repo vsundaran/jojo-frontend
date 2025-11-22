@@ -17,6 +17,7 @@ export interface WishCardProps {
   tags?: string[];
   callCount?: number;
   likeCount?: number;
+  isLiked?: boolean;
   onIconPress?: () => void;
   onLikePress?: () => void;
   onCallPress?: () => void;
@@ -32,6 +33,7 @@ export const WishCard: React.FC<WishCardProps> = ({
   tags = [],
   callCount = 0,
   likeCount = 0,
+  isLiked = false,
   onIconPress,
   onLikePress,
   onCallPress,
@@ -116,11 +118,16 @@ export const WishCard: React.FC<WishCardProps> = ({
         </Chip>
 
         <Button
-          icon={() => <MaterialIcons name="cards-heart-outline" size={moderateScale(24)} />}
+          icon={() => (
+            <MaterialIcons
+              name={isLiked ? "cards-heart" : "cards-heart-outline"}
+              size={moderateScale(24)}
+              color={isLiked ? "#EB4848" : undefined}
+            />
+          )}
           style={styles.statItem}
           labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(2) }}
           onPress={onLikePress}
-
         >
           {likeCount}
         </Button>

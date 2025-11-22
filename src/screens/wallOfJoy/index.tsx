@@ -15,6 +15,7 @@ import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useActiveMoments } from '../../hooks/useActiveMoments';
+import { useMomentInteractions } from '../../hooks/useMomentInteractions';
 import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -70,6 +71,8 @@ const WallOfJoyContent = () => {
     isFetchingNextPage
   } = useActiveMoments();
 
+  const { toggleHeart } = useMomentInteractions();
+
   const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
   // const moments = data?.pages.flatMap(page => page.moments || []) || [];
 
@@ -99,7 +102,7 @@ const WallOfJoyContent = () => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={isRefetching}
+            refreshing={false}
             onRefresh={refetch}
             colors={[lightTheme.colors.primary]}
             tintColor={lightTheme.colors.primary}
@@ -138,8 +141,9 @@ const WallOfJoyContent = () => {
               tags={[item.category, item.subCategory]}
               callCount={item.callCount || 0}
               likeCount={item.hearts || 0}
+              isLiked={item.hasHearted}
               onIconPress={() => console.log('Icon pressed')}
-              onLikePress={() => console.log('Like pressed')}
+              onLikePress={() => toggleHeart(item._id, item.hasHearted || false)}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
               primaryColor={primaryColor}
