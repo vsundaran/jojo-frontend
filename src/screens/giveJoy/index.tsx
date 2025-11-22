@@ -1,12 +1,24 @@
-import { Image, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import LinearGradient from 'react-native-linear-gradient';
 import { lightTheme } from '../../theme';
 import GradientText from '../../automic-elements/gradientText';
 import { CountCard } from './countCard';
+import { useAvailableMomentsCount } from '../../hooks/useAvailableMomentsCount';
 
 export default function Givejoy() {
+  const { data, isLoading, isError } = useAvailableMomentsCount();
+
+  // Helper function to get count for a specific category
+  const getCategoryCount = (category: string): number => {
+    if (!data?.data?.categoryCounts) return 0;
+    const categoryData = data.data.categoryCounts.find(
+      (item) => item._id.toLowerCase() === category.toLowerCase()
+    );
+    return categoryData?.count || 0;
+  };
+
   return (
     <Container style={{ paddingTop: 0, flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -79,10 +91,17 @@ export default function Givejoy() {
           Choose a category and connect with someone who needs your support
         </Text>
 
+        {isLoading && (
+          <View style={{ marginTop: 20, alignItems: 'center' }}>
+            <ActivityIndicator size="small" color={lightTheme.colors.wishesColor} />
+          </View>
+        )}
+
         <View style={{ marginTop: 2 }}>
           <CountCard
             title="Wishes"
             description="Celebrate special moments with someone"
+            count={getCategoryCount('wishes')}
             callCount={15}
             likeCount={12}
             onIconPress={() => console.log('Icon pressed')}
@@ -104,6 +123,7 @@ export default function Givejoy() {
           <CountCard
             title="Motivation"
             description="Celebrate special moments with someone"
+            count={getCategoryCount('motivation')}
             callCount={15}
             likeCount={12}
             onIconPress={() => console.log('Icon pressed')}
@@ -125,6 +145,7 @@ export default function Givejoy() {
           <CountCard
             title="Song"
             description="Celebrate special moments with someone"
+            count={getCategoryCount('songs')}
             callCount={15}
             likeCount={12}
             onIconPress={() => console.log('Icon pressed')}
@@ -146,6 +167,7 @@ export default function Givejoy() {
           <CountCard
             title="Celebration"
             description="Celebrate special moments with someone"
+            count={getCategoryCount('blessings')}
             callCount={15}
             likeCount={12}
             onIconPress={() => console.log('Icon pressed')}

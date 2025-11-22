@@ -18,6 +18,7 @@ import { lightTheme } from '../../theme';
 export interface WishCardProps {
   title: string;
   description: string;
+  count?: number;
   callCount?: number;
   likeCount?: number;
   onIconPress?: () => void;
@@ -33,6 +34,7 @@ export interface WishCardProps {
 export const CountCard: React.FC<WishCardProps> = ({
   title,
   description,
+  count = 0,
   callCount = 0,
   likeCount = 0,
   onIconPress,
@@ -64,12 +66,12 @@ export const CountCard: React.FC<WishCardProps> = ({
               title == 'Motivation'
                 ? require('../../assets/fire.png')
                 : title == 'Song'
-                ? require('../../assets/song.png')
-                : title == 'Blessings'
-                ? require('../../assets/blessing.png')
-                : title == 'Celebration'
-                ? require('../../assets/celebration.png')
-                : require('../../assets/giftIcon.png')
+                  ? require('../../assets/song.png')
+                  : title == 'Blessings'
+                    ? require('../../assets/blessing.png')
+                    : title == 'Celebration'
+                      ? require('../../assets/celebration.png')
+                      : require('../../assets/giftIcon.png')
             }
             style={{ width: 34, height: 34 }}
           />
@@ -102,10 +104,14 @@ export const CountCard: React.FC<WishCardProps> = ({
           <View
             style={{
               padding: 8,
+              width: 36,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               borderRadius: 1000,
               position: 'absolute',
-              right: -72,
-              top: -15,
+              right: -68,
+              top: -12,
               backgroundColor: badgeColor,
             }}
           >
@@ -117,7 +123,7 @@ export const CountCard: React.FC<WishCardProps> = ({
                 lineHeight: 20,
               }}
             >
-              10
+              {count}
             </Text>
           </View>
         </View>

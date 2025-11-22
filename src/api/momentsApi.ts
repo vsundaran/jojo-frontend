@@ -20,6 +20,16 @@ export interface UpdateMomentRequest {
     languages?: string[];
 }
 
+export interface CategoryCount {
+    _id: string;
+    count: number;
+}
+
+export interface AvailableMomentsResponse {
+    success: boolean;
+    categoryCounts: CategoryCount[];
+}
+
 class MomentApi {
     async createMoment(data: CreateMomentRequest): Promise<ApiResponse<{ moment: Moment }>> {
         return apiClient.post('/moments', data);
@@ -50,6 +60,10 @@ class MomentApi {
     async getAvailableMoments(category?: string): Promise<AxiosResponse<ApiResponse<{ moments: Moment[] }>>> {
         const url = category ? `/moments/available?category=${category}` : '/moments/available';
         return apiClient.get(url);
+    }
+
+    async getAvailableMomentsCount(): Promise<AxiosResponse<AvailableMomentsResponse>> {
+        return apiClient.get('/moments/available');
     }
 }
 
