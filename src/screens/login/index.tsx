@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
 import CustomButton from '../../automic-elements/customButton';
@@ -21,6 +21,17 @@ const LoginScreen = () => {
   const [visible, setVisible] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const { mobileNumber } = route.params || {};
+
+  useEffect(() => {
+    if (mobileNumber) {
+      // Remove +91 prefix if present, as the input handles it separately
+      const number = mobileNumber.replace('+91', '');
+      setPhoneNumber(number);
+    }
+  }, [mobileNumber]);
+
   const { mutate: sendOTP, isPending } = useSendOTP();
 
   const onDismiss = () => {

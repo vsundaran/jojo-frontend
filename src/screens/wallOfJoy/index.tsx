@@ -20,6 +20,7 @@ import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
 import { useQueryClient, InfiniteData } from '@tanstack/react-query';
 import { socketService, MomentEventPayload } from '../../services/socketService';
+import { NoMoments } from '../myMoments/NoMoments';
 
 export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -58,7 +59,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
           activeTab={activeTab}
           onTabChange={setActiveTab}
           renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} /> : <MyMomentsScreen category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} />
+            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} /> : <MyMomentsScreen category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} />
           )}
         />
       </View>
@@ -66,7 +67,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
   );
 }
 
-const WallOfJoyContent = ({ category }: { category: string }) => {
+const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: string, onCreateMoment: () => void }) => {
   const {
     data,
     isLoading,
@@ -202,6 +203,12 @@ const WallOfJoyContent = ({ category }: { category: string }) => {
     );
   }
 
+  if (moments.length === 0) {
+    return (
+      <NoMoments onCreateMoment={onCreateMoment} />
+    );
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -265,6 +272,7 @@ const WallOfJoyContent = ({ category }: { category: string }) => {
           );
         }}
       />
+
     </View>
   );
 }

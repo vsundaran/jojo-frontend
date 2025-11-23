@@ -31,7 +31,7 @@ const Signup = () => {
 
     const onDismiss = () => {
         setVisible(false);
-        navigation.goBack();
+        navigation.navigate("login", { mobileNumber });
     };
 
     const { mutate: verifyOTP, isPending: isVerifying } = useVerifyOTP();
@@ -88,7 +88,7 @@ const Signup = () => {
     };
 
     return (
-        <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon onBack={() => { navigation.navigate("login"); setVisible(false); }}>
+        <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon onBack={() => { navigation.navigate("login", { mobileNumber }); setVisible(false); }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
 
