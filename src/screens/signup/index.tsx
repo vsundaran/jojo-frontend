@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
     StyleSheet,
     View,
@@ -26,6 +26,18 @@ const Signup = () => {
     const [otp, setOtp] = useState('');
     const { login } = useAuth();
     const { mutate: sendOTP, isPending: isResending } = useSendOTP();
+
+    const [resendTimer, setResendTimer] = useState(30);
+
+    useEffect(() => {
+        let interval: any;
+        if (resendTimer > 0) {
+            interval = setInterval(() => {
+                setResendTimer((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [resendTimer]);
 
     const inputRef = useRef<TextInputType>(null);
 
@@ -79,6 +91,7 @@ const Signup = () => {
             {
                 onSuccess: () => {
                     Alert.alert('Success', 'OTP resent successfully');
+                    setResendTimer(30);
                 },
                 onError: (error: any) => {
                     Alert.alert('Error', error.response?.data?.message || 'Failed to resend OTP');
@@ -165,8 +178,10 @@ const Signup = () => {
                     </View>
                     <View style={styles.resendContainer}>
                         {/* Resend Link */}
-                        <TouchableOpacity onPress={handleResend} disabled={isResending}>
-                            <Text style={styles.resendText}>{isResending ? "Resending..." : "Resend"}</Text>
+                        <TouchableOpacity onPress={handleResend} disabled={isResending || resendTimer > 0}>
+                            <Text style={[styles.resendText, (isResending || resendTimer > 0) && { color: lightTheme.colors.textSecondary }]}>
+                                {isResending ? "Resending..." : resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend"}
+                            </Text>
                         </TouchableOpacity>
                     </View>
 
