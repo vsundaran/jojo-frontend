@@ -10,10 +10,18 @@ import SafePrivateScreen from '../screens/welcome/safePrivate';
 const { width } = Dimensions.get('window');
 
 const sliderItems = [
-  <WelcomeScreen />,
-  <MomentsScreen />,
-  <GiveJoyScreen />,
-  <SafePrivateScreen />,
+  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+    <WelcomeScreen />
+  </View>,
+  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+    <MomentsScreen />
+  </View>,
+  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+    <GiveJoyScreen />
+  </View>,
+  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+    <SafePrivateScreen />
+  </View>
 ];
 
 const CustomPagination = ({ paginationIndex, data }: any) => {
@@ -32,9 +40,9 @@ const CustomPagination = ({ paginationIndex, data }: any) => {
 const Slider = () => (
   <View style={styles.container}>
     <SwiperFlatList
-      autoplay
+      // autoplay
       autoplayDelay={2}
-      autoplayLoop
+      // autoplayLoop
       index={0}
       data={sliderItems}
       showPagination

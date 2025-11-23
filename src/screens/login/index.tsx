@@ -97,8 +97,13 @@ const LoginScreen = () => {
                   left={
                     <TextInput.Icon
                       icon={() => (
-                        <View style={styles.countryCodeContainer}>
-                          <Text style={styles.countryCode}>+91</Text>
+                        <View style={{}}>
+                          <Text style={{
+                            fontSize: scale(16),
+                            color: lightTheme.colors.darkText,
+                            // marginLeft: 10,
+                            fontWeight: 'bold'
+                          }}>+91</Text>
                         </View>
                       )}
                     />
