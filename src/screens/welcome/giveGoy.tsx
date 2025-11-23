@@ -9,7 +9,7 @@ import GiveJoyLogo from '../../automic-elements/giveJoyLogo';
 
 export default function GiveJoyScreen() {
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
       <View>
         <GiveJoyLogo />
       </View>
@@ -19,7 +19,7 @@ export default function GiveJoyScreen() {
       <View style={{ marginTop: 15 }}>
         <MainText>Be someone's reason to smile</MainText>
       </View>
-      <View style={{ marginTop: 15 }}>
+      <View style={{ marginTop: 15, maxWidth: '100%' }}>
         <SubText>
           Ready to make someone's day? Choose a category like "Motivation" or
           "Wishes," and we'll instantly connect you to a live Moment.

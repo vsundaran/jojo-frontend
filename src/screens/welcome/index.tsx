@@ -1,9 +1,11 @@
+import React, { useRef } from 'react';
 import { Button, Surface, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import { View } from 'react-native';
 import JojoCarousel from '../../automic-elements/slider';
 
 export default function Welcome({ navigation }: any) {
+  const carouselRef = useRef<any>(null);
   return (
     <Container>
       <Surface
@@ -50,7 +52,7 @@ export default function Welcome({ navigation }: any) {
               justifyContent: 'center',
             }}
           >
-            <JojoCarousel />
+            <JojoCarousel ref={carouselRef} />
           </View>
         </View>
         <View
@@ -63,7 +65,7 @@ export default function Welcome({ navigation }: any) {
           <Button
             icon="arrow-right"
             mode="contained"
-            onPress={() => console.log('Pressed')}
+            onPress={() => carouselRef.current?.goNext()}
             style={{ width: 300, borderRadius: 10 }}
             contentStyle={{ flexDirection: 'row-reverse' }}
           >

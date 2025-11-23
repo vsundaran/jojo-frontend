@@ -7,7 +7,7 @@ import { SubText } from '../../automic-elements/subText';
 
 export default function WelcomeScreen() {
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
       <View>
         <MainLogo />
       </View>
@@ -17,7 +17,7 @@ export default function WelcomeScreen() {
       <View style={{ marginTop: 15 }}>
         <MainText>Joy of Just once - Be real, be human</MainText>
       </View>
-      <View style={{ marginTop: 15 }}>
+      <View style={{ marginTop: 15, maxWidth: '100%' }}>
         <SubText>
           Ditch the feed and just feel. Connect in authentic 30-second moments.
           No followers, no likes, just genuine human connection.

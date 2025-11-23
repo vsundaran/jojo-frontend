@@ -8,7 +8,7 @@ import VideoCallLogo from '../../automic-elements/videoCallLogo';
 
 export default function MomentsScreen() {
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
       <View>
         <VideoCallLogo />
       </View>
@@ -18,7 +18,7 @@ export default function MomentsScreen() {
       <View style={{ marginTop: 15 }}>
         <MainText>Create moments that multiply joy</MainText>
       </View>
-      <View style={{ marginTop: 15 }}>
+      <View style={{ marginTop: 15, maxWidth: '100%' }}>
         <SubText>
           Share a win, a celebration, or a need for motivation. You create the
           Moment, and the community brings the joy.

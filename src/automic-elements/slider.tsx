@@ -10,7 +10,7 @@ import SafePrivateScreen from '../screens/welcome/safePrivate';
 const { width } = Dimensions.get('window');
 
 const sliderItems = [
-  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%" }}>
     <WelcomeScreen />
   </View>,
   <View style={{ paddingHorizontal: 30, flex: 1 }}>
@@ -37,32 +37,47 @@ const CustomPagination = ({ paginationIndex, data }: any) => {
   );
 };
 
-const Slider = () => (
-  <View style={styles.container}>
-    <SwiperFlatList
-      // autoplay
-      autoplayDelay={2}
-      // autoplayLoop
-      index={0}
-      data={sliderItems}
-      showPagination
-      pagingEnabled
-      snapToAlignment="center"
-      decelerationRate="fast"
-      PaginationComponent={({ paginationIndex }) => (
-        <CustomPagination
-          paginationIndex={paginationIndex}
-          data={sliderItems}
-        />
-      )}
-      renderItem={({ item }) => (
-        <View style={{ width }}>
-          {item}
-        </View>
-      )}
-    />
-  </View>
-);
+const Slider = React.forwardRef((props, ref) => {
+  const swiperRef = React.useRef<SwiperFlatList>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    goNext: () => {
+      if (swiperRef.current) {
+        const currentIndex = swiperRef.current.getCurrentIndex();
+        const nextIndex = (currentIndex + 1) % sliderItems.length;
+        swiperRef.current.scrollToIndex({ index: nextIndex });
+      }
+    },
+  }));
+
+  return (
+    <View style={styles.container}>
+      <SwiperFlatList
+        ref={swiperRef}
+        // autoplay
+        autoplayDelay={2}
+        // autoplayLoop
+        index={0}
+        data={sliderItems}
+        showPagination
+        pagingEnabled
+        snapToAlignment="center"
+        decelerationRate="fast"
+        PaginationComponent={({ paginationIndex }) => (
+          <CustomPagination
+            paginationIndex={paginationIndex}
+            data={sliderItems}
+          />
+        )}
+        renderItem={({ item }) => (
+          <View style={{ width }}>
+            {item}
+          </View>
+        )}
+      />
+    </View>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {

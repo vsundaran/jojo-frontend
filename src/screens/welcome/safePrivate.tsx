@@ -9,7 +9,7 @@ import SafeAndPrivateLogo from '../../automic-elements/safeAndPrivateLogo';
 
 export default function SafePrivateScreen() {
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
       <View>
         <SafeAndPrivateLogo />
       </View>
@@ -19,7 +19,7 @@ export default function SafePrivateScreen() {
       <View style={{ marginTop: 15 }}>
         <MainText>Your safety matters</MainText>
       </View>
-      <View style={{ marginTop: 15 }}>
+      <View style={{ marginTop: 15, maxWidth: '100%' }}>
         <SubText>
           Connect with peace of mind. There are no public profiles, and every
           30-second call is fleeting. Your safety is our priority, with simple
