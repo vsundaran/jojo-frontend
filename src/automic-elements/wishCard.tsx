@@ -107,7 +107,7 @@ export const WishCard: React.FC<WishCardProps> = ({
 
       {/* Footer Section with Stats */}
       <View style={styles.footerSection}>
-        <Chip
+        {/* <Chip
           style={{
             borderRadius: moderateScale(25),
             backgroundColor: lightTheme.colors.greenSurface,
@@ -118,7 +118,7 @@ export const WishCard: React.FC<WishCardProps> = ({
           textStyle={{ color: '#000', fontSize: moderateScale(13) }}
         >
           {callCount}
-        </Chip>
+        </Chip> */}
 
         <Button
           icon={() => (
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   footerSection: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginTop: verticalScale(8),
   },

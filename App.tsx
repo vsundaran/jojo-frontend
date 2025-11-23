@@ -13,7 +13,8 @@ import {
 import { AppNavigator } from './src/navigation';
 import { PaperProvider } from 'react-native-paper';
 import { paperTheme } from './src/theme/paperTheme';
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { socketService } from './src/services/socketService';
+import React, { useEffect } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -21,6 +22,15 @@ const queryClient = new QueryClient();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+
+  useEffect(() => {
+    socketService.initialize();
+
+    return () => {
+      socketService.disconnect();
+    };
+  }, []);
+
   return (
     <PaperProvider theme={paperTheme}>
       <SafeAreaProvider>

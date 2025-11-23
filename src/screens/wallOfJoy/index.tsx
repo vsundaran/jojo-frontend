@@ -18,6 +18,8 @@ import { useActiveMoments } from '../../hooks/useActiveMoments';
 import { useMomentInteractions } from '../../hooks/useMomentInteractions';
 import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
+import { useQueryClient, InfiniteData } from '@tanstack/react-query';
+import { socketService, MomentEventPayload } from '../../services/socketService';
 
 export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -75,10 +77,112 @@ const WallOfJoyContent = ({ category }: { category: string }) => {
     isFetchingNextPage
   } = useActiveMoments(category === 'All' ? '' : category);
 
+  const queryClient = useQueryClient();
+  const queryKey = ['activeMoments', category === 'All' ? '' : category];
+
+  useEffect(() => {
+    const handleMomentCreated = (payload: MomentEventPayload) => {
+      console.log('⚡ Socket event: moment:created', payload);
+      // Only add if category matches or we are in 'All'
+      if (category !== 'All' && payload.category !== category) return;
+
+      queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        const newPages = [...oldData.pages];
+        // Add to the beginning of the first page
+        if (newPages.length > 0) {
+          newPages[0] = {
+            ...newPages[0],
+            data: {
+              ...newPages[0].data,
+              moments: [payload, ...newPages[0].data.moments],
+            },
+          };
+        }
+        return {
+          ...oldData,
+          pages: newPages,
+        };
+      });
+    };
+
+    const handleMomentUpdated = (payload: MomentEventPayload | any) => {
+      console.log('⚡ Socket event: moment:updated', payload);
+      queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
+        console.log(oldData, "oldData")
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: {
+              ...page.data,
+              moments: page.data.moments.map((moment: any) =>
+                moment._id === payload._id ? { ...moment, ...payload } : moment
+              ),
+            },
+          })),
+        };
+      });
+    };
+
+    const handleMomentDeleted = (payload: MomentEventPayload) => {
+      console.log('⚡ Socket event: moment:deleted', payload);
+      queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: {
+              ...page.data,
+              moments: page.data.moments.filter((moment: any) => moment._id !== payload.momentId),
+            },
+          })),
+        };
+      });
+    };
+
+    const handleHeartUpdated = (payload: MomentEventPayload) => {
+      console.log('⚡ Socket event: moment:heart:updated', payload);
+      queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: {
+              ...page.data,
+              moments: page.data.moments.map((moment: any) =>
+                moment._id === payload.momentId
+                  ? { ...moment, hearts: payload.heartCount }
+                  : moment
+              ),
+            },
+          })),
+        };
+      });
+    };
+
+    socketService.on('moment:created', handleMomentCreated);
+    socketService.on('moment:updated', handleMomentUpdated);
+    socketService.on('moment:deleted', handleMomentDeleted);
+    socketService.on('moment:heart:updated', handleHeartUpdated);
+
+    return () => {
+      socketService.off('moment:created', handleMomentCreated);
+      socketService.off('moment:updated', handleMomentUpdated);
+      socketService.off('moment:deleted', handleMomentDeleted);
+      socketService.off('moment:heart:updated', handleHeartUpdated);
+    };
+  }, [queryClient, queryKey, category]);
+
   const { toggleHeart, loadingMomentId } = useMomentInteractions();
 
   const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
   // const moments = data?.pages.flatMap(page => page.moments || []) || [];
+
+  console.log(moments, "moments")
 
   const getCategoryColors = (categoryName: string) => {
     const category = MOMENT_CATEGORIES.find(
