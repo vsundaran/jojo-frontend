@@ -7,7 +7,7 @@ import { lightTheme } from '../theme';
 import Givejoy from '../screens/giveJoy';
 import CreateMomentStack from '../navigation/createMoment';
 
-export default function FooterNavigation({ initialTab, timestamp }: any) {
+export default function FooterNavigation({ initialTab, timestamp, footerSlectedIndex = 0 }: any) {
   const [index, setIndex] = useState(0);
 
   const [routes] = useState([
@@ -26,6 +26,13 @@ export default function FooterNavigation({ initialTab, timestamp }: any) {
       setIndex(0);
     }
   }, [initialTab, timestamp]);
+
+  useEffect(() => {
+    console.log(footerSlectedIndex, "footerSlectedIndex");
+    if (footerSlectedIndex) {
+      setIndex(footerSlectedIndex);
+    }
+  }, [footerSlectedIndex]);
 
   const handleNavigateToCreateMoment = () => {
     const createMomentIndex = routes.findIndex(r => r.key === 'create-moment');

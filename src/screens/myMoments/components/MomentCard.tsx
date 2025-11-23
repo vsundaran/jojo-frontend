@@ -18,6 +18,7 @@ export interface MomentCardProps {
     containerStyle?: ViewStyle;
     showToggle?: boolean;
     isLoading?: boolean;
+    onEdit?: () => void;
 }
 
 const getVariantStyles = (variant: MomentVariant) => {
@@ -72,6 +73,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
     containerStyle,
     showToggle = true,
     isLoading = false,
+    onEdit,
 }) => {
     const { primary, border, icon } = getVariantStyles(title);
 
@@ -106,8 +108,18 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                         </Chip>
                     </View>
                 </View>
-                <TouchableOpacity>
-                    <MaterialCommunityIcons name="export-variant" size={18} color={primary} style={{ transform: [{ rotate: '55deg' }] }} />
+                <TouchableOpacity
+                    style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 16,
+                        backgroundColor: 'transparent',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    onPress={onEdit}
+                >
+                    <MaterialCommunityIcons name="arrow-top-right-thin" size={18} color={primary} />
                 </TouchableOpacity>
             </View>
 

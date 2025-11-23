@@ -6,6 +6,9 @@ import { NoMoments } from './NoMoments';
 import { useUserMoments } from '../../hooks/useUserMoments';
 import { momentApi } from '../../api/momentsApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { MOMENT_CATEGORIES } from '../../data/momentCategories';
+import { useNavigation } from '@react-navigation/native';
+import { Moment } from '../../types';
 
 export default function MyMomentsScreen({ onCreateMoment, category }: { onCreateMoment?: () => void, category?: string }) {
     const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
@@ -35,6 +38,13 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
 
     const handleToggle = (momentId: string) => {
         toggleMutation.mutate(momentId);
+    };
+
+    const navigation = useNavigation<any>();
+
+    const handleEdit = (moment: Moment) => {
+        const category = MOMENT_CATEGORIES.find(c => c.id === moment.category.toLowerCase()) || MOMENT_CATEGORIES[0];
+        navigation.navigate('app-layout', { screen: 'ChoosingSubCategory', params: { category: category, moment: moment }, timestamp: Date.now(), footerSlectedIndex: 1 });
     };
 
     const getCategoryVariant = (category: string): MomentVariant => {
@@ -104,6 +114,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
                         onToggle={() => handleToggle(moment._id)}
                         showToggle={moment.status !== 'expired'}
                         isLoading={togglingId === moment._id}
+                        onEdit={() => handleEdit(moment)}
                     />
                 ))}
             </ScrollView>

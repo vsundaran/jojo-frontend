@@ -18,6 +18,7 @@ export interface CreateMomentRequest {
 export interface UpdateMomentRequest {
     content?: string;
     languages?: string[];
+    subCategory?: string;
 }
 
 export interface CategoryCount {

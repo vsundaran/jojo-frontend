@@ -9,7 +9,9 @@ import { MomentCreatingForm } from './momentcreatingForm';
 
 export const ChoosingSubCategory = ({ navigation, route }: any) => {
     const category: Category = route.params?.category;
-    const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null);
+    const moment: any = route.params?.moment;
+    // const subCategory = route.params?.subCategory;
+    const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(moment?.subCategory || null);
 
     const handlePress = (subCategory: string) => {
         setSelectedSubCategory(subCategory);
@@ -34,7 +36,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
                     ))}
                 </View>
                 <View style={{ marginTop: 30 }}>
-                    <MomentCreatingForm navigation={navigation} route={route} selectedSubCategory={selectedSubCategory} />
+                    <MomentCreatingForm navigation={navigation} route={route} selectedSubCategory={selectedSubCategory} moment={moment} />
                 </View>
             </Container>
         </ScrollView>

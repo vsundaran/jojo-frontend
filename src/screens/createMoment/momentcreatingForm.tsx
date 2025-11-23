@@ -13,6 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { LANGUAGES } from '../../constants/flag';
 import CountryFlag from "react-native-country-flag";
 import { useCreateMoment } from '../../hooks/useCreateMoment';
+import { useUpdateMoment } from '../../hooks/useUpdateMoment';
 import { authApi } from '../../api/authApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
@@ -23,17 +24,19 @@ interface Language {
     flagCode: string;
 }
 
-export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: any) => {
+export const MomentCreatingForm = ({ navigation, route, selectedSubCategory, moment }: any) => {
     const category: Category = route.params?.category;
     const subCategory = route.params?.subCategory;
-    const { mutate: createMoment, isPending } = useCreateMoment();
+    const { mutate: createMoment, isPending: isCreating } = useCreateMoment();
+    const { mutate: updateMoment, isPending: isUpdating } = useUpdateMoment();
+    const isPending = isCreating || isUpdating;
 
     // Default colors if no category selected (fallback)
     const primaryColor = category?.primaryColor || lightTheme.colors.wishesColor;
     const bgColor = category?.bgColor || '#FADAFF';
     const borderColor = category?.borderColor || '#FADAFF';
 
-    const [momentText, setMomentText] = useState('');
+    const [momentText, setMomentText] = useState(moment?.content || '');
     const [isImmediate, setIsImmediate] = useState(true);
     const [duration, setDuration] = useState(60);
 
@@ -51,7 +54,15 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
                     const mappedLanguages = LANGUAGES.filter(l =>
                         parsedLanguages.some((pl: string) => pl.toLowerCase() === l.name.toLowerCase())
                     );
-                    setSelectedLanguages(mappedLanguages);
+
+                    if (moment?.languages) {
+                        const momentLangs = LANGUAGES.filter(l =>
+                            moment.languages.some((ml: string) => ml.toLowerCase() === l.name.toLowerCase())
+                        );
+                        setSelectedLanguages(momentLangs);
+                    } else {
+                        setSelectedLanguages(mappedLanguages);
+                    }
                 } else {
                     const response = await authApi.getLanguages();
                     if (response.data.success && response.data.languages) {
@@ -59,7 +70,15 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
                         const mappedLanguages = LANGUAGES.filter(l =>
                             serverLanguages.some(sl => sl.toLowerCase() === l.name.toLowerCase())
                         );
-                        setSelectedLanguages(mappedLanguages);
+
+                        if (moment?.languages) {
+                            const momentLangs = LANGUAGES.filter(l =>
+                                moment.languages.some((ml: string) => ml.toLowerCase() === l.name.toLowerCase())
+                            );
+                            setSelectedLanguages(momentLangs);
+                        } else {
+                            setSelectedLanguages(mappedLanguages);
+                        }
                         await AsyncStorage.setItem(StorageKeys.SELECTED_LANGUAGES, JSON.stringify(serverLanguages));
                     }
                 }
@@ -92,23 +111,40 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
     const isSelected = (id: string) => selectedLanguages.some((l) => l.id === id);
 
     const handleCreateMoment = () => {
-        const payload = {
-            category: category?.title.toLocaleLowerCase() || 'wishes',
-            subCategory: selectedSubCategory || 'birthday',
-            content: momentText,
-            languages: selectedLanguages.map(l => l.name),
-            scheduleType: 'immediate' as const,
-            activeTime: 1440
-        };
+        if (moment) {
+            const payload = {
+                content: momentText,
+                languages: selectedLanguages.map(l => l.name),
+                subCategory: selectedSubCategory,
+            };
 
-        createMoment(payload, {
-            onSuccess: () => {
-                navigation.navigate('app-layout', { initialTab: '2', timestamp: Date.now() });
-            },
-            onError: (error) => {
-                console.error("Failed to create moment", error);
-            }
-        });
+            updateMoment({ momentId: moment._id, data: payload }, {
+                onSuccess: () => {
+                    navigation.navigate('app-layout', { footerSlectedIndex: 0, initialTab: '2', timestamp: Date.now() });
+                },
+                onError: (error) => {
+                    console.error("Failed to update moment", error);
+                }
+            });
+        } else {
+            const payload = {
+                category: category?.title.toLocaleLowerCase() || 'wishes',
+                subCategory: selectedSubCategory || 'birthday',
+                content: momentText,
+                languages: selectedLanguages.map(l => l.name),
+                scheduleType: 'immediate' as const,
+                activeTime: 1440
+            };
+
+            createMoment(payload, {
+                onSuccess: () => {
+                    navigation.navigate('app-layout', { initialTab: '2', timestamp: Date.now() });
+                },
+                onError: (error) => {
+                    console.error("Failed to create moment", error);
+                }
+            });
+        }
     };
 
 
@@ -259,7 +295,7 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory }: a
             {/* Create Button */}
             <CustomButton
                 onPress={handleCreateMoment}
-                title="Create Moment"
+                title={moment ? "Update Moment" : "Create Moment"}
                 disabled={!selectedSubCategory || !momentText || isPending}
             />
 

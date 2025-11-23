@@ -5,13 +5,14 @@ import WallOfJoyScreen from '../screens/wallOfJoy';
 
 export default function AppLayout({ route }: any) {
   const initialTab = route?.params?.initialTab;
+  const footerSlectedIndex = route?.params?.footerSlectedIndex;
   const timestamp = route?.params?.timestamp;
 
   console.log(initialTab, "inital")
   return (
     <View style={{ flex: 1 }}>
       <Header />
-      <FooterNavigation initialTab={initialTab} timestamp={timestamp} />
+      <FooterNavigation initialTab={initialTab} timestamp={timestamp} footerSlectedIndex={footerSlectedIndex} />
     </View>
   );
 }
