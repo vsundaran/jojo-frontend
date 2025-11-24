@@ -14,7 +14,7 @@ import { AppNavigator } from './src/navigation';
 import { PaperProvider } from 'react-native-paper';
 import { paperTheme } from './src/theme/paperTheme';
 import { socketService } from './src/services/socketService';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -22,6 +22,8 @@ const queryClient = new QueryClient();
 
 import LinearGradient from 'react-native-linear-gradient';
 import { lightTheme } from './src/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StorageKeys } from './src/constants/StorageKeys';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -45,11 +47,32 @@ function App() {
 
 function AppContent() {
   const insets = useSafeAreaInsets();
+  // const [headerGradient, setHeaderGradient] = useState(false);
+
+  // const loadStorageData = async () => {
+  //   try {
+  //     const storedToken = await AsyncStorage.getItem(StorageKeys.AUTH_TOKEN);
+  //     const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
+
+  //     if (storedToken && storedUser) {
+  //       setHeaderGradient(true);
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to load auth data', error);
+  //   } finally {
+  //     // setIsLoading(false)
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   loadStorageData();
+  // }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <View style={styles.container}>
         <LinearGradient
-          colors={lightTheme.colors.gradientColors}
+          colors={[lightTheme.colors.background, lightTheme.colors.background]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={{ height: insets.top }}
