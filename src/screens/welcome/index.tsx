@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StorageKeys } from '../../constants/StorageKeys';
 import { Button, Surface, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import { View } from 'react-native';
@@ -31,7 +33,10 @@ export default function Welcome({ navigation }: any) {
         >
           <Button
             mode="text"
-            onPress={() => navigation.navigate('login')}
+            onPress={async () => {
+              await AsyncStorage.setItem(StorageKeys.HAS_SEEN_WELCOME, 'true');
+              navigation.navigate('login');
+            }}
             style={{
               padding: 0,
               margin: 0,
@@ -49,7 +54,13 @@ export default function Welcome({ navigation }: any) {
             justifyContent: 'center',
           }}
         >
-          <JojoCarousel ref={carouselRef} />
+          <JojoCarousel
+            ref={carouselRef}
+            onDone={async () => {
+              await AsyncStorage.setItem(StorageKeys.HAS_SEEN_WELCOME, 'true');
+              navigation.navigate('login');
+            }}
+          />
         </View>
 
         <View

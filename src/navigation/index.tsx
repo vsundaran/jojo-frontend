@@ -31,11 +31,17 @@ export const AppNavigator = ({ setCurrentRouteName }: { setCurrentRouteName?: (r
     try {
       const storedToken = await AsyncStorage.getItem(StorageKeys.AUTH_TOKEN);
       const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
+      const hasSeenWelcome = await AsyncStorage.getItem(StorageKeys.HAS_SEEN_WELCOME);
 
       if (storedToken && storedUser) {
         setInitialRouteName("app-layout");
         if (setCurrentRouteName) {
           setCurrentRouteName("app-layout")
+        }
+      } else if (hasSeenWelcome === 'true') {
+        setInitialRouteName("login");
+        if (setCurrentRouteName) {
+          setCurrentRouteName("login")
         }
       }
     } catch (error) {

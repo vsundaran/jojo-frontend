@@ -8,10 +8,9 @@ export const WelcomeText = ({ children }: { children: React.ReactNode }) => {
       style={{
         color: lightTheme.colors.jojoLogoColor,
         textAlign: 'center',
-        fontSize: 36,
-        fontStyle: 'normal',
-        fontWeight: '600',
+        fontSize: 30,
         lineHeight: 40,
+        fontFamily: 'Poppins-SemiBold',
       }}
     >
       {children}

@@ -13,7 +13,7 @@ const sliderItems = [
   <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
     <WelcomeScreen />
   </View>,
-  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%" }}>
     <MomentsScreen />
   </View>,
   <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
@@ -37,15 +37,25 @@ const CustomPagination = ({ paginationIndex, data }: any) => {
   );
 };
 
-const Slider = React.forwardRef((props, ref) => {
+interface SliderProps {
+  onDone?: () => void;
+}
+
+const Slider = React.forwardRef<any, SliderProps>((props, ref) => {
   const swiperRef = React.useRef<SwiperFlatList>(null);
 
   React.useImperativeHandle(ref, () => ({
     goNext: () => {
       if (swiperRef.current) {
         const currentIndex = swiperRef.current.getCurrentIndex();
-        const nextIndex = (currentIndex + 1) % sliderItems.length;
-        swiperRef.current.scrollToIndex({ index: nextIndex });
+        if (currentIndex === sliderItems.length - 1) {
+          if (props.onDone) {
+            props.onDone();
+          }
+        } else {
+          const nextIndex = currentIndex + 1;
+          swiperRef.current.scrollToIndex({ index: nextIndex });
+        }
       }
     },
   }));
