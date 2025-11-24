@@ -19,9 +19,12 @@ export const InfoCard = ({ title, items }: InfoCardProps) => {
             </View>
             <View style={styles.content}>
                 {items.map((item, index) => (
-                    <Text key={index} style={styles.itemText}>
-                        • {item}
-                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon name="circle-medium" size={scale(12)} color={"#90A1B9"} style={styles.icon} />
+                        <Text key={index} style={styles.itemText}>
+                            {item}
+                        </Text>
+                    </View>
                 ))}
             </View>
         </View>
@@ -55,10 +58,11 @@ const styles = StyleSheet.create({
         paddingLeft: scale(4),
     },
     itemText: {
-        fontSize: scale(13),
-        color: lightTheme.colors.text,
+        fontSize: scale(12),
+        color: lightTheme.colors.darkText,
         marginBottom: verticalScale(4),
         lineHeight: scale(20),
         fontFamily: 'Poppins-Regular',
+        maxWidth: "90%"
     },
 });

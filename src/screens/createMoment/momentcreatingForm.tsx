@@ -217,7 +217,12 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory, mom
         <View style={styles.container}>
             {/* Description Input */}
             <View style={{ ...styles.section, marginBottom: 15 }}>
-                <FormLabel style={{ fontFamily: 'Poppins-Regular' }} optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
+                <FormLabel style={{
+                    fontSize: scale(13),
+                    color: lightTheme.colors.darkText,
+                    marginBottom: verticalScale(4),
+                    fontFamily: 'Poppins-Medium',
+                }} optionalText="(max 60 characters)">Tell us about your moment</FormLabel>
                 <View style={styles.inputContainer}>
                     <TextInput
                         mode="outlined"
@@ -239,7 +244,12 @@ export const MomentCreatingForm = ({ navigation, route, selectedSubCategory, mom
 
             {/* Language Selection */}
             <View style={styles.section}>
-                <FormLabel style={{ fontFamily: 'Poppins-Regular' }}>What language do you prefer?</FormLabel>
+                <FormLabel style={{
+                    fontSize: scale(13),
+                    color: lightTheme.colors.darkText,
+                    marginBottom: verticalScale(4),
+                    fontFamily: 'Poppins-Medium',
+                }}>What language do you prefer?</FormLabel>
 
                 {/* SELECTED TAGS */}
                 {selectedLanguages.length > 0 && (
@@ -330,7 +340,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         backgroundColor: '#FFFFFF',
-        fontSize: scale(14),
+        fontSize: scale(13),
         paddingVertical: verticalScale(10)
     },
     inputOutline: {

@@ -18,6 +18,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
         // navigation.navigate('MomentCreatingForm', { category, subCategory });
     };
 
+    console.log(category, 'category')
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <Container style={styles.container}>
@@ -25,6 +26,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
                 <View style={styles.chipsContainer}>
                     {category?.subCategories.map((subCategory) => (
                         <SelectionChipTwo
+                            darkColor={category.darkColor}
                             key={subCategory}
                             label={subCategory}
                             selected={selectedSubCategory === subCategory}
@@ -49,16 +51,16 @@ const styles = StyleSheet.create({
         paddingVertical: verticalScale(20),
     },
     title: {
-        fontSize: scale(16),
-        fontWeight: '600',
+        fontSize: scale(13),
         color: lightTheme.colors.darkText,
         marginBottom: verticalScale(4),
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'Poppins-Medium',
     },
     chipsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: scale(12),
+        marginTop: verticalScale(8),
     },
     chip: {
         borderRadius: scale(20),
@@ -74,9 +76,10 @@ interface SelectionChipProps {
     style?: ViewStyle;
     primaryColor: string;
     bgColor: string;
+    darkColor?: string;
 }
 
-export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor, bgColor }: SelectionChipProps) => {
+export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor, bgColor, darkColor }: SelectionChipProps) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -90,8 +93,7 @@ export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor
             <Text
                 style={[
                     stylesChips.text,
-                    { fontFamily: 'Poppins-Regular' },
-                    selected ? { color: primaryColor, fontWeight: '600' } : { color: lightTheme.colors.text },
+                    selected ? { color: darkColor } : { color: lightTheme.colors.text },
                 ]}
             >
                 {label}
@@ -102,7 +104,7 @@ export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor
 
 const stylesChips = StyleSheet.create({
     container: {
-        paddingVertical: verticalScale(8),
+        paddingVertical: verticalScale(3),
         paddingHorizontal: scale(16),
         borderRadius: scale(8),
         borderWidth: 1,
@@ -111,8 +113,7 @@ const stylesChips = StyleSheet.create({
         minWidth: scale(60),
     },
     text: {
-        fontSize: scale(14),
-        fontWeight: '500',
-        fontFamily: 'Poppins',
+        fontSize: scale(12),
+        fontFamily: 'Poppins-Medium',
     },
 });
