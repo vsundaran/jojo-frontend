@@ -72,7 +72,7 @@ function AppContent() {
     <QueryClientProvider client={queryClient}>
       <View style={styles.container}>
         <LinearGradient
-          colors={[lightTheme.colors.background, lightTheme.colors.background]}
+          colors={lightTheme.colors.gradientColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={{ height: insets.top }}

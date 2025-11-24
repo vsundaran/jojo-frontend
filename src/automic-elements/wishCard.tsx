@@ -146,7 +146,8 @@ export const WishCard: React.FC<WishCardProps> = ({
 const styles = StyleSheet.create({
   container: {
     borderRadius: moderateScale(24),
-    paddingHorizontal: scale(12),
+    paddingLeft: scale(12),
+    paddingRight: scale(0),
     paddingVertical: verticalScale(8),
   },
   headerSection: {
@@ -205,9 +206,11 @@ const styles = StyleSheet.create({
   description: {
     fontSize: moderateScale(14),
     fontWeight: '500',
+    minHeight: verticalScale(35),
     color: lightTheme.colors.darkText,
     lineHeight: verticalScale(15),
     fontFamily: 'Poppins-Regular',
+    maxWidth: "90%"
   },
   footerSection: {
     flexDirection: 'row',
