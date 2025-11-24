@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, View, RefreshControl, FlatList } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { ScrollView, View, RefreshControl, FlatList } from 'react-native';
+import { Divider, Text } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Header from '../../automic-elements/header';
 import { lightTheme } from '../../theme';
@@ -210,7 +210,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: 
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingHorizontal: scale(14) }}>
       <FlatList
         data={moments}
         keyExtractor={(item, index) => item._id || index.toString()}

@@ -83,8 +83,9 @@ export const CountCard: React.FC<WishCardProps> = ({
               color: primaryColor,
               fontSize: 22,
               fontWeight: 600,
-              lineHeight: 24,
+              lineHeight: 27,
               marginTop: 3,
+              fontFamily: 'Poppins-Regular',
             }}
           >
             {title}
@@ -97,36 +98,40 @@ export const CountCard: React.FC<WishCardProps> = ({
               lineHeight: 20,
               marginTop: 4,
               maxWidth: 200,
+              fontFamily: 'Poppins-Regular',
             }}
           >
             {description}
           </Text>
-          <View
-            style={{
-              padding: 8,
-              width: 36,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 1000,
-              position: 'absolute',
-              right: -68,
-              top: -12,
-              backgroundColor: badgeColor,
-            }}
-          >
-            <Text
-              style={{
-                color: lightTheme.colors.text,
-                fontSize: 16,
-                fontWeight: 500,
-                lineHeight: 20,
-              }}
-            >
-              {count}
-            </Text>
-          </View>
+
         </View>
+      </View>
+      <View
+        style={{
+          padding: 8,
+          minWidth: 36,
+          height: 36,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 1000,
+          position: 'absolute',
+          right: 12,
+          top: 12,
+          backgroundColor: badgeColor,
+        }}
+      >
+        <Text
+          style={{
+            color: lightTheme.colors.text,
+            fontSize: 16,
+            fontWeight: 500,
+            lineHeight: 20,
+            fontFamily: 'Poppins-Regular',
+          }}
+        >
+          {count}
+        </Text>
       </View>
     </View>
   );

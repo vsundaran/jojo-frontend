@@ -6,10 +6,9 @@ export const MainText = ({ children }: { children: React.ReactNode }) => (
     style={{
       color: lightTheme.colors.text,
       textAlign: 'center',
-      fontFamily: 'Poppins',
       fontSize: 18,
       fontStyle: 'normal',
-      fontWeight: 500,
+      fontWeight: '500',
       lineHeight: 28,
     }}
   >

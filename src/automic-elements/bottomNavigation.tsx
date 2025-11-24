@@ -119,9 +119,10 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
               style={{
                 fontSize: 12,
                 textAlign: 'center',
-                fontWeight: isActive ? 'bold' : '500',
+                // fontWeight: isActive ? "bold" : '500',
+                fontFamily: isActive ? 'Poppins-Bold' : 'Poppins-Medium',
                 color: isActive
-                  ? lightTheme.colors.text
+                  ? lightTheme.colors.darkText
                   : lightTheme.colors.iconDefaultColor,
               }}
             >

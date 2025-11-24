@@ -6,7 +6,6 @@ export const SubText = ({ children }: { children: React.ReactNode }) => (
     style={{
       color: lightTheme.colors.text,
       textAlign: 'center',
-      fontFamily: 'Poppins',
       fontSize: 16,
       fontStyle: 'normal',
       fontWeight: '400',

@@ -86,6 +86,7 @@ export default function Givejoy() {
             fontWeight: 400,
             lineHeight: 20,
             marginVertical: 10,
+            fontFamily: 'Poppins-Regular'
           }}
         >
           Choose a category and connect with someone who needs your support

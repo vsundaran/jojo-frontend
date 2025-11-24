@@ -83,6 +83,7 @@ export const CategoryCard: React.FC<WishCardProps> = ({
             fontWeight: 600,
             lineHeight: 24,
             marginTop: 3,
+            fontFamily: 'Poppins-Regular',
           }}
         >
           {title}

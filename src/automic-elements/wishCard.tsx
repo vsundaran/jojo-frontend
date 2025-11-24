@@ -133,7 +133,7 @@ export const WishCard: React.FC<WishCardProps> = ({
             )
           )}
           style={styles.statItem}
-          labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(2) }}
+          labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(0) }}
           onPress={isLoading ? undefined : onLikePress}
         >
           {likeCount}
@@ -146,14 +146,15 @@ export const WishCard: React.FC<WishCardProps> = ({
 const styles = StyleSheet.create({
   container: {
     borderRadius: moderateScale(24),
-    paddingHorizontal: scale(22),
-    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(8),
   },
   headerSection: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: verticalScale(7),
-    gap: scale(12),
+    gap: scale(6),
+    flexWrap: 'nowrap'
   },
   iconButton: {
     width: scale(48),
@@ -173,9 +174,11 @@ const styles = StyleSheet.create({
   },
   tagsContainer: {
     flexDirection: 'row',
-    gap: scale(8),
+    gap: scale(6),
     flex: 1,
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
+    borderColor: lightTheme.colors.wishesColor,
+    borderWidth: moderateScale(2),
   },
   chip: {
     borderRadius: moderateScale(20),
@@ -204,13 +207,14 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     fontWeight: '500',
     color: lightTheme.colors.text,
-    lineHeight: verticalScale(24),
+    lineHeight: verticalScale(16),
+    fontFamily: 'Poppins-Regular',
   },
   footerSection: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: verticalScale(8),
+    marginTop: verticalScale(-10),
   },
   statItem: {
     flexDirection: 'row',

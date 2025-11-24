@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
         fontSize: scale(16),
         fontWeight: '600',
         color: lightTheme.colors.darkText,
-        marginBottom: verticalScale(20),
-        fontFamily: 'Poppins',
+        marginBottom: verticalScale(4),
+        fontFamily: 'Poppins-Regular',
     },
     chipsContainer: {
         flexDirection: 'row',
@@ -90,12 +90,13 @@ export const SelectionChipTwo = ({ label, selected, onPress, style, primaryColor
             <Text
                 style={[
                     stylesChips.text,
+                    { fontFamily: 'Poppins-Regular' },
                     selected ? { color: primaryColor, fontWeight: '600' } : { color: lightTheme.colors.text },
                 ]}
             >
                 {label}
             </Text>
-        </TouchableOpacity>
+        </TouchableOpacity >
     );
 };
 

@@ -34,7 +34,6 @@ function App() {
   return (
     <PaperProvider theme={paperTheme}>
       <SafeAreaProvider>
-        {/* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */}
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'light-content'} />
         <AppContent />
       </SafeAreaProvider>
@@ -56,7 +55,7 @@ function AppContent() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
 });
 

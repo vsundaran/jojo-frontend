@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, Text, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { Text } from 'react-native-paper';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
 import { NoMoments } from './NoMoments';

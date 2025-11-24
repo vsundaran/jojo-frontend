@@ -37,13 +37,12 @@ export default function ScrollingCategory({ activeCategory, onCategorySelect }: 
                   end={{ x: 1, y: 0 }}
                   style={{
                     borderRadius: 39602500,
-                    padding: 2,
+                    padding: 1,
                   }}
                 >
                   <Chip
                     style={{
                       backgroundColor: 'transparent',
-                      height: 40,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
@@ -60,7 +59,6 @@ export default function ScrollingCategory({ activeCategory, onCategorySelect }: 
                     backgroundColor: lightTheme.colors.nonActiveChip,
                     borderColor: '#E2E8F0',
                     borderWidth: 1,
-                    height: 40,
                     borderRadius: 39602500,
                     justifyContent: 'center',
                     alignItems: 'center',

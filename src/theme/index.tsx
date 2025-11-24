@@ -48,28 +48,34 @@ export const lightTheme: AppTheme = {
       fontSize: scale(24),
       fontWeight: 'bold',
       lineHeight: scale(32),
+      fontFamily: 'Poppins-Bold',
     },
     h2: {
       fontSize: scale(20),
       fontWeight: '600',
       lineHeight: scale(28),
+      fontFamily: 'Poppins-SemiBold',
     },
     h3: {
       fontSize: scale(16),
       fontWeight: '600',
       lineHeight: scale(24),
+      fontFamily: 'Poppins-SemiBold',
     },
     body: {
       fontSize: scale(14),
       lineHeight: scale(20),
+      fontFamily: 'Poppins-Regular',
     },
     caption: {
       fontSize: scale(12),
       lineHeight: scale(16),
+      fontFamily: 'Poppins-Regular',
     },
     button: {
       fontSize: scale(16),
       fontWeight: '600',
+      fontFamily: 'Poppins-Medium',
     },
   },
   borderRadius: {

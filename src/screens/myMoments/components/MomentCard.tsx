@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native';
-import { Card, Chip, Switch } from 'react-native-paper';
+import { View, StyleSheet, Image, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native';
+import { Card, Chip, Switch, Text } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { lightTheme } from '../../../theme';

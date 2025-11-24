@@ -42,7 +42,9 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                                     styles.label,
                                     {
                                         color: isActive ? lightTheme.colors.darkText : lightTheme.colors.darkText,
-                                        fontWeight: isActive ? '600' : '400',
+                                        // fontWeight: isActive ? '600' : '400',
+                                        fontFamily: isActive ? 'Poppins-SemiBold' : 'Poppins-Regular',
+                                        // marginTop: 2
                                     },
                                 ]}
                             >
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: verticalScale(8),
+        paddingVertical: verticalScale(6),
         gap: scale(8),
 
     },

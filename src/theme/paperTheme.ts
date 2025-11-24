@@ -1,6 +1,11 @@
-import { MD3LightTheme as PaperLightTheme } from 'react-native-paper';
+import { MD3LightTheme as PaperLightTheme, configureFonts } from 'react-native-paper';
 import { lightTheme } from '.';
 
+const fontConfig = {
+  fontFamily: 'Poppins-Regular',
+};
+
+const fonts = configureFonts({ config: fontConfig });
 
 export const paperTheme = {
   ...PaperLightTheme,
@@ -14,4 +19,9 @@ export const paperTheme = {
     text: lightTheme.colors.text,
     outline: lightTheme.colors.border,
   },
+  fonts: configureFonts({
+    config: {
+      fontFamily: 'Poppins-Regular',
+    },
+  }),
 };

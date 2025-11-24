@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         fontSize: scale(16),
         fontWeight: '700',
         color: '#F59E0B', // warning/orange color
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
     },
     content: {
         paddingLeft: scale(4),
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
         color: lightTheme.colors.text,
         marginBottom: verticalScale(4),
         lineHeight: scale(20),
-        fontFamily: 'Poppins',
+        fontFamily: 'Poppins-Regular',
     },
 });
