@@ -35,7 +35,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                                 //     { tintColor: isActive ? lightTheme.colors.text : lightTheme.colors.textSecondary },
                                 // ]}
                                 // resizeMode="contain"
-                                size={26}
+                                size={20}
                             />
                             <Text
                                 style={[
@@ -44,6 +44,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                                         color: isActive ? lightTheme.colors.darkText : lightTheme.colors.darkText,
                                         // fontWeight: isActive ? '600' : '400',
                                         fontFamily: isActive ? 'Poppins-SemiBold' : 'Poppins-Regular',
+                                        fontSize: scale(12),
                                         // marginTop: 2
                                     },
                                 ]}

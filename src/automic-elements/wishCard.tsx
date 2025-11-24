@@ -50,7 +50,7 @@ export const WishCard: React.FC<WishCardProps> = ({
       style={[
         styles.container,
         {
-          borderWidth: moderateScale(2),
+          borderWidth: moderateScale(1),
           borderTopWidth: moderateScale(5),
           borderColor: borderColor,
         },
@@ -70,7 +70,7 @@ export const WishCard: React.FC<WishCardProps> = ({
                     ? require('../assets/blessing.png')
                     : require('../assets/giftIcon.png')
             }
-            style={{ width: scale(24), height: scale(24) }}
+            style={{ width: scale(18), height: scale(18) }}
           />
         </View>
 
@@ -127,7 +127,7 @@ export const WishCard: React.FC<WishCardProps> = ({
             ) : (
               <MaterialIcons
                 name={isLiked ? "cards-heart" : "cards-heart-outline"}
-                size={moderateScale(24)}
+                size={moderateScale(17)}
                 color={isLiked ? "#EB4848" : undefined}
               />
             )
@@ -146,7 +146,7 @@ export const WishCard: React.FC<WishCardProps> = ({
 const styles = StyleSheet.create({
   container: {
     borderRadius: moderateScale(24),
-    paddingHorizontal: scale(16),
+    paddingHorizontal: scale(12),
     paddingVertical: verticalScale(8),
   },
   headerSection: {
@@ -157,8 +157,8 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap'
   },
   iconButton: {
-    width: scale(48),
-    height: scale(48),
+    width: scale(36),
+    height: scale(36),
     borderRadius: moderateScale(16),
     justifyContent: 'center',
     alignItems: 'center',
@@ -177,8 +177,6 @@ const styles = StyleSheet.create({
     gap: scale(6),
     flex: 1,
     flexWrap: 'nowrap',
-    borderColor: lightTheme.colors.wishesColor,
-    borderWidth: moderateScale(2),
   },
   chip: {
     borderRadius: moderateScale(20),
@@ -204,10 +202,10 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(4),
   },
   description: {
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(14),
     fontWeight: '500',
-    color: lightTheme.colors.text,
-    lineHeight: verticalScale(16),
+    color: lightTheme.colors.darkText,
+    lineHeight: verticalScale(15),
     fontFamily: 'Poppins-Regular',
   },
   footerSection: {

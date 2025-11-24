@@ -35,7 +35,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
 
   const tabs: any[] = [
     { key: '1', label: 'JoJo Moments', icon: 'creation' },
-    { key: '2', label: 'My Moments', icon: 'home-outline' },
+    { key: '2', label: 'My Moments', icon: 'account' },
   ];
 
   const handleLoginComplete = () => {
