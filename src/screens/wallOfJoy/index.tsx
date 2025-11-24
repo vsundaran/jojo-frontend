@@ -50,7 +50,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
           onCategorySelect={setSelectedCategory}
         />
       </View>
-      <View style={{ marginBottom: verticalScale(6) }}>
+      <View style={{ marginBottom: verticalScale(4) }}>
         <Divider />
       </View>
       <View style={{ paddingHorizontal: scale(6), flex: 1 }}>

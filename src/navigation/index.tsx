@@ -22,7 +22,7 @@ import { Image } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 
-export const AppNavigator = () => {
+export const AppNavigator = ({ setCurrentRouteName }: { setCurrentRouteName?: (route: string) => void }) => {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
   const [initialRouteName, setInitialRouteName] = useState("welcome");
@@ -33,7 +33,10 @@ export const AppNavigator = () => {
       const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
 
       if (storedToken && storedUser) {
-        setInitialRouteName("app-layout")
+        setInitialRouteName("app-layout");
+        if (setCurrentRouteName) {
+          setCurrentRouteName("app-layout")
+        }
       }
     } catch (error) {
       console.error('Failed to load auth data', error);
@@ -57,7 +60,14 @@ export const AppNavigator = () => {
     <AuthProvider>
       <Toast />
       <Surface style={{ flex: 1 }}>
-        <NavigationContainer>
+        <NavigationContainer
+          onStateChange={(state) => {
+            const currentRouteName = state?.routes[state.index].name;
+            if (setCurrentRouteName && currentRouteName) {
+              setCurrentRouteName(currentRouteName);
+            }
+          }}
+        >
           <Stack.Navigator
             initialRouteName={initialRouteName}
             screenOptions={{ headerShown: false }}

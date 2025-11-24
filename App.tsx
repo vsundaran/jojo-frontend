@@ -47,43 +47,44 @@ function App() {
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  // const [headerGradient, setHeaderGradient] = useState(false);
+  const [currentRouteName, setCurrentRouteName] = useState<string>('welcome');
 
-  // const loadStorageData = async () => {
-  //   try {
-  //     const storedToken = await AsyncStorage.getItem(StorageKeys.AUTH_TOKEN);
-  //     const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
+  const whiteStatusBarRoutes = [
+    'welcome',
+    'signup',
+    'language-selection',
+    'login',
+    'otp-verification',
+  ];
 
-  //     if (storedToken && storedUser) {
-  //       setHeaderGradient(true);
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to load auth data', error);
-  //   } finally {
-  //     // setIsLoading(false)
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   loadStorageData();
-  // }, []);
+  const isWhiteStatusBar = whiteStatusBarRoutes.includes(currentRouteName);
 
   return (
     <QueryClientProvider client={queryClient}>
       <View style={styles.container}>
-        <LinearGradient
-          colors={lightTheme.colors.gradientColors}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{ height: insets.top }}
-        >
-          <StatusBar
-            barStyle="dark-content"
-            translucent={true}
-            backgroundColor="transparent"
-          />
-        </LinearGradient>
-        <AppNavigator />
+        {isWhiteStatusBar ? (
+          <View style={{ height: insets.top, backgroundColor: 'white' }}>
+            <StatusBar
+              barStyle="dark-content"
+              translucent={true}
+              backgroundColor="transparent"
+            />
+          </View>
+        ) : (
+          <LinearGradient
+            colors={lightTheme.colors.gradientColors}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{ height: insets.top }}
+          >
+            <StatusBar
+              barStyle="dark-content"
+              translucent={true}
+              backgroundColor="transparent"
+            />
+          </LinearGradient>
+        )}
+        <AppNavigator setCurrentRouteName={setCurrentRouteName} />
       </View>
     </QueryClientProvider>
   );

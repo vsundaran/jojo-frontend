@@ -78,7 +78,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                     );
                 })}
             </View>
-            <Divider style={{ marginTop: 10 }} />
+            <Divider style={{ marginTop: verticalScale(4) }} />
             {renderContent && <View style={styles.contentContainer}>{renderContent(activeTab)}</View>}
         </View>
     );
