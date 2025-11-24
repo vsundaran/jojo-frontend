@@ -10,16 +10,16 @@ import SafePrivateScreen from '../screens/welcome/safePrivate';
 const { width } = Dimensions.get('window');
 
 const sliderItems = [
-  <View style={{ flex: 1, justifyContent: 'center', width: "100%" }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
     <WelcomeScreen />
   </View>,
-  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
     <MomentsScreen />
   </View>,
-  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
     <GiveJoyScreen />
   </View>,
-  <View style={{ paddingHorizontal: 30, flex: 1 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
     <SafePrivateScreen />
   </View>
 ];
@@ -70,7 +70,7 @@ const Slider = React.forwardRef((props, ref) => {
           />
         )}
         renderItem={({ item }) => (
-          <View style={{ width }}>
+          <View style={{ width, flex: 1, justifyContent: 'center' }}>
             {item}
           </View>
         )}
@@ -82,14 +82,14 @@ const Slider = React.forwardRef((props, ref) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 400,
+    flex: 1, // Use flex: 1 instead of fixed height
     backgroundColor: 'white',
   },
 
   paginationContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 10,
+    marginBottom: 10, // Add margin bottom for spacing
   },
 
   dot: {

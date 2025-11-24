@@ -9,7 +9,7 @@ import GiveJoyLogo from '../../automic-elements/giveJoyLogo';
 
 export default function GiveJoyScreen() {
   return (
-    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
       <View>
         <GiveJoyLogo />
       </View>

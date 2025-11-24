@@ -9,7 +9,7 @@ import SafeAndPrivateLogo from '../../automic-elements/safeAndPrivateLogo';
 
 export default function SafePrivateScreen() {
   return (
-    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
       <View>
         <SafeAndPrivateLogo />
       </View>

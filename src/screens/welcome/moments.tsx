@@ -8,7 +8,7 @@ import VideoCallLogo from '../../automic-elements/videoCallLogo';
 
 export default function MomentsScreen() {
   return (
-    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
       <View>
         <VideoCallLogo />
       </View>

@@ -10,12 +10,14 @@ export default function Welcome({ navigation }: any) {
     <Container>
       <Surface
         style={{
+          flex: 1,
           backgroundColor: 'white',
           elevation: 0,
           shadowColor: 'transparent',
           shadowOpacity: 0,
           shadowOffset: { width: 0, height: 0 },
           shadowRadius: 0,
+          paddingBottom: 40, // Add some padding at the bottom
         }}
       >
         <Surface
@@ -24,6 +26,7 @@ export default function Welcome({ navigation }: any) {
             justifyContent: 'flex-end',
             backgroundColor: 'transparent',
             elevation: 0,
+            paddingTop: 10,
           }}
         >
           <Button
@@ -38,28 +41,22 @@ export default function Welcome({ navigation }: any) {
             Skip
           </Button>
         </Surface>
+
         <View
           style={{
-            marginTop: 120,
+            flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <View
-            style={{
-              // marginTop: 10,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <JojoCarousel ref={carouselRef} />
-          </View>
+          <JojoCarousel ref={carouselRef} />
         </View>
+
         <View
           style={{
-            marginTop: 180,
             alignItems: 'center',
             justifyContent: 'center',
+            marginBottom: 20,
           }}
         >
           <Button

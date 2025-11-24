@@ -7,7 +7,7 @@ import { SubText } from '../../automic-elements/subText';
 
 export default function WelcomeScreen() {
   return (
-    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1, paddingRight: 30 }}>
+    <View style={{ justifyContent: 'center', alignItems: "center", flex: 1 }}>
       <View>
         <MainLogo />
       </View>
