@@ -221,6 +221,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
                         onEdit={() => handleEdit(moment)}
                     />
                 ))}
+
             </ScrollView>
         </View>
     );
@@ -229,7 +230,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: scale(14),
+        paddingHorizontal: scale(10),
         backgroundColor: lightTheme.colors.background,
     },
     scrollContent: {

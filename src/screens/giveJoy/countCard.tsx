@@ -14,6 +14,7 @@ import { Button, Card, Chip } from 'react-native-paper';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { lightTheme } from '../../theme';
+import { scale } from 'react-native-size-matters';
 
 export interface WishCardProps {
   title: string;
@@ -28,6 +29,7 @@ export interface WishCardProps {
   primaryColor?: string;
   borderColor?: string;
   badgeColor?: string;
+  darkTextColor?: string;
   containerStyle?: ViewStyle;
 }
 
@@ -45,6 +47,7 @@ export const CountCard: React.FC<WishCardProps> = ({
   borderColor = lightTheme.colors.wishesColor,
   badgeColor = '',
   containerStyle,
+  darkTextColor = lightTheme.colors.text,
 }) => {
   return (
     <View
@@ -73,31 +76,29 @@ export const CountCard: React.FC<WishCardProps> = ({
                       ? require('../../assets/celebration.png')
                       : require('../../assets/giftIcon.png')
             }
-            style={{ width: 34, height: 34 }}
+            style={{ width: scale(18), height: scale(18) }}
           />
         </View>
 
         <View>
           <Text
             style={{
-              color: primaryColor,
-              fontSize: 22,
+              color: darkTextColor,
+              fontSize: scale(14),
               fontWeight: 600,
               lineHeight: 27,
-              marginTop: 3,
-              fontFamily: 'Poppins-Regular',
+              fontFamily: 'Poppins-Medium',
             }}
           >
             {title}
           </Text>
           <Text
             style={{
-              color: lightTheme.colors.text,
-              fontSize: 16,
+              color: lightTheme.colors.darkText,
+              fontSize: scale(12),
               fontWeight: 400,
               lineHeight: 20,
-              marginTop: 4,
-              maxWidth: 200,
+              maxWidth: "80%",
               fontFamily: 'Poppins-Regular',
             }}
           >
@@ -108,9 +109,9 @@ export const CountCard: React.FC<WishCardProps> = ({
       </View>
       <View
         style={{
-          padding: 8,
-          minWidth: 36,
-          height: 36,
+          minWidth: 22,
+          height: 22,
+          width: 22,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -124,10 +125,8 @@ export const CountCard: React.FC<WishCardProps> = ({
         <Text
           style={{
             color: lightTheme.colors.text,
-            fontSize: 16,
-            fontWeight: 500,
-            lineHeight: 20,
-            fontFamily: 'Poppins-Regular',
+            fontSize: scale(8),
+            fontFamily: 'Poppins-Bold',
           }}
         >
           {count}
@@ -139,21 +138,21 @@ export const CountCard: React.FC<WishCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 24,
+    borderRadius: 22,
     paddingHorizontal: 22,
     paddingVertical: 18,
     position: 'relative',
   },
   headerSection: {
     flexDirection: 'row',
-    alignItems: 'stretch',
+    alignItems: 'flex-start',
     marginBottom: 7,
     gap: 12,
   },
   iconButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
+    width: scale(36),
+    height: scale(36),
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },

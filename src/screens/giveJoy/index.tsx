@@ -20,7 +20,7 @@ export default function Givejoy() {
   };
 
   return (
-    <Container style={{ paddingTop: 0, flex: 1 }}>
+    <Container style={{ paddingTop: 0, flex: 1, paddingHorizontal: 42 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -36,8 +36,8 @@ export default function Givejoy() {
               end={{ x: 1, y: 0 }}
               style={{
                 borderRadius: 100000,
-                paddingHorizontal: 22,
-                paddingVertical: 18,
+                paddingHorizontal: 8,
+                paddingVertical: 8,
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginTop: 20,
@@ -47,7 +47,7 @@ export default function Givejoy() {
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'center',
-                  padding: 35,
+                  padding: 15,
                   borderColor: '#E9D4FF',
                   borderWidth: 5,
                   borderRadius: 100000,
@@ -57,8 +57,8 @@ export default function Givejoy() {
                 <Image
                   source={require('../../assets/loveHeart.png')}
                   style={{
-                    width: 64,
-                    height: 64,
+                    width: 24,
+                    height: 24,
                     resizeMode: 'contain',
                   }}
                 />
@@ -70,23 +70,23 @@ export default function Givejoy() {
           // variant="displayMedium"
           style={{
             textAlign: 'center',
-            fontSize: 30,
+            fontSize: 24,
             fontWeight: 400,
             lineHeight: 36,
-            marginTop: 12,
+            marginTop: 6,
           }}
         >
           Give Joy
         </GradientText>
         <Text
           style={{
-            color: lightTheme.colors.text,
+            color: lightTheme.colors.darkText,
             textAlign: 'center',
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: 400,
             lineHeight: 20,
-            marginVertical: 10,
-            fontFamily: 'Poppins-Regular'
+            marginVertical: 4,
+            fontFamily: 'Poppins-Medium'
           }}
         >
           Choose a category and connect with someone who needs your support
@@ -112,6 +112,7 @@ export default function Givejoy() {
             primaryColor={lightTheme.colors.wishesColor}
             borderColor={lightTheme.colors.wishesBorderColor}
             badgeColor="#F8E3FF"
+            darkTextColor="#AE1AE2"
             containerStyle={{
               height: 'auto',
               minHeight: 110,
@@ -123,7 +124,7 @@ export default function Givejoy() {
         <View style={{ marginTop: 2 }}>
           <CountCard
             title="Motivation"
-            description="Celebrate special moments with someone"
+            description="Motivate someone with your positive vibes"
             count={getCategoryCount('motivation')}
             callCount={15}
             likeCount={12}
@@ -134,6 +135,7 @@ export default function Givejoy() {
             primaryColor={lightTheme.colors.motivationColor}
             borderColor={lightTheme.colors.motivationBorderColor}
             badgeColor="#DDE8FF"
+            darkTextColor="#5E8EF1"
             containerStyle={{
               height: 'auto',
               minHeight: 110,
@@ -145,7 +147,7 @@ export default function Givejoy() {
         <View style={{ marginTop: 2 }}>
           <CountCard
             title="Song"
-            description="Celebrate special moments with someone"
+            description="Sing a song to a stranger to share a joy"
             count={getCategoryCount('songs')}
             callCount={15}
             likeCount={12}
@@ -156,6 +158,30 @@ export default function Givejoy() {
             primaryColor={lightTheme.colors.songColor}
             borderColor={lightTheme.colors.songBorderColor}
             badgeColor="#D2FFEE"
+            darkTextColor="#5ACEA1"
+            containerStyle={{
+              height: 'auto',
+              minHeight: 110,
+              justifyContent: 'center',
+              marginTop: 16,
+            }}
+          />
+        </View>
+        <View style={{ marginTop: 2, marginBottom: 8 }}>
+          <CountCard
+            title="Blessings"
+            description="Send spiritual warmth and good wishes"
+            count={getCategoryCount('blessings')}
+            callCount={15}
+            likeCount={12}
+            onIconPress={() => console.log('Icon pressed')}
+            onLikePress={() => console.log('Like pressed')}
+            onCallPress={() => console.log('Call pressed')}
+            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+            primaryColor={lightTheme.colors.blessingsColor}
+            borderColor={lightTheme.colors.blessingsBorderColor}
+            badgeColor="#FFF3DC"
+            darkTextColor="#F0B847"
             containerStyle={{
               height: 'auto',
               minHeight: 110,
@@ -168,7 +194,7 @@ export default function Givejoy() {
           <CountCard
             title="Celebration"
             description="Celebrate special moments with someone"
-            count={getCategoryCount('blessings')}
+            count={getCategoryCount('celebrations')}
             callCount={15}
             likeCount={12}
             onIconPress={() => console.log('Icon pressed')}
@@ -178,6 +204,7 @@ export default function Givejoy() {
             primaryColor={lightTheme.colors.celebrationColor}
             borderColor={lightTheme.colors.celebrationBorderColor}
             badgeColor="#FFE0E0"
+            darkTextColor="#D34848"
             containerStyle={{
               height: 'auto',
               minHeight: 110,

@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   iconButton: {
     width: scale(36),
     height: scale(36),
-    borderRadius: 16,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
