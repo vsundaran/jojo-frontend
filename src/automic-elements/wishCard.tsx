@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     gap: scale(6),
     flex: 1,
     flexWrap: 'nowrap',
+    overflow: 'hidden',
   },
   chip: {
     borderRadius: moderateScale(20),

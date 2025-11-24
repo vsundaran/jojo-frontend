@@ -20,6 +20,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
+import LinearGradient from 'react-native-linear-gradient';
+import { lightTheme } from './src/theme';
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -34,7 +37,6 @@ function App() {
   return (
     <PaperProvider theme={paperTheme}>
       <SafeAreaProvider>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'light-content'} />
         <AppContent />
       </SafeAreaProvider>
     </PaperProvider>
@@ -46,7 +48,18 @@ function AppContent() {
   return (
     <QueryClientProvider client={queryClient}>
       <View style={styles.container}>
-        <View style={{ height: insets.top }}></View>
+        <LinearGradient
+          colors={lightTheme.colors.gradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={{ height: insets.top }}
+        >
+          <StatusBar
+            barStyle="dark-content"
+            translucent={true}
+            backgroundColor="transparent"
+          />
+        </LinearGradient>
         <AppNavigator />
       </View>
     </QueryClientProvider>
