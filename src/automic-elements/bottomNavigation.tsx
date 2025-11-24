@@ -111,6 +111,10 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
             </View>
           );
         }}
+        style={{
+          backgroundColor: lightTheme.colors.background,
+          boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)',
+        }}
         getLabelText={({ route }) => route.title}
         renderLabel={({ route }) => {
           const isActive = routes[index].key === route.key;
