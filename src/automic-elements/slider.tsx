@@ -39,6 +39,7 @@ const CustomPagination = ({ paginationIndex, data }: any) => {
 
 interface SliderProps {
   onDone?: () => void;
+  onChangeIndex?: (index: number) => void;
 }
 
 const Slider = React.forwardRef<any, SliderProps>((props, ref) => {
@@ -73,6 +74,11 @@ const Slider = React.forwardRef<any, SliderProps>((props, ref) => {
         pagingEnabled
         snapToAlignment="center"
         decelerationRate="fast"
+        onChangeIndex={({ index }) => {
+          if (props.onChangeIndex) {
+            props.onChangeIndex(index);
+          }
+        }}
         PaginationComponent={({ paginationIndex }) => (
           <CustomPagination
             paginationIndex={paginationIndex}

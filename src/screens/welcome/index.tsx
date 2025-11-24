@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
 import { Button, Surface, Text } from 'react-native-paper';
@@ -8,6 +8,7 @@ import JojoCarousel from '../../automic-elements/slider';
 
 export default function Welcome({ navigation }: any) {
   const carouselRef = useRef<any>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <Container>
       <Surface
@@ -56,6 +57,7 @@ export default function Welcome({ navigation }: any) {
         >
           <JojoCarousel
             ref={carouselRef}
+            onChangeIndex={(index) => setCurrentIndex(index)}
             onDone={async () => {
               await AsyncStorage.setItem(StorageKeys.HAS_SEEN_WELCOME, 'true');
               navigation.navigate('login');
@@ -77,7 +79,8 @@ export default function Welcome({ navigation }: any) {
             style={{ width: 300, borderRadius: 10 }}
             contentStyle={{ flexDirection: 'row-reverse' }}
           >
-            Next
+
+            {currentIndex === 3 ? 'Get Started' : 'Next'}
           </Button>
         </View>
       </Surface>
