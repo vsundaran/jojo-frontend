@@ -6,6 +6,7 @@ export interface Category {
     primaryColor: string;
     borderColor: string;
     bgColor: string;
+    darkColor?: string;
     subCategories: string[];
 }
 
@@ -16,6 +17,7 @@ export const MOMENT_CATEGORIES: Category[] = [
         primaryColor: lightTheme.colors.wishesColor,
         borderColor: lightTheme.colors.wishesBorderColor,
         bgColor: '#FBEFFF',
+        darkColor: '#8B12B6',
         subCategories: [
             'Birthday',
             'Wedding Anniversary',
@@ -35,6 +37,7 @@ export const MOMENT_CATEGORIES: Category[] = [
         primaryColor: lightTheme.colors.motivationColor,
         borderColor: lightTheme.colors.motivationBorderColor,
         bgColor: '#EDF3FF',
+        darkColor: '#2355BF',
         subCategories: [
             'Exam Stress',
             'Work Pressure',
@@ -53,6 +56,7 @@ export const MOMENT_CATEGORIES: Category[] = [
         primaryColor: lightTheme.colors.songColor,
         borderColor: lightTheme.colors.songBorderColor,
         bgColor: '#E7F9EC',
+        darkColor: '#209E4B',
         subCategories: [
             'Romantic',
             'Sad',
@@ -72,6 +76,7 @@ export const MOMENT_CATEGORIES: Category[] = [
         primaryColor: lightTheme.colors.blessingsColor,
         borderColor: lightTheme.colors.blessingsBorderColor,
         bgColor: '#FFF8EA',
+        darkColor: '#BC8E31',
         subCategories: [
             'New Born',
             'New House',
@@ -90,6 +95,7 @@ export const MOMENT_CATEGORIES: Category[] = [
         primaryColor: lightTheme.colors.celebrationColor,
         borderColor: lightTheme.colors.celebrationBorderColor,
         bgColor: '#FFEBEB',
+        darkColor: '#C42F2F',
         subCategories: [
             'Festival',
             'Party',

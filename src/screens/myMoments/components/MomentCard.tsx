@@ -4,6 +4,7 @@ import { Card, Chip, Switch, Text } from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { lightTheme } from '../../../theme';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 
 export type MomentVariant = 'Wishes' | 'Motivation' | 'Song' | 'Blessings' | 'Celebration';
 
@@ -153,7 +154,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     <TouchableOpacity
                         style={[
                             styles.toggleButton,
-                            { backgroundColor: isOn ? '#10B981' : '#6B7280' },
+                            { backgroundColor: isOn ? '#007C32' : '#EB4848' },
                             isLoading && { opacity: 0.7 }
                         ]}
                         onPress={onToggle}
@@ -203,20 +204,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom: 12,
+        marginBottom: scale(8),
     },
     leftHeader: {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
+        flexWrap: 'nowrap',
+        overflow: 'hidden'
     },
     iconContainer: {
-        width: 48,
-        height: 48,
+        width: scale(36),
+        height: scale(36),
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 12,
+        marginRight: scale(6),
         // Shadow for icon
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -225,41 +228,43 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     iconImage: {
-        width: 28,
-        height: 28,
+        width: scale(18), height: scale(18),
         resizeMode: 'contain',
         tintColor: '#FFFFFF',
     },
     tagsWrapper: {
         flexDirection: 'row',
         gap: 8,
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
         flex: 1,
+        overflow: 'hidden'
     },
     chip: {
-        height: 32,
+        // height: 32,
         borderRadius: 16,
+        width: 'auto',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingHorizontal: scale(0),
+        margin: 0
     },
     chipTextActive: {
         color: '#FFFFFF',
         fontSize: 12,
         fontWeight: '600',
-        marginHorizontal: 4,
         marginVertical: 0,
     },
     chipTextInactive: {
         fontSize: 12,
         fontWeight: '600',
-        marginHorizontal: 4,
+        marginHorizontal: 0,
         marginVertical: 0,
     },
     description: {
-        fontSize: 16,
-        color: '#1F2937', // Gray 800
-        lineHeight: 24,
-        marginBottom: 16,
+        fontSize: moderateScale(14),
+        lineHeight: verticalScale(15),
+        color: lightTheme.colors.darkText,
+        marginBottom: scale(3),
         fontWeight: '500',
     },
     footer: {
@@ -292,11 +297,11 @@ const styles = StyleSheet.create({
     toggleButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 4,
-        paddingVertical: 4,
+        paddingHorizontal: scale(2),
+        paddingVertical: scale(2),
         borderRadius: 20,
         gap: 6,
-        minWidth: 60,
+        minWidth: scale(10),
         justifyContent: 'space-between',
     },
     toggleText: {
@@ -307,8 +312,8 @@ const styles = StyleSheet.create({
         marginRight: 6,
     },
     toggleIconCircle: {
-        width: 20,
-        height: 20,
+        width: 18,
+        height: 18,
         borderRadius: 10,
         backgroundColor: '#FFFFFF',
         alignItems: 'center',

@@ -1,5 +1,5 @@
 import { View, ScrollView } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import { lightTheme } from '../../theme';
 import { CategoryCard } from './category';
@@ -12,40 +12,40 @@ export default function CreateMomentScreen({ navigation }: any) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Container>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
+      <Container style={{ flex: 1, }}>
         <Text
           style={{
             color: lightTheme.colors.darkText,
-            fontSize: scale(30),
-            fontWeight: '500',
+            fontSize: scale(22),
+            fontFamily: 'Poppins-Medium',
             lineHeight: verticalScale(36),
           }}
         >
           Create your moment
         </Text>
-
         <Text
           style={{
             color: lightTheme.colors.darkText,
-            fontSize: scale(16),
-            fontWeight: '500',
-            lineHeight: verticalScale(20),
-            marginTop: verticalScale(10),
-            marginBottom: verticalScale(48),
+            fontSize: scale(12),
+            lineHeight: verticalScale(17),
+            marginTop: verticalScale(0),
+            marginBottom: verticalScale(15),
+            fontFamily: 'Poppins-Medium',
           }}
         >
           Create your moment to let someone share your Joy for 30 seconds.
         </Text>
+        <Divider />
 
         <Text
           style={{
             color: lightTheme.colors.darkText,
-            fontSize: scale(16),
-            fontWeight: '500',
+            fontSize: scale(12),
             lineHeight: verticalScale(20),
-            marginTop: verticalScale(10),
+            marginTop: verticalScale(15),
             marginBottom: verticalScale(10),
+            fontFamily: 'Poppins-Medium',
           }}
         >
           Choose Category
@@ -57,6 +57,8 @@ export default function CreateMomentScreen({ navigation }: any) {
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
+            flex: 1,
+            backgroundColor: lightTheme.colors.background,
           }}
         >
           {MOMENT_CATEGORIES.map((item) => (
@@ -67,9 +69,9 @@ export default function CreateMomentScreen({ navigation }: any) {
                 primaryColor={item.primaryColor}
                 borderColor={item.borderColor}
                 bgColor={item.bgColor}
+                darkColor={item.darkColor}
                 containerStyle={{
                   height: 'auto',
-                  minHeight: verticalScale(110),
                   justifyContent: 'center',
                 }}
               />

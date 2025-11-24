@@ -8,9 +8,9 @@ import {
   TextStyle,
   Image,
 } from 'react-native';
-import { Button, Card, Chip, TouchableRipple } from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { TouchableRipple } from 'react-native-paper';
 import { lightTheme } from '../../theme';
+import { scale, verticalScale } from 'react-native-size-matters';
 
 export interface WishCardProps {
   title: string;
@@ -18,6 +18,7 @@ export interface WishCardProps {
   primaryColor?: string;
   borderColor?: string;
   bgColor?: string;
+  darkColor?: string;
   containerStyle?: ViewStyle;
 }
 
@@ -28,9 +29,12 @@ export const CategoryCard: React.FC<WishCardProps> = ({
   borderColor = lightTheme.colors.wishesColor,
   bgColor = '',
   containerStyle,
+  darkColor = '',
 }) => {
   return (
-    <View
+    <TouchableRipple
+      onPress={onPress}
+      rippleColor="rgba(0, 0, 0, .15)"
       style={[
         styles.container,
         {
@@ -43,11 +47,7 @@ export const CategoryCard: React.FC<WishCardProps> = ({
         { ...containerStyle, elevation: 0 },
       ]}
     >
-      <TouchableRipple
-        onPress={onPress}
-        rippleColor="rgba(0, 0, 0, .32)"
-      >
-
+      <View>
         <View style={styles.headerSection}>
           <View
             style={[
@@ -70,26 +70,26 @@ export const CategoryCard: React.FC<WishCardProps> = ({
                         ? require('../../assets/celebration.png')
                         : require('../../assets/giftIcon.png')
               }
-              style={{ width: 34, height: 34 }}
+              style={{ width: scale(18), height: scale(18), }}
             />
           </View>
         </View>
-      </TouchableRipple>
-      <View>
+
         <Text
           style={{
-            color: primaryColor,
-            fontSize: 22,
-            fontWeight: 600,
-            lineHeight: 24,
-            marginTop: 3,
-            fontFamily: 'Poppins-Regular',
+            color: darkColor,
+            fontSize: scale(12),
+            fontWeight: '600',
+            lineHeight: verticalScale(17),
+            marginTop: verticalScale(1),
+            fontFamily: 'Poppins-SemiBold',
+            textAlign: 'center',
           }}
         >
           {title}
         </Text>
       </View>
-    </View >
+    </TouchableRipple>
   );
 };
 
@@ -97,66 +97,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 24,
-    paddingHorizontal: 22,
-    paddingVertical: 18,
+    paddingVertical: verticalScale(10),
     position: 'relative',
     alignItems: 'center',
+    backgroundColor: lightTheme.colors.background,
   },
   headerSection: {
     flexDirection: 'row',
-    alignItems: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 7,
     gap: 12,
   },
   iconButton: {
-    width: 56,
-    height: 56,
+    width: scale(36),
+    height: scale(36),
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    flex: 1,
-  },
-  chip: {
-    borderRadius: 20,
-  },
-  chipText: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  contentSection: {
-    marginBottom: 7,
-    paddingHorizontal: 4,
-  },
-  title: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: lightTheme.colors.text,
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: lightTheme.colors.text,
-    lineHeight: 24,
-  },
-  footerSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  statText: {
-    fontSize: 14,
-    fontWeight: 600,
-    color: lightTheme.colors.text,
-    minWidth: 24,
   },
 });
