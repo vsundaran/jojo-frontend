@@ -21,53 +21,62 @@ import { Image } from 'react-native';
 
 import Toast from 'react-native-toast-message';
 
-
-export const AppNavigator = ({ setCurrentRouteName }: { setCurrentRouteName?: (route: string) => void }) => {
+export const AppNavigator = ({
+  setCurrentRouteName,
+}: {
+  setCurrentRouteName?: (route: string) => void;
+}) => {
   const Stack = createNativeStackNavigator();
   const [isLoading, setIsLoading] = useState(true);
-  const [initialRouteName, setInitialRouteName] = useState("welcome");
+  const [initialRouteName, setInitialRouteName] = useState('welcome');
 
   const loadStorageData = async () => {
     try {
       const storedToken = await AsyncStorage.getItem(StorageKeys.AUTH_TOKEN);
       const storedUser = await AsyncStorage.getItem(StorageKeys.USER_DATA);
-      const hasSeenWelcome = await AsyncStorage.getItem(StorageKeys.HAS_SEEN_WELCOME);
+      const hasSeenWelcome = await AsyncStorage.getItem(
+        StorageKeys.HAS_SEEN_WELCOME,
+      );
 
       if (storedToken && storedUser) {
-        setInitialRouteName("app-layout");
+        setInitialRouteName('app-layout');
         if (setCurrentRouteName) {
-          setCurrentRouteName("app-layout")
+          setCurrentRouteName('app-layout');
         }
       } else if (hasSeenWelcome === 'true') {
-        setInitialRouteName("login");
+        setInitialRouteName('login');
         if (setCurrentRouteName) {
-          setCurrentRouteName("login")
+          setCurrentRouteName('login');
         }
       }
     } catch (error) {
       console.error('Failed to load auth data', error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadStorageData()
-  }, [])
+    loadStorageData();
+  }, []);
 
   if (isLoading) {
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Image source={require('../assets/logo.png')} style={{ width: 100, height: 100 }} />
-    </View>
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Image
+          source={require('../assets/logo.png')}
+          style={{ width: 100, height: 100 }}
+        />
+      </View>
+    );
   }
-
 
   return (
     <AuthProvider>
       <Toast />
-      <Surface style={{ flex: 1 }}>
+      <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
         <NavigationContainer
-          onStateChange={(state) => {
+          onStateChange={state => {
             const currentRouteName = state?.routes[state.index].name;
             if (setCurrentRouteName && currentRouteName) {
               setCurrentRouteName(currentRouteName);
@@ -81,14 +90,20 @@ export const AppNavigator = ({ setCurrentRouteName }: { setCurrentRouteName?: (r
             <Stack.Screen name="home" component={HomeScreen} />
             <Stack.Screen name="welcome" component={Welcome} />
             <Stack.Screen name="app-layout" component={AppLayout} />
-            <Stack.Screen name="moment-creating-form" component={MomentCreatingForm} />
+            <Stack.Screen
+              name="moment-creating-form"
+              component={MomentCreatingForm}
+            />
             <Stack.Screen name="signup" component={Signup} />
-            <Stack.Screen name="language-selection" component={LanguageSelectionScreen} />
+            <Stack.Screen
+              name="language-selection"
+              component={LanguageSelectionScreen}
+            />
             <Stack.Screen name="login" component={LoginScreen} />
             <Stack.Screen name="otp-verification" component={OTPVerification} />
           </Stack.Navigator>
         </NavigationContainer>
-      </Surface>
+      </View>
     </AuthProvider>
   );
 };

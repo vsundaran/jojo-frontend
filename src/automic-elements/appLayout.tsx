@@ -8,11 +8,15 @@ export default function AppLayout({ route }: any) {
   const footerSlectedIndex = route?.params?.footerSlectedIndex;
   const timestamp = route?.params?.timestamp;
 
-  console.log(initialTab, "inital")
+  console.log(initialTab, 'inital');
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
       <Header />
-      <FooterNavigation initialTab={initialTab} timestamp={timestamp} footerSlectedIndex={footerSlectedIndex} />
+      <FooterNavigation
+        initialTab={initialTab}
+        timestamp={timestamp}
+        footerSlectedIndex={footerSlectedIndex}
+      />
     </View>
   );
 }
