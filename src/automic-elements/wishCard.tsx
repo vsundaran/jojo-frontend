@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   ViewStyle,
   Image,
   ActivityIndicator,
 } from 'react-native';
+
+import { Text } from 'react-native-paper';
+
 import { Button, Chip } from 'react-native-paper';
 import { lightTheme } from '../theme';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -65,10 +67,10 @@ export const WishCard: React.FC<WishCardProps> = ({
               title == 'Motivation'
                 ? require('../assets/fire.png')
                 : title == 'Song'
-                  ? require('../assets/song.png')
-                  : title == 'Blessings'
-                    ? require('../assets/blessing.png')
-                    : require('../assets/giftIcon.png')
+                ? require('../assets/song.png')
+                : title == 'Blessings'
+                ? require('../assets/blessing.png')
+                : require('../assets/giftIcon.png')
             }
             style={{ width: scale(18), height: scale(18) }}
           />
@@ -121,19 +123,25 @@ export const WishCard: React.FC<WishCardProps> = ({
         </Chip> */}
 
         <Button
-          icon={() => (
+          icon={() =>
             isLoading ? (
-              <ActivityIndicator size={moderateScale(14)} color={isLiked ? "#EB4848" : lightTheme.colors.text} />
+              <ActivityIndicator
+                size={moderateScale(14)}
+                color={isLiked ? '#EB4848' : lightTheme.colors.text}
+              />
             ) : (
               <MaterialIcons
-                name={isLiked ? "cards-heart" : "cards-heart-outline"}
+                name={isLiked ? 'cards-heart' : 'cards-heart-outline'}
                 size={moderateScale(17)}
-                color={isLiked ? "#EB4848" : undefined}
+                color={isLiked ? '#EB4848' : undefined}
               />
             )
-          )}
+          }
           style={styles.statItem}
-          labelStyle={{ fontSize: moderateScale(14), marginVertical: verticalScale(0) }}
+          labelStyle={{
+            fontSize: moderateScale(14),
+            marginVertical: verticalScale(0),
+          }}
           onPress={isLoading ? undefined : onLikePress}
         >
           {likeCount}
@@ -155,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: verticalScale(7),
     gap: scale(6),
-    flexWrap: 'nowrap'
+    flexWrap: 'nowrap',
   },
   iconButton: {
     width: scale(36),
@@ -205,12 +213,11 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: moderateScale(14),
-    fontWeight: '500',
-    minHeight: verticalScale(35),
-    color: lightTheme.colors.darkText,
     lineHeight: verticalScale(15),
-    fontFamily: 'Poppins-Regular',
-    maxWidth: "90%"
+    color: lightTheme.colors.darkText,
+    maxWidth: '90%',
+    fontWeight: '500',
+    minHeight: verticalScale(23),
   },
   footerSection: {
     flexDirection: 'row',

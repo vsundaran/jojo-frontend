@@ -33,7 +33,7 @@ export default function Header() {
 
   console.log(user);
 
-  const name = user?.name?.split(" ")[0]?.charAt(0)?.toUpperCase() || "G";
+  const name = user?.name?.split(' ')[0]?.charAt(0)?.toUpperCase() || 'G';
 
   return (
     <LinearGradient
@@ -46,6 +46,9 @@ export default function Header() {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: lightTheme.spacing.md,
+        // borderWidth: 1,
+        boxShadow: 'none',
+        elevation: 0,
       }}
     >
       <View
@@ -69,7 +72,7 @@ export default function Header() {
               <Pressable
                 onPress={closeMenu}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
@@ -78,7 +81,7 @@ export default function Header() {
               />
               <View
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: 70,
                   right: 70,
                   backgroundColor: lightTheme.colors.background,
@@ -86,7 +89,7 @@ export default function Header() {
                   paddingVertical: 0,
                   paddingHorizontal: 0,
                   elevation: 6,
-                  shadowColor: "#000",
+                  shadowColor: '#000',
                   shadowOpacity: 0.2,
                   shadowRadius: 10,
                   width: 'auto',
@@ -94,18 +97,18 @@ export default function Header() {
               >
                 <Pressable
                   onPress={showLogoutConfirmation}
-                  android_ripple={{ color: "#e0e0e0" }}
+                  android_ripple={{ color: '#e0e0e0' }}
                   style={({ pressed }) => ({
                     paddingVertical: 4,
                     paddingHorizontal: 4,
-                    backgroundColor: pressed ? "#f5f5f5" : "transparent",
+                    backgroundColor: pressed ? '#f5f5f5' : 'transparent',
                   })}
                 >
                   <View>
                     <Button
                       onPress={showLogoutConfirmation}
                       textColor={lightTheme.colors.text}
-                      contentStyle={{ justifyContent: "flex-start" }}
+                      contentStyle={{ justifyContent: 'flex-start' }}
                       labelStyle={{ fontSize: 16 }}
                     >
                       Logout
