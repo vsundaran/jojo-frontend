@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { lightTheme } from '../theme';
-import { Image, View, TouchableOpacity, Pressable } from 'react-native';
+import { Image, View, TouchableOpacity, Pressable, Text } from 'react-native';
 import logo from '../assets/logo.png';
-import { Avatar, Menu, Portal, Dialog, Button } from 'react-native-paper';
+import { Menu, Portal, Dialog, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import ConfirmationModal from './confirmationModal';
+import { scale } from 'react-native-size-matters';
 
 export default function Header() {
   const navigation = useNavigation<any>();
@@ -33,7 +34,32 @@ export default function Header() {
 
   console.log(user);
 
-  const name = user?.name?.split(' ')[0]?.charAt(0)?.toUpperCase() || 'G';
+  // Generate initials based on name structure
+  const getInitials = (fullName: string | undefined): string => {
+    if (!fullName) return 'G';
+
+    const trimmedName = fullName.trim();
+    const words = trimmedName.split(/\s+/); // Split by whitespace
+
+    if (words.length === 0) return 'G';
+
+    // If it's a single word
+    if (words.length === 1) {
+      const word = words[0];
+      if (word.length === 1) {
+        // Single letter name - show one letter
+        return word.toUpperCase();
+      } else {
+        // Single word with multiple letters - show first and last letters
+        return (word.charAt(0) + word.charAt(word.length - 1)).toUpperCase();
+      }
+    }
+
+    // Multiple words - show first letters of first two words
+    return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+  };
+
+  const name = getInitials(user?.name);
 
   return (
     <LinearGradient
@@ -59,11 +85,39 @@ export default function Header() {
 
       <>
         <TouchableOpacity onPress={openMenu} activeOpacity={0.7}>
-          <Avatar.Text
-            size={44}
-            label={name}
-            style={{ backgroundColor: lightTheme.colors.background }}
-          />
+          <View
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              gap: 1,
+              backgroundColor: lightTheme.colors.background,
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            <Text
+              style={{
+                fontSize: scale(14),
+                fontFamily: 'Poppins-SemiBold',
+                color: lightTheme.colors.jojoLogoColor,
+              }}
+            >
+              {name.charAt(0)}
+            </Text>
+            {name.length > 1 && (
+              <Text
+                style={{
+                  fontSize: scale(14),
+                  fontFamily: 'Poppins-SemiBold',
+                  color: lightTheme.colors.darkText,
+                }}
+              >
+                {name.charAt(1)}
+              </Text>
+            )}
+          </View>
         </TouchableOpacity>
 
         <Portal>
