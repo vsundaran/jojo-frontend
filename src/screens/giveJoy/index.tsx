@@ -20,7 +20,7 @@ export default function Givejoy() {
   };
 
   return (
-    <Container style={{ paddingTop: 0, flex: 1, paddingHorizontal: 42 }}>
+    <Container style={{ paddingTop: 0, paddingBottom: 0, flex: 1, paddingHorizontal: 42 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{

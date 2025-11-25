@@ -110,9 +110,8 @@ const LoginScreen = () => {
                       icon={() => (
                         <View style={{}}>
                           <Text style={{
-                            fontSize: scale(16),
+                            fontSize: scale(14),
                             color: lightTheme.colors.darkText,
-                            // marginLeft: 10,
                             fontWeight: 'bold'
                           }}>+91</Text>
                         </View>
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     borderRadius: 20,
-    fontSize: scale(16),
+    fontSize: scale(14),
     color: lightTheme.colors.text,
   },
   sendButton: {

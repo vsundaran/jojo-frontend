@@ -64,13 +64,13 @@ export const WishCard: React.FC<WishCardProps> = ({
         <View style={[styles.iconButton, { backgroundColor: primaryColor }]}>
           <Image
             source={
-              title == 'Motivation'
+              title == 'motivation'
                 ? require('../assets/fire.png')
-                : title == 'Song'
-                ? require('../assets/song.png')
-                : title == 'Blessings'
-                ? require('../assets/blessing.png')
-                : require('../assets/giftIcon.png')
+                : title == 'songs'
+                  ? require('../assets/song.png')
+                  : title == 'blessings'
+                    ? require('../assets/blessing.png')
+                    : require('../assets/giftIcon.png')
             }
             style={{ width: scale(18), height: scale(18) }}
           />
@@ -217,13 +217,12 @@ const styles = StyleSheet.create({
     color: lightTheme.colors.darkText,
     maxWidth: '90%',
     fontWeight: '500',
-    minHeight: verticalScale(23),
+    minHeight: verticalScale(20),
   },
   footerSection: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    marginTop: verticalScale(-10),
   },
   statItem: {
     flexDirection: 'row',

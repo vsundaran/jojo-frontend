@@ -188,16 +188,15 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#FFFFFF',
         borderRadius: 24,
-        padding: 16,
+        paddingVertical: verticalScale(8),
+        paddingHorizontal: scale(10),
         borderWidth: 2,
-        borderTopWidth: 5, // Thicker top border as per design
-        marginBottom: 16,
-        // Shadow for iOS
+        borderTopWidth: 5,
+        marginBottom: verticalScale(16),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        // Elevation for Android
         elevation: 3,
     },
     header: {
@@ -211,7 +210,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         flexWrap: 'nowrap',
-        overflow: 'hidden'
     },
     iconContainer: {
         width: scale(36),
@@ -266,6 +264,7 @@ const styles = StyleSheet.create({
         color: lightTheme.colors.darkText,
         marginBottom: scale(3),
         fontWeight: '500',
+        minHeight: verticalScale(16),
     },
     footer: {
         flexDirection: 'row',

@@ -13,7 +13,7 @@ import { Moment } from '../../types';
 import { socketService, MomentEventPayload } from '../../services/socketService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
-import { scale } from 'react-native-size-matters';
+import { scale, verticalScale } from 'react-native-size-matters';
 
 export default function MyMomentsScreen({ onCreateMoment, category }: { onCreateMoment?: () => void, category?: string }) {
     const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
@@ -234,8 +234,9 @@ const styles = StyleSheet.create({
         backgroundColor: lightTheme.colors.background,
     },
     scrollContent: {
-        padding: 16,
-        paddingBottom: 100,
+        paddingHorizontal: scale(14),
+        paddingBottom: verticalScale(100),
+        paddingTop: verticalScale(10),
     },
     centerContent: {
         justifyContent: 'center',

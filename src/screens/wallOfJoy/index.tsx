@@ -225,8 +225,9 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: 
         }
         contentContainerStyle={{
           paddingBottom: verticalScale(130),
-          paddingVertical: verticalScale(16),
+          paddingVertical: verticalScale(0),
           paddingHorizontal: scale(8),
+          paddingTop: verticalScale(10),
         }}
         onEndReached={() => {
           if (hasNextPage) {
@@ -266,7 +267,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: 
               isLoading={loadingMomentId === item._id}
               containerStyle={{
                 height: 'auto',
-                marginTop: verticalScale(16),
+                marginBottom: verticalScale(16),
               }}
             />
           );
