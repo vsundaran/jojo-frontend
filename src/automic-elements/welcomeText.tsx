@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native-paper';
 import { lightTheme } from '../theme';
+import { scale, verticalScale } from 'react-native-size-matters';
 
 export const WelcomeText = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -8,8 +9,8 @@ export const WelcomeText = ({ children }: { children: React.ReactNode }) => {
       style={{
         color: lightTheme.colors.jojoLogoColor,
         textAlign: 'center',
-        fontSize: 30,
-        lineHeight: 40,
+        fontSize: scale(30),
+        lineHeight: verticalScale(40),
         fontFamily: 'Poppins-SemiBold',
       }}
     >
