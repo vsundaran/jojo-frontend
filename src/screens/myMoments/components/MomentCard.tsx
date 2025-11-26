@@ -112,7 +112,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     </View>
                 </View>
                 {
-                    isExp ? (
+                    !isExp ? (
                         <TouchableOpacity
                             style={{
                                 width: 32,
@@ -145,7 +145,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     </View>
                 </View>
 
-                {isExp ? (
+                {!isExp ? (
                     <TouchableOpacity
                         style={[
                             styles.toggleButton,
