@@ -96,19 +96,61 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     <View style={[styles.iconContainer, { backgroundColor: primary }]}>
                         <Image source={icon} style={styles.iconImage} />
                     </View>
-                    <View style={styles.tagsWrapper}>
+                    {/* <View style={styles.tagsWrapper}>
                         <Chip
-                            style={[styles.chip, { backgroundColor: primary }]}
-                            textStyle={styles.chipTextActive}
+                            style={[styles.chip, { backgroundColor: primary, }]}
+                            textStyle={[styles.chipTextActive, { marginRight: 0, marginLeft: 0 }]}
                         >
                             {title}
                         </Chip>
                         <Chip
                             style={[styles.chip, { borderColor: primary, borderWidth: 1, backgroundColor: 'transparent' }]}
-                            textStyle={[styles.chipTextInactive, { color: primary }]}
+                            textStyle={[styles.chipTextInactive, { color: primary, marginRight: 0, marginLeft: 0 }]}
                         >
                             {subTag}
                         </Chip>
+                    </View> */}
+
+                    <View style={styles.tagsContainer}>
+                        <Chip
+                            mode="outlined"
+                            style={[
+                                styles.chip,
+                                {
+                                    borderColor: primary,
+                                    backgroundColor: primary
+                                },
+                            ]}
+                            textStyle={[
+                                styles.chipText,
+                                {
+                                    color: '#fff'
+                                },
+                            ]}
+                        >
+                            {title}
+                        </Chip>
+
+                        <Chip
+                            mode="outlined"
+                            style={[
+                                styles.chip,
+                                {
+                                    borderColor: primary,
+                                    backgroundColor: 'transparent',
+                                },
+                            ]}
+                            textStyle={[
+                                styles.chipText,
+                                {
+                                    color: primary,
+                                },
+                            ]}
+                        >
+                            {subTag}
+                        </Chip>
+
+
                     </View>
                 </View>
                 {
@@ -175,7 +217,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     </TouchableOpacity>
                 ) : <Text style={{ color: '#EB4848', fontSize: scale(10), fontFamily: 'Poppins-Regular' }}>Expired</Text>}
             </View>
-        </View>
+        </View >
     );
 };
 
@@ -193,6 +235,22 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
+    },
+
+    tagsContainer: {
+        flexDirection: 'row',
+        gap: scale(6),
+        flex: 1,
+        flexWrap: 'nowrap',
+        overflow: 'hidden',
+    },
+
+    chipText: {
+        fontSize: moderateScale(12),
+        fontWeight: '600',
+        lineHeight: verticalScale(18),
+        marginVertical: 0,
+        marginHorizontal: 0,
     },
     header: {
         flexDirection: 'row',
@@ -233,22 +291,20 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     chip: {
-        // height: 32,
-        borderRadius: 16,
-        width: 'auto',
+        borderRadius: moderateScale(20),
+        height: verticalScale(22),
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: scale(0),
-        margin: 0
     },
     chipTextActive: {
         color: '#FFFFFF',
-        fontSize: 12,
+        fontSize: moderateScale(12),
         fontWeight: '600',
         marginVertical: 0,
+        paddingHorizontal: scale(6),
     },
     chipTextInactive: {
-        fontSize: 12,
+        fontSize: moderateScale(12),
         fontWeight: '600',
         marginHorizontal: 0,
         marginVertical: 0,
