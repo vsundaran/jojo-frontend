@@ -36,7 +36,7 @@ export default function Welcome({ navigation }: any) {
             mode="text"
             onPress={async () => {
               await AsyncStorage.setItem(StorageKeys.HAS_SEEN_WELCOME, 'true');
-              navigation.navigate('login');
+              navigation.navigate('app-layout');
             }}
             style={{
               padding: 0,
@@ -60,7 +60,7 @@ export default function Welcome({ navigation }: any) {
             onChangeIndex={(index) => setCurrentIndex(index)}
             onDone={async () => {
               await AsyncStorage.setItem(StorageKeys.HAS_SEEN_WELCOME, 'true');
-              navigation.navigate('login');
+              navigation.navigate('app-layout');
             }}
           />
         </View>

@@ -111,7 +111,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
 
     /* UI */
     return (
-        <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon contentContainerStyle={{ minHeight: '90%' }} >
+        <CustomModal visible={visible} onDismiss={onDismiss} contentContainerStyle={{ minHeight: '90%' }} >
             <View style={styles.container}>
 
                 {/* HEADER */}

@@ -44,9 +44,9 @@ export const AppNavigator = ({
           setCurrentRouteName('app-layout');
         }
       } else if (hasSeenWelcome === 'true') {
-        setInitialRouteName('login');
+        setInitialRouteName('app-layout');
         if (setCurrentRouteName) {
-          setCurrentRouteName('login');
+          setCurrentRouteName('app-layout');
         }
       }
     } catch (error) {

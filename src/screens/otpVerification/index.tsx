@@ -17,19 +17,21 @@ import CustomModal from '../../automic-elements/customModal';
 import { useVerifyOTP, useSendOTP } from '../../hooks/useAuthQuery';
 import { useAuth } from '../../context/AuthContext';
 
-const OTPVerification = () => {
+const OTPVerification = ({ isVisible, onClose, mobileNumber: propMobileNumber, onVerifySuccess }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onVerifySuccess?: () => void }) => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef<TextInput>(null);
   const shakeAnimation = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { mobileNumber, name } = route.params || {};
+  const mobileNumber = propMobileNumber || route.params?.mobileNumber;
+  const name = route.params?.name;
   const { mutate: verifyOTP, isPending: isVerifying } = useVerifyOTP();
   const { mutate: sendOTP, isPending: isResending } = useSendOTP();
   const { login } = useAuth();
 
-  const [visible, setVisible] = useState(true);
+  const [internalVisible, setInternalVisible] = useState(true);
+  const visible = isVisible !== undefined ? isVisible : internalVisible;
 
   const [resendTimer, setResendTimer] = useState(30);
 
@@ -44,8 +46,12 @@ const OTPVerification = () => {
   }, [resendTimer]);
 
   const onDismiss = () => {
-    setVisible(false);
-    navigation.navigate("login", { mobileNumber });
+    if (onClose) {
+      onClose();
+    } else {
+      setInternalVisible(false);
+      navigation.navigate('app-layout');
+    }
   };
 
   const handleOtpChange = (text: string) => {
@@ -102,8 +108,12 @@ const OTPVerification = () => {
         console.log('Verify OTP Success:', response.data);
         const { token, user } = response.data;
         await login(token, user);
-        setVisible(false);
-        navigation.navigate('app-layout');
+        if (onVerifySuccess) {
+          onVerifySuccess();
+        } else {
+          setInternalVisible(false);
+          navigation.navigate('app-layout');
+        }
       },
       onError: (error: any) => {
         console.error('Verify OTP Error:', error);
@@ -138,7 +148,14 @@ const OTPVerification = () => {
   };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon onBack={() => { navigation.navigate("login", { mobileNumber }); setVisible(false); }}>
+    <CustomModal visible={visible} onDismiss={onDismiss} enableBackIcon onBack={() => {
+      if (onClose) {
+        onClose();
+      } else {
+        navigation.navigate("login", { mobileNumber });
+        setInternalVisible(false);
+      }
+    }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
 

@@ -17,8 +17,9 @@ import { useSendOTP } from '../../hooks/useAuthQuery';
 
 import Toast from 'react-native-toast-message';
 
-const LoginScreen = () => {
-  const [visible, setVisible] = useState(true);
+const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess }: { isVisible?: boolean; onClose?: () => void; onSendOtpSuccess?: (data: { mobileNumber: string, isNewUser: boolean }) => void }) => {
+  const [internalVisible, setInternalVisible] = useState(true);
+  const visible = isVisible !== undefined ? isVisible : internalVisible;
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -35,8 +36,12 @@ const LoginScreen = () => {
   const { mutate: sendOTP, isPending } = useSendOTP();
 
   const onDismiss = () => {
-    setVisible(false);
-    navigation.goBack();
+    if (onClose) {
+      onClose();
+    } else {
+      setInternalVisible(false);
+      navigation.goBack();
+    }
   };
 
   const handleSendOtp = () => {
@@ -51,11 +56,20 @@ const LoginScreen = () => {
         onSuccess: (response) => {
           console.log('Send OTP Success:', response.data);
           const { isNewUser } = response.data;
-          setVisible(false);
-          if (isNewUser) {
-            navigation.navigate('signup', { mobileNumber: formattedNumber });
+
+          if (onSendOtpSuccess) {
+            onSendOtpSuccess({ mobileNumber: formattedNumber, isNewUser });
           } else {
-            navigation.navigate('otp-verification', { mobileNumber: formattedNumber });
+            if (onClose) {
+              onClose();
+            } else {
+              setInternalVisible(false);
+            }
+            if (isNewUser) {
+              navigation.navigate('signup', { mobileNumber: formattedNumber });
+            } else {
+              navigation.navigate('otp-verification', { mobileNumber: formattedNumber });
+            }
           }
 
           Toast.show({
@@ -72,7 +86,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon>
+    <CustomModal visible={visible} onDismiss={onDismiss}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           {/* Icon Section */}

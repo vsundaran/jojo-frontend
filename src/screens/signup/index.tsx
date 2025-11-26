@@ -17,12 +17,13 @@ import CustomModal from '../../automic-elements/customModal';
 import { useSendOTP, useVerifyOTP } from '../../hooks/useAuthQuery';
 import { useAuth } from '../../context/AuthContext';
 
-const Signup = () => {
+const Signup = ({ isVisible, onClose, mobileNumber: propMobileNumber, onSignupSuccess }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onSignupSuccess?: () => void }) => {
     const [name, setName] = useState('');
-    const [visible, setVisible] = useState(true);
+    const [internalVisible, setInternalVisible] = useState(true);
+    const visible = isVisible !== undefined ? isVisible : internalVisible;
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
-    const { mobileNumber } = route.params || {};
+    const mobileNumber = propMobileNumber || route.params?.mobileNumber;
     const [otp, setOtp] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
@@ -44,8 +45,12 @@ const Signup = () => {
     const inputRef = useRef<TextInputType>(null);
 
     const onDismiss = () => {
-        setVisible(false);
-        navigation.navigate("login", { mobileNumber });
+        if (onClose) {
+            onClose();
+        } else {
+            setInternalVisible(false);
+            navigation.navigate('app-layout');
+        }
     };
 
     const { mutate: verifyOTP, isPending: isVerifying } = useVerifyOTP();
@@ -66,8 +71,12 @@ const Signup = () => {
                 console.log('Verify OTP Success:', response.data);
                 const { token, user } = response.data;
                 await login(token, user);
-                setVisible(false);
-                navigation.navigate('language-selection');
+                if (onSignupSuccess) {
+                    onSignupSuccess();
+                } else {
+                    setInternalVisible(false);
+                    navigation.navigate('language-selection');
+                }
             },
             onError: (error: any) => {
                 console.error('Verify OTP Error:', error);
@@ -141,7 +150,14 @@ const Signup = () => {
     };
 
     return (
-        <CustomModal visible={visible} onDismiss={onDismiss} disableCloseIcon enableBackIcon onBack={() => { navigation.navigate("login", { mobileNumber }); setVisible(false); }}>
+        <CustomModal visible={visible} onDismiss={onDismiss} enableBackIcon onBack={() => {
+            if (onClose) {
+                onClose();
+            } else {
+                navigation.navigate("login", { mobileNumber });
+                setInternalVisible(false);
+            }
+        }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
 
@@ -186,7 +202,7 @@ const Signup = () => {
 
                     <Divider style={{ width: '100%', height: verticalScale(2), marginBottom: lightTheme.spacing.md, backgroundColor: "#E2E8F0" }} />
                     <Text style={styles.instruction}>
-                        Enter the code we sent to {mobileNumber.split("").slice(0, 3).join("") + "*****" + mobileNumber.split("").slice(8).join("")}
+                        Enter the code we sent to {mobileNumber?.split("").slice(0, 3).join("") + "*****" + mobileNumber?.split("").slice(8).join("")}
                     </Text>
                     <View style={styles.otpContainer}>
                         <TextInput

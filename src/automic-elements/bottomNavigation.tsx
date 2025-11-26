@@ -7,8 +7,13 @@ import { lightTheme } from '../theme';
 import Givejoy from '../screens/giveJoy';
 import CreateMomentStack from '../navigation/createMoment';
 
-export default function FooterNavigation({ initialTab, timestamp, footerSlectedIndex = 0 }: any) {
+import { useAuth } from '../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+
+export default function FooterNavigation({ initialTab, timestamp, footerSlectedIndex = 0, onLoginRequest }: any) {
   const [index, setIndex] = useState(0);
+  const { user } = useAuth();
+  const navigation = useNavigation<any>();
 
   const [routes] = useState([
     { key: 'home', title: 'Wall of Joy', icon: 'home-outline' },
@@ -50,6 +55,7 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
               initialTab={initialTab}
               timestamp={timestamp}
               onNavigateToCreateMoment={handleNavigateToCreateMoment}
+              onLoginRequest={onLoginRequest}
             />
           </View>
         );
@@ -81,7 +87,13 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
         navigationState={{ index, routes }}
         onTabPress={({ route }) => {
           const newIndex = routes.findIndex(r => r.key === route.key);
-          if (newIndex !== -1) setIndex(newIndex);
+          if (newIndex !== -1) {
+            if (!user && (route.key === 'create-moment' || route.key === 'Give-Joy')) {
+              if (onLoginRequest) onLoginRequest();
+              return;
+            }
+            setIndex(newIndex);
+          }
         }}
         renderIcon={({ route }) => {
           const isActive = routes[index].key === route.key;

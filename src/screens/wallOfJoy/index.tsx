@@ -20,9 +20,10 @@ import { MOMENT_CATEGORIES, Category } from '../../data/momentCategories';
 import { ActivityIndicator } from 'react-native-paper';
 import { useQueryClient, InfiniteData } from '@tanstack/react-query';
 import { socketService, MomentEventPayload } from '../../services/socketService';
+import { useAuth } from '../../context/AuthContext';
 import { NoMoments } from '../myMoments/NoMoments';
 
-export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment }: any) {
+export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment, onLoginRequest }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -37,6 +38,8 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
     { key: '1', label: 'JoJo Moments', icon: 'creation' },
     { key: '2', label: 'My Moments', icon: 'account' },
   ];
+
+  const { user } = useAuth();
 
   const handleLoginComplete = () => {
     setIsLoginCompleted(true);
@@ -54,20 +57,25 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
         <Divider />
       </View>
       <View style={{ paddingHorizontal: scale(6), flex: 1 }}>
-        <CustomTabs
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          renderContent={(key) => (
-            tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} /> : <MyMomentsScreen category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} />
-          )}
-        />
+        {!user ? (
+          <WallOfJoyContent category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} onLoginRequest={onLoginRequest} />
+        ) : (
+          <CustomTabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            renderContent={(key) => (
+              tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ? <WallOfJoyContent category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} onLoginRequest={onLoginRequest} /> : <MyMomentsScreen category={selectedCategory} onCreateMoment={onNavigateToCreateMoment} />
+            )}
+          />
+        )}
       </View>
     </View>
   );
 }
 
-const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: string, onCreateMoment: () => void }) => {
+const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest }: { category: string, onCreateMoment: () => void, onLoginRequest?: () => void }) => {
+  const { user } = useAuth();
   const {
     data,
     isLoading,
@@ -259,7 +267,13 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { } }: { category: 
               likeCount={item.hearts || 0}
               isLiked={item.hasHearted}
               onIconPress={() => console.log('Icon pressed')}
-              onLikePress={() => toggleHeart(item._id, item.hasHearted || false)}
+              onLikePress={() => {
+                if (!user) {
+                  if (onLoginRequest) onLoginRequest();
+                } else {
+                  toggleHeart(item._id, item.hasHearted || false);
+                }
+              }}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
               primaryColor={primaryColor}

@@ -9,7 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import ConfirmationModal from './confirmationModal';
 import { scale } from 'react-native-size-matters';
 
-export default function Header() {
+export default function Header({ onLoginRequest }: { onLoginRequest?: () => void }) {
   const navigation = useNavigation<any>();
   const { logout, user } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
@@ -28,7 +28,7 @@ export default function Header() {
     setLogoutModalVisible(false);
     navigation.reset({
       index: 0,
-      routes: [{ name: 'login' }],
+      routes: [{ name: 'app-layout' }],
     });
   };
 
@@ -84,7 +84,7 @@ export default function Header() {
       </View>
 
       <>
-        <TouchableOpacity onPress={openMenu} activeOpacity={0.7}>
+        <TouchableOpacity onPress={!user ? () => onLoginRequest && onLoginRequest() : openMenu} activeOpacity={0.7}>
           <View
             style={{
               width: 44,
