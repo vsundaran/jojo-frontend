@@ -7,12 +7,13 @@ import {
   ViewStyle,
   BackHandler,
 } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { lightTheme } from '../../theme';
 import Container from '../../automic-elements/container';
 import { Category } from '../../data/momentCategories';
 import { MomentCreatingForm } from './momentcreatingForm';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const ChoosingSubCategory = ({ navigation, route }: any) => {
   const category: Category = route.params?.category;
@@ -52,9 +53,15 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
     return () => backHandler.remove();
   }, [moment, navigation]);
 
-  console.log(category, 'category');
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      <Container style={{ paddingHorizontal: scale(17), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", paddingVertical: verticalScale(4), backgroundColor: "#F4F9FF" }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+          <MaterialCommunityIcons name="arrow-left" size={24} color="black" />
+          <Text style={{ ...styles.title, marginLeft: scale(6), marginTop: scale(4), fontSize: scale(14), marginBottom: 0, fontFamily: 'Poppins-Medium', color: category.primaryColor }}>{category?.title}</Text>
+        </TouchableOpacity>
+      </Container>
       <Container style={styles.container}>
         <Text style={styles.title}>Choose sub Category</Text>
         <View style={styles.chipsContainer}>
@@ -87,7 +94,8 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: scale(20),
-    paddingVertical: verticalScale(20),
+    paddingBottom: verticalScale(20),
+    paddingTop: verticalScale(10),
   },
   title: {
     fontSize: scale(13),

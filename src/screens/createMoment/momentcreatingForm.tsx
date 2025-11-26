@@ -259,7 +259,6 @@ export const MomentCreatingForm = ({
             marginBottom: verticalScale(4),
             fontFamily: 'Poppins-Medium',
           }}
-          optionalText="(max 60 characters)"
         >
           Tell us about your moment
         </FormLabel>
