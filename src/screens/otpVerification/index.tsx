@@ -136,8 +136,12 @@ const OTPVerification = ({ isVisible, onClose, mobileNumber: propMobileNumber, o
       { mobileNumber },
       {
         onSuccess: () => {
+          setOtp('');
           setError('');
           setResendTimer(30);
+          setTimeout(() => {
+            inputRef.current?.focus();
+          }, 100);
         },
         onError: (error: any) => {
           const errorMessage = error.response?.data?.message || 'Failed to resend OTP';

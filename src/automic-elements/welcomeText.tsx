@@ -9,7 +9,7 @@ export const WelcomeText = ({ children }: { children: React.ReactNode }) => {
       style={{
         color: lightTheme.colors.jojoLogoColor,
         textAlign: 'center',
-        fontSize: scale(30),
+        fontSize: scale(24),
         lineHeight: verticalScale(40),
         fontFamily: 'Poppins-SemiBold',
       }}

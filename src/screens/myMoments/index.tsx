@@ -129,10 +129,39 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
 
     const toggleMutation = useMutation({
         mutationFn: (momentId: string) => momentApi.toggleMoment(momentId),
-        onMutate: (momentId) => {
+        onMutate: async (momentId) => {
             setTogglingId(momentId);
+
+            // Cancel any outgoing refetches to avoid overwriting our optimistic update
+            await queryClient.cancelQueries({ queryKey });
+
+            // Snapshot the previous value
+            const previousData = queryClient.getQueryData<any>(queryKey);
+
+            // Optimistically update to the new value
+            queryClient.setQueryData<any>(queryKey, (oldData: any) => {
+                if (!oldData || !oldData.moments) return oldData;
+                return {
+                    ...oldData,
+                    moments: oldData.moments.map((moment: Moment) =>
+                        moment._id === momentId
+                            ? { ...moment, status: moment.status === 'active' ? 'inactive' : 'active' }
+                            : moment
+                    ),
+                };
+            });
+
+            // Return a context object with the snapshotted value
+            return { previousData };
+        },
+        onError: (err, momentId, context: any) => {
+            // If the mutation fails, use the context returned from onMutate to roll back
+            if (context?.previousData) {
+                queryClient.setQueryData(queryKey, context.previousData);
+            }
         },
         onSuccess: () => {
+            // Refetch to ensure we have the latest data from the server
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         },
         onSettled: () => {
