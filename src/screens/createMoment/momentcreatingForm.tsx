@@ -17,7 +17,7 @@ import CustomButton from '../../automic-elements/customButton';
 import { Category } from '../../data/momentCategories';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LANGUAGES } from '../../constants/flag';
-import CountryFlag from 'react-native-country-flag';
+// import CountryFlag from 'react-native-country-flag';
 import { useCreateMoment } from '../../hooks/useCreateMoment';
 import { useUpdateMoment } from '../../hooks/useUpdateMoment';
 import { authApi } from '../../api/authApi';
@@ -234,7 +234,7 @@ export const MomentCreatingForm = ({
         ]}
       >
         <View style={styles.languageRow}>
-          <CountryFlag isoCode={item.flagCode} size={20} />
+          {/* <CountryFlag isoCode={item.flagCode} size={20} /> */}
 
           <Text style={styles.languageName}>{item.name}</Text>
         </View>

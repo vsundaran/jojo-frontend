@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, TextInput, Chip } from 'react-native-paper';
 import CustomModal from './customModal';
-import CountryFlag from "react-native-country-flag";
+// import CountryFlag from "react-native-country-flag";
 import { scale, verticalScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './customButton';
@@ -92,7 +92,7 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                 ]}
             >
                 <View style={styles.languageRow}>
-                    <CountryFlag isoCode={item.flagCode} size={20} />
+                    {/* <CountryFlag isoCode={item.flagCode} size={20} /> */}
 
                     <Text style={styles.languageName}>
                         {item.name}

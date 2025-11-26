@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
+  Animated,
 } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -19,7 +19,9 @@ import { useAuth } from '../../context/AuthContext';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState('');
+  const [error, setError] = useState('');
   const inputRef = useRef<TextInput>(null);
+  const shakeAnimation = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { mobileNumber, name } = route.params || {};
@@ -49,10 +51,39 @@ const OTPVerification = () => {
   const handleOtpChange = (text: string) => {
     if (/^\d*$/.test(text) && text.length <= 6) {
       setOtp(text);
+      // Clear error when user starts typing
+      if (error) {
+        setError('');
+      }
       if (text.length === 6) {
         Keyboard.dismiss();
       }
     }
+  };
+
+  const triggerShakeAnimation = () => {
+    Animated.sequence([
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   const handleVerify = () => {
@@ -76,7 +107,15 @@ const OTPVerification = () => {
       },
       onError: (error: any) => {
         console.error('Verify OTP Error:', error);
-        Alert.alert('Error', error.response?.data?.message || 'Failed to verify OTP');
+        const errorMessage = error.response?.data?.message || 'Invalid OTP. Please try again.';
+        setError(errorMessage);
+        triggerShakeAnimation();
+        // Clear OTP field
+        setOtp('');
+        // Refocus input for better UX
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 200);
       },
     });
   };
@@ -87,11 +126,12 @@ const OTPVerification = () => {
       { mobileNumber },
       {
         onSuccess: () => {
-          Alert.alert('Success', 'OTP resent successfully');
+          setError('');
           setResendTimer(30);
         },
         onError: (error: any) => {
-          Alert.alert('Error', error.response?.data?.message || 'Failed to resend OTP');
+          const errorMessage = error.response?.data?.message || 'Failed to resend OTP';
+          setError(errorMessage);
         },
       }
     );
@@ -138,7 +178,12 @@ const OTPVerification = () => {
               autoFocus={false}
               caretHidden={true}
             />
-            <View style={styles.otpInputs}>
+            <Animated.View
+              style={[
+                styles.otpInputs,
+                { transform: [{ translateX: shakeAnimation }] }
+              ]}
+            >
               {[...Array(6)].map((_, index) => (
                 <TouchableOpacity
                   key={index}
@@ -146,6 +191,7 @@ const OTPVerification = () => {
                     styles.otpCircle,
                     otp.length === index && styles.otpCircleActive,
                     otp.length > index && styles.otpCircleFilled,
+                    error && styles.otpCircleError,
                   ]}
                   onPress={() => inputRef.current?.focus()}
                   activeOpacity={1}
@@ -153,7 +199,10 @@ const OTPVerification = () => {
                   <Text style={styles.otpText}>{otp[index] || ''}</Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </Animated.View>
+            {error ? (
+              <Text style={styles.errorText}>{error}</Text>
+            ) : null}
           </View>
 
           <View style={styles.resendContainer}>
@@ -287,10 +336,22 @@ const styles = StyleSheet.create({
     borderColor: lightTheme.colors.primary,
     backgroundColor: lightTheme.colors.surface,
   },
+  otpCircleError: {
+    borderColor: '#EF4444',
+    borderWidth: 1.5,
+  },
   otpText: {
     fontSize: scale(16),
     fontWeight: '600',
     color: lightTheme.colors.text,
+  },
+  errorText: {
+    fontSize: scale(12),
+    color: '#EF4444',
+    marginTop: lightTheme.spacing.sm,
+    textAlign: 'center',
+    width: '100%',
+    fontWeight: '500',
   },
   resendText: {
     fontSize: scale(12),
