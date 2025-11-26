@@ -6,6 +6,7 @@ import { lightTheme } from '../../theme';
 import GradientText from '../../automic-elements/gradientText';
 import { CountCard } from './countCard';
 import { useAvailableMomentsCount } from '../../hooks/useAvailableMomentsCount';
+import { verticalScale } from 'react-native-size-matters';
 
 export default function Givejoy() {
   const { data, isLoading, isError } = useAvailableMomentsCount();
@@ -98,7 +99,7 @@ export default function Givejoy() {
           </View>
         )}
 
-        <View style={{ marginTop: 2 }}>
+        <View style={{ marginTop: verticalScale(2) }}>
           <CountCard
             title="Wishes"
             description="Celebrate special moments with someone"
@@ -117,11 +118,11 @@ export default function Givejoy() {
               height: 'auto',
               minHeight: 110,
               justifyContent: 'center',
-              marginTop: 16,
+              marginTop: verticalScale(16),
             }}
           />
         </View>
-        <View style={{ marginTop: 2 }}>
+        <View style={{ marginTop: verticalScale(2) }}>
           <CountCard
             title="Motivation"
             description="Motivate someone with your positive vibes"
@@ -140,11 +141,11 @@ export default function Givejoy() {
               height: 'auto',
               minHeight: 110,
               justifyContent: 'center',
-              marginTop: 16,
+              marginTop: verticalScale(16),
             }}
           />
         </View>
-        <View style={{ marginTop: 2 }}>
+        <View style={{ marginTop: verticalScale(2) }}>
           <CountCard
             title="Song"
             description="Sing a song to a stranger to share a joy"
@@ -163,11 +164,11 @@ export default function Givejoy() {
               height: 'auto',
               minHeight: 110,
               justifyContent: 'center',
-              marginTop: 16,
+              marginTop: verticalScale(16),
             }}
           />
         </View>
-        <View style={{ marginTop: 2, marginBottom: 8 }}>
+        <View style={{ marginTop: verticalScale(2) }}>
           <CountCard
             title="Blessings"
             description="Send spiritual warmth and good wishes"
@@ -186,11 +187,11 @@ export default function Givejoy() {
               height: 'auto',
               minHeight: 110,
               justifyContent: 'center',
-              marginTop: 16,
+              marginTop: verticalScale(16),
             }}
           />
         </View>
-        <View style={{ marginTop: 2, marginBottom: 8 }}>
+        <View style={{ marginTop: verticalScale(2), marginBottom: verticalScale(8) }}>
           <CountCard
             title="Celebration"
             description="Celebrate special moments with someone"
@@ -209,7 +210,7 @@ export default function Givejoy() {
               height: 'auto',
               minHeight: 110,
               justifyContent: 'center',
-              marginTop: 16,
+              marginTop: verticalScale(16),
             }}
           />
         </View>

@@ -98,7 +98,7 @@ export const CountCard: React.FC<WishCardProps> = ({
               fontSize: scale(12),
               fontWeight: 400,
               lineHeight: 20,
-              maxWidth: "80%",
+              maxWidth: "90%",
               fontFamily: 'Poppins-Regular',
             }}
           >
@@ -138,16 +138,16 @@ export const CountCard: React.FC<WishCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 22,
-    paddingHorizontal: 22,
-    paddingVertical: 18,
+    borderRadius: scale(14),
+    paddingHorizontal: scale(12),
+    paddingVertical: scale(12),
     position: 'relative',
   },
   headerSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 7,
-    gap: 12,
+    marginBottom: scale(7),
+    gap: scale(12),
   },
   iconButton: {
     width: scale(36),
@@ -169,20 +169,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   contentSection: {
-    marginBottom: 7,
-    paddingHorizontal: 4,
+    marginBottom: scale(7),
+    paddingHorizontal: scale(4),
   },
   title: {
-    fontSize: 14,
+    fontSize: scale(14),
     fontWeight: '600',
     color: lightTheme.colors.text,
     marginBottom: 4,
   },
   description: {
-    fontSize: 16,
+    fontSize: scale(12),
     fontWeight: '500',
     color: lightTheme.colors.text,
-    lineHeight: 24,
+    lineHeight: scale(24),
   },
   footerSection: {
     flexDirection: 'row',
@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
   statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: scale(6),
   },
   statText: {
-    fontSize: 14,
+    fontSize: scale(14),
     fontWeight: 600,
     color: lightTheme.colors.text,
-    minWidth: 24,
+    minWidth: scale(24),
   },
 });
