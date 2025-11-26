@@ -219,6 +219,7 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
                         showToggle={moment.status !== 'expired'}
                         isLoading={togglingId === moment._id}
                         onEdit={() => handleEdit(moment)}
+                        expiryDate={moment.expiresAt || ""}
                     />
                 ))}
 

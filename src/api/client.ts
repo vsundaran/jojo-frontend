@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../constants/StorageKeys';
 
 const apiClient = axios.create({
-    baseURL: 'https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.net/api',
+    // baseURL: 'https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.net/api',
+    baseURL: 'http://10.0.2.2:3000/api',
     headers: {
         'Content-Type': 'application/json',
     },

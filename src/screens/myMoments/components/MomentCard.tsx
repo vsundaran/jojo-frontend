@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { lightTheme } from '../../../theme';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { isExpired } from '../../../utils/isExpired';
 
 export type MomentVariant = 'Wishes' | 'Motivation' | 'Song' | 'Blessings' | 'Celebration';
 
@@ -12,6 +13,7 @@ export interface MomentCardProps {
     title: MomentVariant;
     subTag: string;
     description: string;
+    expiryDate: string;
     callCount: number;
     likeCount: number;
     isOn: boolean;
@@ -75,7 +77,9 @@ export const MomentCard: React.FC<MomentCardProps> = ({
     showToggle = true,
     isLoading = false,
     onEdit,
+    expiryDate,
 }) => {
+    const isExp = isExpired(expiryDate);
     const { primary, border, icon } = getVariantStyles(title);
 
     return (
@@ -109,19 +113,24 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                         </Chip>
                     </View>
                 </View>
-                <TouchableOpacity
-                    style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
-                        backgroundColor: 'transparent',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
-                    onPress={onEdit}
-                >
-                    <MaterialCommunityIcons name="arrow-top-right-thin" size={18} color={primary} />
-                </TouchableOpacity>
+                {
+                    isExp ? (
+                        <TouchableOpacity
+                            style={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: 16,
+                                backgroundColor: 'transparent',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                            onPress={onEdit}
+                        >
+                            <MaterialCommunityIcons name="arrow-top-right-thin" size={18} color={primary} />
+                        </TouchableOpacity>
+                    ) : null
+                }
+
             </View>
 
             {/* Content */}
@@ -130,18 +139,6 @@ export const MomentCard: React.FC<MomentCardProps> = ({
             {/* Footer */}
             <View style={styles.footer}>
                 <View style={styles.statsContainer}>
-                    {/* <View style={styles.statItem}>
-                        <View style={styles.statIconWrapper}>
-                            <MaterialIcons name="call-end" size={14} color="#FF5858" style={{ transform: [{ rotate: '220deg' }] }} />
-                        </View>
-                        <Text style={styles.statText}>{callCount}</Text>
-                    </View> */}
-                    {/* <View style={styles.statItem}>
-                        <View style={styles.statIconWrapper}>
-                            <MaterialIcons name="call" size={14} color="#10B981" />
-                        </View>
-                        <Text style={styles.statText}>{callCount}</Text>
-                    </View> */}
                     <View style={styles.statItem}>
                         <View style={styles.statIconWrapper}>
                             <MaterialIcons name="favorite" size={14} color="#EF4444" />
@@ -150,7 +147,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                     </View>
                 </View>
 
-                {showToggle && (
+                {isExp ? (
                     <TouchableOpacity
                         style={[
                             styles.toggleButton,
@@ -178,7 +175,7 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                             </>
                         )}
                     </TouchableOpacity>
-                )}
+                ) : <Text style={{ color: '#EB4848', fontSize: scale(10), fontFamily: 'Poppins-Regular' }}>Expired</Text>}
             </View>
         </View>
     );
