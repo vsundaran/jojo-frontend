@@ -57,9 +57,22 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Container style={{ paddingHorizontal: scale(17), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", paddingVertical: verticalScale(4), backgroundColor: "#F4F9FF" }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="black" />
-          <Text style={{ ...styles.title, marginLeft: scale(6), marginTop: scale(4), fontSize: scale(14), marginBottom: 0, fontFamily: 'Poppins-Medium', color: category.primaryColor }}>{category?.title}</Text>
+        <TouchableOpacity onPress={() => {
+          // If we have a moment, we came from the edit flow (MyMoments)
+          if (moment) {
+            // Navigate back to app-layout with MyMoments tab
+            navigation.navigate('app-layout', {
+              footerSlectedIndex: 0,
+              initialTab: '2',
+              timestamp: Date.now(),
+            });
+          } else {
+            // Otherwise, we came from the create flow, use default back behavior
+            navigation.goBack();
+          }
+        }} style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+          <MaterialCommunityIcons name="arrow-left" size={20} color="black" />
+          <Text style={{ ...styles.title, marginLeft: scale(6), marginTop: scale(4), fontSize: scale(12), marginBottom: 0, fontFamily: 'Poppins-Medium', color: category.primaryColor }}>{category?.title}</Text>
         </TouchableOpacity>
       </Container>
       <Container style={styles.container}>
