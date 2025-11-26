@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   ViewStyle,
+  BackHandler,
 } from 'react-native';
 import { Text } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -25,6 +26,31 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
     setSelectedSubCategory(subCategory);
     // navigation.navigate('MomentCreatingForm', { category, subCategory });
   };
+
+  // Handle back button press
+  useEffect(() => {
+    const handleBackPress = () => {
+      // If we have a moment, we came from the edit flow (MyMoments)
+      if (moment) {
+        // Navigate back to app-layout with MyMoments tab
+        navigation.navigate('app-layout', {
+          footerSlectedIndex: 0,
+          initialTab: '2',
+          timestamp: Date.now(),
+        });
+        return true; // Prevent default back behavior
+      }
+      // Otherwise, we came from the create flow, use default back behavior
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress,
+    );
+
+    return () => backHandler.remove();
+  }, [moment, navigation]);
 
   console.log(category, 'category');
   return (
@@ -108,9 +134,9 @@ export const SelectionChipTwo = ({
         selected
           ? { backgroundColor: bgColor, borderColor: bgColor, elevation: 5 }
           : {
-              backgroundColor: bgColor,
-              borderColor: lightTheme.colors.nonActiveChip,
-            },
+            backgroundColor: bgColor,
+            borderColor: lightTheme.colors.nonActiveChip,
+          },
         style,
       ]}
       activeOpacity={0.8}
