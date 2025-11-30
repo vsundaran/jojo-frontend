@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native-paper';
 import { StyleSheet, TextStyle } from 'react-native';
 import { lightTheme } from '../theme';
-import { scale } from 'react-native-size-matters';
+import { scale, moderateScale } from 'react-native-size-matters';
 
 interface FormLabelProps {
     children: React.ReactNode;
@@ -19,7 +19,7 @@ export const FormLabel = ({ children, style, optionalText }: FormLabelProps) => 
 
 const styles = StyleSheet.create({
     label: {
-        fontSize: scale(14),
+        fontSize: moderateScale(14),
         fontWeight: '600',
         color: lightTheme.colors.darkText,
         marginBottom: lightTheme.spacing.sm,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     optional: {
         color: lightTheme.colors.textSecondary,
-        fontSize: scale(12),
+        fontSize: moderateScale(12),
         fontWeight: '400',
     },
 });

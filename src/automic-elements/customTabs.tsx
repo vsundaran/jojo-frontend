@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Divider, Text, TouchableRipple } from 'react-native-paper';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -12,6 +12,7 @@ interface CustomTabsProps {
     activeTab: string;
     onTabChange: (key: string) => void;
     renderContent?: (activeTab: string) => React.ReactNode;
+    visibilityValue?: Animated.Value;
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({
@@ -19,66 +20,91 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
     activeTab,
     onTabChange,
     renderContent,
+    visibilityValue,
 }) => {
+    const marginTop = visibilityValue?.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-60, 0], // Increased slightly to ensure full hide
+    });
+
+    const TabsContainer = visibilityValue ? Animated.View : View;
+    const animatedStyle = visibilityValue ? {
+        marginTop: marginTop,
+        opacity: visibilityValue,
+    } : {};
+
     return (
         <View style={styles.container}>
-            <View style={styles.tabsContainer}>
-                {tabs.map((tab) => {
-                    const isActive = activeTab === tab.key;
+            {/* Tabs positioned relatively at top */}
+            <TabsContainer
+                style={[
+                    animatedStyle,
+                    {
+                        zIndex: 15,
+                        backgroundColor: lightTheme.colors.background,
+                    }
+                ]}
+            >
+                <View style={styles.tabsContainer}>
+                    {tabs.map((tab) => {
+                        const isActive = activeTab === tab.key;
 
-                    const TabContent = () => (
-                        <View style={[styles.tabContent, isActive && styles.activeTabContent]}>
-                            <Icon
-                                name={tab.icon}
-                                // style={[
-                                //     styles.icon,
-                                //     { tintColor: isActive ? lightTheme.colors.text : lightTheme.colors.textSecondary },
-                                // ]}
-                                // resizeMode="contain"
-                                size={20}
-                            />
-                            <Text
-                                style={[
-                                    styles.label,
-                                    {
-                                        color: isActive ? lightTheme.colors.darkText : lightTheme.colors.darkText,
-                                        // fontWeight: isActive ? '600' : '400',
-                                        fontFamily: isActive ? 'Poppins-SemiBold' : 'Poppins-Regular',
-                                        fontSize: scale(12),
-                                        // marginTop: 2
-                                    },
-                                ]}
-                            >
-                                {tab.label}
-                            </Text>
-                        </View>
-                    );
-
-                    return (
-                        <TouchableRipple
-                            key={tab.key}
-                            onPress={() => onTabChange(tab.key)}
-                            style={[styles.tabButton, isActive && styles.activeTabButton]}
-                            borderless={true}
-                            rippleColor="rgba(0, 0, 0, 0.1)"
-                        >
-                            {isActive ? (
-                                <LinearGradient
-                                    colors={lightTheme.colors.gradientColors}
-                                    start={{ x: 0, y: 0 }}
-                                    end={{ x: 1, y: 0 }}
-                                    style={styles.gradientBackground}
+                        const TabContent = () => (
+                            <View style={[styles.tabContent, isActive && styles.activeTabContent]}>
+                                <Icon
+                                    name={tab.icon}
+                                    // style={[
+                                    //     styles.icon,
+                                    //     { tintColor: isActive ? lightTheme.colors.text : lightTheme.colors.textSecondary },
+                                    // ]}
+                                    // resizeMode="contain"
+                                    size={20}
+                                />
+                                <Text
+                                    style={[
+                                        styles.label,
+                                        {
+                                            color: isActive ? lightTheme.colors.darkText : lightTheme.colors.darkText,
+                                            // fontWeight: isActive ? '600' : '400',
+                                            fontFamily: isActive ? 'Poppins-SemiBold' : 'Poppins-Regular',
+                                            fontSize: scale(12),
+                                            // marginTop: 2
+                                        },
+                                    ]}
                                 >
+                                    {tab.label}
+                                </Text>
+                            </View>
+                        );
+
+                        return (
+                            <TouchableRipple
+                                key={tab.key}
+                                onPress={() => onTabChange(tab.key)}
+                                style={[styles.tabButton, isActive && styles.activeTabButton]}
+                                borderless={true}
+                                rippleColor="rgba(0, 0, 0, 0.1)"
+                            >
+                                {isActive ? (
+                                    <LinearGradient
+                                        colors={lightTheme.colors.gradientColors}
+                                        start={{ x: 0, y: 0 }}
+                                        end={{ x: 1, y: 0 }}
+                                        style={styles.gradientBackground}
+                                    >
+                                        <TabContent />
+                                    </LinearGradient>
+                                ) : (
                                     <TabContent />
-                                </LinearGradient>
-                            ) : (
-                                <TabContent />
-                            )}
-                        </TouchableRipple>
-                    );
-                })}
-            </View>
-            <Divider style={{ marginTop: verticalScale(4) }} />
+                                )}
+                            </TouchableRipple>
+                        );
+                    })}
+                </View>
+                <Divider style={{ marginTop: verticalScale(4) }} />
+            </TabsContainer>
+
+            {/* Content fills remaining space */}
             {renderContent && <View style={styles.contentContainer}>{renderContent(activeTab)}</View>}
         </View>
     );

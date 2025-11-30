@@ -9,11 +9,29 @@ import CreateMomentStack from '../navigation/createMoment';
 
 import { useAuth } from '../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
+import { useLayout } from '../context/LayoutContext';
+import { Animated } from 'react-native';
 
 export default function FooterNavigation({ initialTab, timestamp, footerSlectedIndex = 0, onLoginRequest }: any) {
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
   const navigation = useNavigation<any>();
+  const { visibilityValue } = useLayout();
+
+  const translateY = visibilityValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [80, 0],
+  });
+
+  const paddingTop = visibilityValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 70], // Header height
+  });
+
+  const paddingBottom = visibilityValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 80], // Footer height
+  });
 
   const [routes] = useState([
     { key: 'home', title: 'Wall of Joy', icon: 'home-outline' },
@@ -82,72 +100,87 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
 
   return (
     <View style={{ flex: 1 }}>
-      {renderScene({ route: routes[index] })}
-      <BottomNavigation.Bar
-        navigationState={{ index, routes }}
-        onTabPress={({ route }) => {
-          const newIndex = routes.findIndex(r => r.key === route.key);
-          if (newIndex !== -1) {
-            if (!user && (route.key === 'create-moment' || route.key === 'Give-Joy')) {
-              if (onLoginRequest) onLoginRequest();
-              return;
-            }
-            setIndex(newIndex);
-          }
-        }}
-        renderIcon={({ route }) => {
-          const isActive = routes[index].key === route.key;
-          return (
-            <View style={{ alignItems: 'center' }}>
-              {isActive && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: -16,
-                    width: 80,
-                    height: 3,
-                    borderRadius: 3,
-                    backgroundColor: lightTheme.colors.text,
-                  }}
-                />
-              )}
-              <Icon
-                name={route.icon}
-                size={26}
-                color={
-                  isActive
-                    ? lightTheme.colors.jojoLogoColor
-                    : lightTheme.colors.iconDefaultColor
-                }
-              />
-            </View>
-          );
-        }}
+      <Animated.View style={{ flex: 1, paddingTop, paddingBottom }}>
+        {renderScene({ route: routes[index] })}
+      </Animated.View>
+      <Animated.View
         style={{
-          backgroundColor: lightTheme.colors.background,
-          boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)',
+          height: 80,
+          transform: [{ translateY }],
+          opacity: visibilityValue,
+          zIndex: 20,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
         }}
-        getLabelText={({ route }) => route.title}
-        renderLabel={({ route }) => {
-          const isActive = routes[index].key === route.key;
-          return (
-            <Text
-              style={{
-                fontSize: 12,
-                textAlign: 'center',
-                // fontWeight: isActive ? "bold" : '500',
-                fontFamily: isActive ? 'Poppins-Bold' : 'Poppins-Medium',
-                color: isActive
-                  ? lightTheme.colors.darkText
-                  : lightTheme.colors.iconDefaultColor,
-              }}
-            >
-              {route.title}
-            </Text>
-          );
-        }}
-        activeIndicatorStyle={{ backgroundColor: 'transparent' }}
-      />
+      >
+        <BottomNavigation.Bar
+          navigationState={{ index, routes }}
+          onTabPress={({ route }) => {
+            const newIndex = routes.findIndex(r => r.key === route.key);
+            if (newIndex !== -1) {
+              if (!user && (route.key === 'create-moment' || route.key === 'Give-Joy')) {
+                if (onLoginRequest) onLoginRequest();
+                return;
+              }
+              setIndex(newIndex);
+            }
+          }}
+          renderIcon={({ route }) => {
+            const isActive = routes[index].key === route.key;
+            return (
+              <View style={{ alignItems: 'center' }}>
+                {isActive && (
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: -16,
+                      width: 80,
+                      height: 3,
+                      borderRadius: 3,
+                      backgroundColor: lightTheme.colors.text,
+                    }}
+                  />
+                )}
+                <Icon
+                  name={route.icon}
+                  size={26}
+                  color={
+                    isActive
+                      ? lightTheme.colors.jojoLogoColor
+                      : lightTheme.colors.iconDefaultColor
+                  }
+                />
+              </View>
+            );
+          }}
+          style={{
+            backgroundColor: lightTheme.colors.background,
+            boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)',
+          }}
+          getLabelText={({ route }) => route.title}
+          renderLabel={({ route }) => {
+            const isActive = routes[index].key === route.key;
+            return (
+              <Text
+                style={{
+                  fontSize: 12,
+                  textAlign: 'center',
+                  // fontWeight: isActive ? "bold" : '500',
+                  fontFamily: isActive ? 'Poppins-Bold' : 'Poppins-Medium',
+                  color: isActive
+                    ? lightTheme.colors.darkText
+                    : lightTheme.colors.iconDefaultColor,
+                }}
+              >
+                {route.title}
+              </Text>
+            );
+          }}
+          activeIndicatorStyle={{ backgroundColor: 'transparent' }}
+        />
+      </Animated.View>
     </View>
   );
 }

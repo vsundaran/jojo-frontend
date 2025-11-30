@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from './header';
 import FooterNavigation from './bottomNavigation';
 import LoginScreen from '../screens/login';
 import OTPVerification from '../screens/otpVerification';
 import Signup from '../screens/signup';
 import LanguageSelectionScreen from '../screens/languageSelection';
+import { LayoutProvider } from '../context/LayoutContext';
 
 export default function AppLayout({ route }: any) {
   const initialTab = route?.params?.initialTab;
@@ -58,48 +60,50 @@ export default function AppLayout({ route }: any) {
 
   console.log(initialTab, 'inital');
   return (
-    <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
-      <Header onLoginRequest={handleLoginRequest} />
-      <FooterNavigation
-        initialTab={initialTab}
-        timestamp={timestamp}
-        footerSlectedIndex={footerSlectedIndex}
-        onLoginRequest={handleLoginRequest}
-      />
-
-      {authStep === 'LOGIN' && (
-        <LoginScreen
-          isVisible={true}
-          onClose={handleLoginClose}
-          onSendOtpSuccess={handleSendOtpSuccess}
+    <LayoutProvider>
+      <SafeAreaView edges={['bottom']} style={{ flex: 1, backgroundColor: 'white' }}>
+        <Header onLoginRequest={handleLoginRequest} />
+        <FooterNavigation
+          initialTab={initialTab}
+          timestamp={timestamp}
+          footerSlectedIndex={footerSlectedIndex}
+          onLoginRequest={handleLoginRequest}
         />
-      )}
 
-      {authStep === 'OTP' && (
-        <OTPVerification
-          isVisible={true}
-          onClose={handleLoginClose}
-          mobileNumber={authData.mobileNumber}
-          onVerifySuccess={handleVerifySuccess}
-        />
-      )}
+        {authStep === 'LOGIN' && (
+          <LoginScreen
+            isVisible={true}
+            onClose={handleLoginClose}
+            onSendOtpSuccess={handleSendOtpSuccess}
+          />
+        )}
 
-      {authStep === 'SIGNUP' && (
-        <Signup
-          isVisible={true}
-          onClose={handleLoginClose}
-          mobileNumber={authData.mobileNumber}
-          onSignupSuccess={handleSignupSuccess}
-        />
-      )}
+        {authStep === 'OTP' && (
+          <OTPVerification
+            isVisible={true}
+            onClose={handleLoginClose}
+            mobileNumber={authData.mobileNumber}
+            onVerifySuccess={handleVerifySuccess}
+          />
+        )}
 
-      {authStep === 'LANGUAGE' && (
-        <LanguageSelectionScreen
-          isVisible={true}
-          onClose={handleLoginClose} // User can skip/close language selection and still be authenticated
-          onComplete={handleLanguageComplete}
-        />
-      )}
-    </View>
+        {authStep === 'SIGNUP' && (
+          <Signup
+            isVisible={true}
+            onClose={handleLoginClose}
+            mobileNumber={authData.mobileNumber}
+            onSignupSuccess={handleSignupSuccess}
+          />
+        )}
+
+        {authStep === 'LANGUAGE' && (
+          <LanguageSelectionScreen
+            isVisible={true}
+            onClose={handleLoginClose} // User can skip/close language selection and still be authenticated
+            onComplete={handleLanguageComplete}
+          />
+        )}
+      </SafeAreaView>
+    </LayoutProvider>
   );
 }

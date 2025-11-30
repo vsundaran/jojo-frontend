@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
 import { scale, verticalScale } from 'react-native-size-matters';
 
-export default function MyMomentsScreen({ onCreateMoment, category }: { onCreateMoment?: () => void, category?: string }) {
+export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: { onCreateMoment?: () => void, category?: string, onScroll?: (event: any) => void }) {
     const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -231,6 +231,8 @@ export default function MyMomentsScreen({ onCreateMoment, category }: { onCreate
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingHorizontal: scale(14),
         paddingBottom: verticalScale(100),
-        paddingTop: verticalScale(10),
+        paddingTop: verticalScale(130), // Space for header (70) + category (60)
     },
     centerContent: {
         justifyContent: 'center',

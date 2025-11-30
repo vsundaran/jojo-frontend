@@ -7,7 +7,7 @@ import {
   FlatList,
 } from 'react-native';
 import { TextInput, Button, Text, Menu, Chip } from 'react-native-paper';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { lightTheme } from '../../theme';
 import { FormLabel } from '../../automic-elements/formLabel';
 import { SelectionChip } from '../../automic-elements/selectionChip';
@@ -254,7 +254,7 @@ export const MomentCreatingForm = ({
       <View style={{ ...styles.section, marginBottom: 15 }}>
         <FormLabel
           style={{
-            fontSize: scale(13),
+            fontSize: moderateScale(13),
             color: lightTheme.colors.darkText,
             marginBottom: verticalScale(4),
             fontFamily: 'Poppins-Medium',
@@ -285,7 +285,7 @@ export const MomentCreatingForm = ({
       <View style={styles.section}>
         <FormLabel
           style={{
-            fontSize: scale(13),
+            fontSize: moderateScale(13),
             color: lightTheme.colors.darkText,
             marginBottom: verticalScale(4),
             fontFamily: 'Poppins-Medium',
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: '#FFFFFF',
-    fontSize: scale(13),
+    fontSize: moderateScale(13),
     paddingVertical: verticalScale(10),
   },
   inputOutline: {
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: verticalScale(12),
     right: scale(12),
-    fontSize: scale(12),
+    fontSize: moderateScale(12),
     color: '#9CA3AF',
   },
   toggleContainer: {
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(34),
   },
   toggleText: {
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: lightTheme.colors.text,
     fontWeight: '500',
   },
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   dateTimeInput: {
     backgroundColor: '#FFFFFF',
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
   },
   dateTimeOutline: {
     borderRadius: scale(8),
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   chipText: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#FFF',
   },
   dropdownTrigger: {
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   dropdownText: {
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: '#9CA3AF', // Placeholder color style
   },
   createButton: {
@@ -484,7 +484,7 @@ const styles = StyleSheet.create({
     height: verticalScale(48),
   },
   createButtonLabel: {
-    fontSize: scale(16),
+    fontSize: moderateScale(16),
     fontWeight: '700',
     color: '#FFFFFF',
   },
@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   selectedLabel: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: '#6B7280',
     marginBottom: 8,
   },
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   languageName: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     fontWeight: '500',
   },
   checkIconContainer: {

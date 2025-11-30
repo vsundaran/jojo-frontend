@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { Text, Button } from 'react-native-paper';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
@@ -293,14 +293,14 @@ const styles = StyleSheet.create({
     tintColor: lightTheme.colors.primary,
   },
   title: {
-    fontSize: scale(20),
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
     color: lightTheme.colors.darkText,
     marginBottom: lightTheme.spacing.xs,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: scale(16),
+    fontSize: moderateScale(16),
     fontWeight: '500',
     color: lightTheme.colors.text,
     marginBottom: lightTheme.spacing.sm,
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   instruction: {
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: lightTheme.colors.textSecondary,
     textAlign: 'center',
     marginBottom: lightTheme.spacing.xl,
@@ -362,12 +362,12 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
   },
   otpText: {
-    fontSize: scale(16),
+    fontSize: moderateScale(16),
     fontWeight: '600',
     color: lightTheme.colors.text,
   },
   errorText: {
-    fontSize: scale(12),
+    fontSize: moderateScale(12),
     color: '#EF4444',
     marginTop: lightTheme.spacing.sm,
     textAlign: 'center',
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   resendText: {
-    fontSize: scale(12),
+    fontSize: moderateScale(12),
     color: lightTheme.colors.darkText,
     fontWeight: '500',
     marginBottom: lightTheme.spacing.lg,
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
     height: verticalScale(33),
   },
   verifyButtonLabel: {
-    fontSize: scale(15),
+    fontSize: moderateScale(15),
     color: '#FFFFFF',
   },
 });

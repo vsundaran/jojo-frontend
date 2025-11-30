@@ -1,4 +1,4 @@
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { AppTheme } from '../types';
 
 export const lightTheme: AppTheme = {
@@ -45,35 +45,35 @@ export const lightTheme: AppTheme = {
   },
   typography: {
     h1: {
-      fontSize: scale(24),
+      fontSize: moderateScale(24),
       fontWeight: 'bold',
       lineHeight: scale(32),
       fontFamily: 'Poppins-Bold',
     },
     h2: {
-      fontSize: scale(20),
+      fontSize: moderateScale(20),
       fontWeight: '600',
       lineHeight: scale(28),
       fontFamily: 'Poppins-SemiBold',
     },
     h3: {
-      fontSize: scale(16),
+      fontSize: moderateScale(16),
       fontWeight: '600',
       lineHeight: scale(24),
       fontFamily: 'Poppins-SemiBold',
     },
     body: {
-      fontSize: scale(14),
+      fontSize: moderateScale(14),
       lineHeight: scale(20),
       fontFamily: 'Poppins-Regular',
     },
     caption: {
-      fontSize: scale(12),
+      fontSize: moderateScale(12),
       lineHeight: scale(16),
       fontFamily: 'Poppins-Regular',
     },
     button: {
-      fontSize: scale(16),
+      fontSize: moderateScale(16),
       fontWeight: '600',
       fontFamily: 'Poppins-Medium',
     },

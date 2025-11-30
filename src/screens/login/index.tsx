@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
@@ -124,7 +124,7 @@ const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess }: { isVisible?: boo
                       icon={() => (
                         <View style={{}}>
                           <Text style={{
-                            fontSize: scale(14),
+                            fontSize: moderateScale(14),
                             color: lightTheme.colors.darkText,
                             fontWeight: 'bold'
                           }}>+91</Text>
@@ -199,14 +199,14 @@ const styles = StyleSheet.create({
     height: scale(30),
   },
   title: {
-    fontSize: scale(22),
+    fontSize: moderateScale(22),
     fontWeight: 'bold',
     color: lightTheme.colors.darkText,
     marginBottom: lightTheme.spacing.xs,
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: lightTheme.colors.text,
     marginBottom: lightTheme.spacing.xl,
     textAlign: 'center',
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     marginBottom: lightTheme.spacing.xl,
   },
   inputLabel: {
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: lightTheme.colors.darkText,
     marginBottom: lightTheme.spacing.xs,
     marginLeft: lightTheme.spacing.xs,
@@ -241,14 +241,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     borderRadius: 20,
-    fontSize: scale(14),
+    fontSize: moderateScale(14),
     color: lightTheme.colors.text,
   },
   sendButton: {
     marginBottom: lightTheme.spacing.lg,
   },
   footerText: {
-    fontSize: scale(10),
+    fontSize: moderateScale(10),
     color: lightTheme.colors.text,
     textAlign: 'center',
     lineHeight: scale(14),
