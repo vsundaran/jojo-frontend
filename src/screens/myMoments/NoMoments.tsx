@@ -5,6 +5,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { lightTheme } from '../../theme';
 import CustomButton from '../../automic-elements/customButton';
+import { useAuth } from '../../context/AuthContext';
 
 const categories = [
     {
@@ -44,6 +45,7 @@ interface NoMomentsProps {
 }
 
 export const NoMoments = ({ onCreateMoment }: NoMomentsProps) => {
+    const { user } = useAuth();
     return (
         <View style={styles.container}>
             <View style={styles.iconsContainer}>
@@ -59,7 +61,9 @@ export const NoMoments = ({ onCreateMoment }: NoMomentsProps) => {
 
             <Text style={styles.title}>No Moments Created Yet</Text>
             <Text style={styles.subtitle}>
-                Create and enjoy your moment with JoJo
+                {
+                    user ? 'Create and enjoy your moment with JoJo' : 'Please login to create your first moment'
+                }
             </Text>
 
             <CustomButton
