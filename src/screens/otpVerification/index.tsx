@@ -17,7 +17,7 @@ import CustomModal from '../../automic-elements/customModal';
 import { useVerifyOTP, useSendOTP } from '../../hooks/useAuthQuery';
 import { useAuth } from '../../context/AuthContext';
 
-const OTPVerification = ({ isVisible, onClose, mobileNumber: propMobileNumber, onVerifySuccess }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onVerifySuccess?: () => void }) => {
+const OTPVerification = ({ isVisible, onClose, mobileNumber: propMobileNumber, onVerifySuccess, onBack }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onVerifySuccess?: () => void, onBack?: () => void }) => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef<TextInput>(null);
@@ -153,7 +153,9 @@ const OTPVerification = ({ isVisible, onClose, mobileNumber: propMobileNumber, o
 
   return (
     <CustomModal visible={visible} onDismiss={onDismiss} enableBackIcon onBack={() => {
-      if (onClose) {
+      if (onBack) {
+        onBack();
+      } else if (onClose) {
         onClose();
       } else {
         navigation.navigate("login", { mobileNumber });

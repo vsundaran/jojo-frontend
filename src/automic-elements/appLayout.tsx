@@ -75,6 +75,7 @@ export default function AppLayout({ route }: any) {
             isVisible={true}
             onClose={handleLoginClose}
             onSendOtpSuccess={handleSendOtpSuccess}
+            initialMobileNumber={authData.mobileNumber}
           />
         )}
 
@@ -84,6 +85,7 @@ export default function AppLayout({ route }: any) {
             onClose={handleLoginClose}
             mobileNumber={authData.mobileNumber}
             onVerifySuccess={handleVerifySuccess}
+            onBack={handleLoginRequest}
           />
         )}
 
@@ -93,6 +95,7 @@ export default function AppLayout({ route }: any) {
             onClose={handleLoginClose}
             mobileNumber={authData.mobileNumber}
             onSignupSuccess={handleSignupSuccess}
+            onBack={handleLoginRequest}
           />
         )}
 

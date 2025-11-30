@@ -17,7 +17,7 @@ import CustomModal from '../../automic-elements/customModal';
 import { useSendOTP, useVerifyOTP } from '../../hooks/useAuthQuery';
 import { useAuth } from '../../context/AuthContext';
 
-const Signup = ({ isVisible, onClose, mobileNumber: propMobileNumber, onSignupSuccess }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onSignupSuccess?: () => void }) => {
+const Signup = ({ isVisible, onClose, mobileNumber: propMobileNumber, onSignupSuccess, onBack }: { isVisible?: boolean, onClose?: () => void, mobileNumber?: string, onSignupSuccess?: () => void, onBack?: () => void }) => {
     const [name, setName] = useState('');
     const [internalVisible, setInternalVisible] = useState(true);
     const visible = isVisible !== undefined ? isVisible : internalVisible;
@@ -151,7 +151,9 @@ const Signup = ({ isVisible, onClose, mobileNumber: propMobileNumber, onSignupSu
 
     return (
         <CustomModal visible={visible} onDismiss={onDismiss} enableBackIcon onBack={() => {
-            if (onClose) {
+            if (onBack) {
+                onBack();
+            } else if (onClose) {
                 onClose();
             } else {
                 navigation.navigate("login", { mobileNumber });

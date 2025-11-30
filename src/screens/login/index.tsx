@@ -17,7 +17,7 @@ import { useSendOTP } from '../../hooks/useAuthQuery';
 
 import Toast from 'react-native-toast-message';
 
-const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess }: { isVisible?: boolean; onClose?: () => void; onSendOtpSuccess?: (data: { mobileNumber: string, isNewUser: boolean }) => void }) => {
+const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber }: { isVisible?: boolean; onClose?: () => void; onSendOtpSuccess?: (data: { mobileNumber: string, isNewUser: boolean }) => void; initialMobileNumber?: string }) => {
   const [internalVisible, setInternalVisible] = useState(true);
   const visible = isVisible !== undefined ? isVisible : internalVisible;
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -26,12 +26,15 @@ const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess }: { isVisible?: boo
   const { mobileNumber } = route.params || {};
 
   useEffect(() => {
-    if (mobileNumber) {
+    if (initialMobileNumber) {
+      const number = initialMobileNumber.replace('+91', '');
+      setPhoneNumber(number);
+    } else if (mobileNumber) {
       // Remove +91 prefix if present, as the input handles it separately
       const number = mobileNumber.replace('+91', '');
       setPhoneNumber(number);
     }
-  }, [mobileNumber]);
+  }, [mobileNumber, initialMobileNumber]);
 
   const { mutate: sendOTP, isPending } = useSendOTP();
 

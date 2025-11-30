@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, ScrollView, StyleSheet, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, RefreshControl, FlatList } from 'react-native';
 import { Text } from 'react-native-paper';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
@@ -48,15 +48,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
         const handleMomentCreated = (payload: MomentEventPayload) => {
             if (!currentUserId || payload.creatorId !== currentUserId) return;
             console.log('⚡ Socket event (MyMoments): moment:created', payload);
-
-            // We need the full moment object to add it. The payload only has minimal info.
-            // So for creation, it's safer to invalidate or refetch if we don't have the full object.
-            // However, the user wants it to appear.
-            // If the payload is just IDs, we can't display it.
-            // Let's check the payload again.
-            // Payload: { momentId, category, creatorId, timestamp }
-            // It's missing content, etc.
-            // So we MUST refetch or invalidate.
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         };
 
@@ -131,14 +122,8 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
         mutationFn: (momentId: string) => momentApi.toggleMoment(momentId),
         onMutate: async (momentId) => {
             setTogglingId(momentId);
-
-            // Cancel any outgoing refetches to avoid overwriting our optimistic update
             await queryClient.cancelQueries({ queryKey });
-
-            // Snapshot the previous value
             const previousData = queryClient.getQueryData<any>(queryKey);
-
-            // Optimistically update to the new value
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
                 if (!oldData || !oldData.moments) return oldData;
                 return {
@@ -150,18 +135,14 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
                     ),
                 };
             });
-
-            // Return a context object with the snapshotted value
             return { previousData };
         },
         onError: (err, momentId, context: any) => {
-            // If the mutation fails, use the context returned from onMutate to roll back
             if (context?.previousData) {
                 queryClient.setQueryData(queryKey, context.previousData);
             }
         },
         onSuccess: () => {
-            // Refetch to ensure we have the latest data from the server
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         },
         onSettled: () => {
@@ -207,37 +188,29 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
         );
     }
 
-    console.log(data, "data useUserMoments");
-
     const moments = data?.moments || [];
 
     if (moments.length === 0) {
         return (
             <View style={styles.container}>
-                <ScrollView
+                <FlatList
+                    data={[]}
+                    renderItem={null}
                     contentContainerStyle={styles.scrollContent}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                     }
-                >
-                    <NoMoments onCreateMoment={onCreateMoment} />
-                </ScrollView>
+                    ListEmptyComponent={<NoMoments onCreateMoment={onCreateMoment} />}
+                />
             </View>
         );
     }
 
     return (
         <View style={styles.container}>
-            <ScrollView
-                contentContainerStyle={styles.scrollContent}
-                showsVerticalScrollIndicator={false}
-                onScroll={onScroll}
-                scrollEventThrottle={16}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-            >
-                {moments.map((moment) => (
+            <FlatList
+                data={moments}
+                renderItem={({ item: moment }) => (
                     <MomentCard
                         key={moment._id}
                         title={getCategoryVariant(moment.category)}
@@ -252,9 +225,16 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
                         onEdit={() => handleEdit(moment)}
                         expiryDate={moment.expiresAt || ""}
                     />
-                ))}
-
-            </ScrollView>
+                )}
+                keyExtractor={(item) => item._id}
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            />
         </View>
     );
 }
@@ -262,13 +242,13 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: scale(10),
+        paddingHorizontal: scale(14),
         backgroundColor: lightTheme.colors.background,
     },
     scrollContent: {
-        paddingHorizontal: scale(14),
-        paddingBottom: verticalScale(100),
-        paddingTop: verticalScale(130), // Space for header (70) + category (60)
+        paddingHorizontal: scale(8),
+        paddingBottom: verticalScale(130),
+        paddingVertical: verticalScale(0),
     },
     centerContent: {
         justifyContent: 'center',
