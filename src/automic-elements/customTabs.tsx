@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        paddingVertical: verticalScale(12),
+        paddingTop: verticalScale(12),
     },
 });
 
