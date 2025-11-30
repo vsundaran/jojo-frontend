@@ -153,7 +153,6 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
             )}
           />
         )}
-        <NoMoments />
       </View>
     </View>
   );

@@ -65,13 +65,14 @@ export const NoMoments = ({ onCreateMoment }: NoMomentsProps) => {
                     user ? 'Create and enjoy your moment with JoJo' : 'Please login to create your first moment'
                 }
             </Text>
-
-            <CustomButton
-                title='Create Your First Moment'
-                onPress={onCreateMoment || (() => { })}
-                icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />}
-            />
-
+            {
+                user && (
+                    <CustomButton
+                        title='Create Your First Moment'
+                        onPress={onCreateMoment || (() => { })}
+                        icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />}
+                    />
+                )}
         </View >
     );
 };
