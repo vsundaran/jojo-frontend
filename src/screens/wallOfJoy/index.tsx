@@ -50,11 +50,13 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
     const diff = currentOffset - lastContentOffset.current;
 
     // If scrolling down and offset is significant, hide controls
-    if (diff > 5 && currentOffset > 10) {
+    // Increased threshold from 5 to 20 to prevent flickering
+    if (diff > 20 && currentOffset > 50) {
       setControlsVisible(false);
     }
     // If scrolling up and offset is significant, show controls
-    else if (diff < -5) {
+    // Increased threshold from -5 to -20
+    else if (diff < -20) {
       setControlsVisible(true);
     }
 
@@ -111,47 +113,49 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
             />
           </View>
         ) : (
-          <CustomTabs
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            visibilityValue={visibilityValue}
-            renderContent={(key) => (
-              <View style={{ flex: 1 }}>
-                <Animated.View
-                  style={{
-                    marginTop: categoryMarginTop,
-                    opacity: visibilityValue,
-                    zIndex: 10,
-                    backgroundColor: lightTheme.colors.background,
-                  }}
-                >
-                  <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
-                    <ScrollingCategory
-                      activeCategory={selectedCategory}
-                      onCategorySelect={setSelectedCategory}
-                    />
-                  </View>
-                  <View style={{ marginBottom: verticalScale(4) }}>
-                    <Divider />
-                  </View>
-                </Animated.View>
-                {tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ?
-                  <WallOfJoyContent
-                    category={selectedCategory}
-                    onCreateMoment={onNavigateToCreateMoment}
-                    onLoginRequest={onLoginRequest}
-                    onScroll={handleScroll}
-                  /> :
-                  <MyMomentsScreen
-                    category={selectedCategory}
-                    onCreateMoment={onNavigateToCreateMoment}
-                    onScroll={handleScroll}
-                  />
-                }
+          <View style={{ flex: 1 }}>
+            <Animated.View
+              style={{
+                marginTop: categoryMarginTop,
+                opacity: visibilityValue,
+                zIndex: 10,
+                backgroundColor: lightTheme.colors.background,
+              }}
+            >
+              <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
+                <ScrollingCategory
+                  activeCategory={selectedCategory}
+                  onCategorySelect={setSelectedCategory}
+                />
               </View>
-            )}
-          />
+              <View style={{ marginBottom: verticalScale(4) }}>
+                <Divider />
+              </View>
+            </Animated.View>
+            <CustomTabs
+              tabs={tabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              visibilityValue={visibilityValue}
+              renderContent={(key) => (
+                <View style={{ flex: 1 }}>
+                  {tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ?
+                    <WallOfJoyContent
+                      category={selectedCategory}
+                      onCreateMoment={onNavigateToCreateMoment}
+                      onLoginRequest={onLoginRequest}
+                      onScroll={handleScroll}
+                    /> :
+                    <MyMomentsScreen
+                      category={selectedCategory}
+                      onCreateMoment={onNavigateToCreateMoment}
+                      onScroll={handleScroll}
+                    />
+                  }
+                </View>
+              )}
+            />
+          </View>
         )}
       </View>
     </View>
