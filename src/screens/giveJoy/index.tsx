@@ -93,12 +93,6 @@ export default function Givejoy() {
           Choose a category and connect with someone who needs your support
         </Text>
 
-        {isLoading && (
-          <View style={{ marginTop: 20, alignItems: 'center' }}>
-            <ActivityIndicator size="small" color={lightTheme.colors.wishesColor} />
-          </View>
-        )}
-
         <View style={{ marginTop: verticalScale(2) }}>
           <CountCard
             title="Wishes"
@@ -120,6 +114,7 @@ export default function Givejoy() {
               justifyContent: 'center',
               marginTop: verticalScale(16),
             }}
+            isLoading={isLoading}
           />
         </View>
         <View style={{ marginTop: verticalScale(2) }}>
@@ -143,6 +138,7 @@ export default function Givejoy() {
               justifyContent: 'center',
               marginTop: verticalScale(16),
             }}
+            isLoading={isLoading}
           />
         </View>
         <View style={{ marginTop: verticalScale(2) }}>
@@ -166,6 +162,7 @@ export default function Givejoy() {
               justifyContent: 'center',
               marginTop: verticalScale(16),
             }}
+            isLoading={isLoading}
           />
         </View>
         <View style={{ marginTop: verticalScale(2) }}>
@@ -189,9 +186,10 @@ export default function Givejoy() {
               justifyContent: 'center',
               marginTop: verticalScale(16),
             }}
+            isLoading={isLoading}
           />
         </View>
-        <View style={{ marginTop: verticalScale(2), marginBottom: verticalScale(8) }}>
+        <View style={{ marginTop: verticalScale(2), marginBottom: verticalScale(20) }}>
           <CountCard
             title="Celebration"
             description="Celebrate special moments with someone"
@@ -212,6 +210,7 @@ export default function Givejoy() {
               justifyContent: 'center',
               marginTop: verticalScale(16),
             }}
+            isLoading={isLoading}
           />
         </View>
       </ScrollView>

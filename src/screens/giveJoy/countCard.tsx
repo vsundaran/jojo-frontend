@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextStyle,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { Button, Card, Chip } from 'react-native-paper';
 // import MaterialIcon from 'react-native-vector-icons/MaterialDesignIcons';
@@ -31,6 +32,7 @@ export interface WishCardProps {
   badgeColor?: string;
   darkTextColor?: string;
   containerStyle?: ViewStyle;
+  isLoading?: boolean;
 }
 
 export const CountCard: React.FC<WishCardProps> = ({
@@ -48,6 +50,7 @@ export const CountCard: React.FC<WishCardProps> = ({
   badgeColor = '',
   containerStyle,
   darkTextColor = lightTheme.colors.text,
+  isLoading = false,
 }) => {
   return (
     <View
@@ -129,7 +132,7 @@ export const CountCard: React.FC<WishCardProps> = ({
             fontFamily: 'Poppins-Bold',
           }}
         >
-          {count}
+          {isLoading ? <ActivityIndicator /> : count}
         </Text>
       </View>
     </View>
