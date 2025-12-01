@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Text, TextInput, Chip } from 'react-native-paper';
 import CustomModal from './customModal';
 // import CountryFlag from "react-native-country-flag";
@@ -7,7 +7,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './customButton';
 import { lightTheme } from '../theme';
-import { LANGUAGES } from '../constants/flag';
+import { useAvailableLanguages } from '../hooks/useAuthQuery';
 
 /* ------------------------------------------------------
    1. LANGUAGE INTERFACE
@@ -19,13 +19,7 @@ export interface Language {
 }
 
 /* ------------------------------------------------------
-   2. FULL MASTER DATA — 200 LANGUAGES  
-   (id, name, flagCode)
--------------------------------------------------------*/
-
-
-/* ------------------------------------------------------
-   3. COMPONENT PROPS
+   2. COMPONENT PROPS
 -------------------------------------------------------*/
 interface LanguageSelectionModalProps {
     visible: boolean;
@@ -36,7 +30,7 @@ interface LanguageSelectionModalProps {
 }
 
 /* ------------------------------------------------------
-   4. MAIN MODAL COMPONENT
+   3. MAIN MODAL COMPONENT
 -------------------------------------------------------*/
 const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     visible,
@@ -48,13 +42,16 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(initialSelectedLanguages);
 
+    // Fetch available languages from API
+    const { data: availableLanguages = [], isLoading: isLoadingLanguages } = useAvailableLanguages();
+
     /* FILTER */
     const filteredLanguages = useMemo(() => {
-        if (!searchQuery) return LANGUAGES;
-        return LANGUAGES.filter((lang) =>
+        if (!searchQuery) return availableLanguages;
+        return availableLanguages.filter((lang) =>
             lang.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
-    }, [searchQuery]);
+    }, [searchQuery, availableLanguages]);
 
 
     /* SELECT / UNSELECT */
@@ -157,15 +154,25 @@ const LanguageSelectionModal: React.FC<LanguageSelectionModalProps> = ({
                 )}
 
 
+                {/* Loading State */}
+                {isLoadingLanguages && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color={lightTheme.colors.primary} />
+                        <Text style={styles.loadingText}>Loading languages...</Text>
+                    </View>
+                )}
+
                 {/* SEARCH */}
-                <TextInput
-                    placeholder="Search languages..."
-                    value={searchQuery}
-                    onChangeText={setSearchQuery}
-                    mode="outlined"
-                    style={styles.searchInput}
-                    left={<TextInput.Icon icon="magnify" />}
-                />
+                {!isLoadingLanguages && (
+                    <TextInput
+                        placeholder="Search languages..."
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        mode="outlined"
+                        style={styles.searchInput}
+                        left={<TextInput.Icon icon="magnify" />}
+                    />
+                )}
 
 
                 {/* LIST */}
@@ -313,6 +320,19 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 12,
         backgroundColor: lightTheme.colors.primary,
+    },
+
+    loadingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 24,
+        gap: 12,
+    },
+
+    loadingText: {
+        fontSize: 14,
+        color: '#6B7280',
     },
 });
 

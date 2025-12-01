@@ -17,7 +17,8 @@ export default function LanguageSelectionScreen({ isVisible, onClose, onComplete
                 visible={visible}
                 isCompleting={completeProfileMutation.isPending || false}
                 onComplete={(selectedLanguages) => {
-                    const languages = selectedLanguages.map(lang => lang.name.toLowerCase());
+                    // Send language IDs instead of names
+                    const languages = selectedLanguages.map(lang => lang.id);
                     completeProfileMutation.mutate(
                         { languages },
                         {

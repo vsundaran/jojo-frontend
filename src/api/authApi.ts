@@ -13,7 +13,7 @@ export interface VerifyOTPRequest {
 }
 
 export interface CompleteProfileRequest {
-    languages: string[];
+    languages: string[]; // Language IDs
 }
 
 class AuthApi {
@@ -31,6 +31,10 @@ class AuthApi {
 
     async getLanguages(): Promise<AxiosResponse<{ success: boolean; languages: string[] }>> {
         return apiClient.get('/auth/languages');
+    }
+
+    async getAvailableLanguages(): Promise<AxiosResponse<{ success: boolean; languages: { id: string; name: string; flagCode: string }[] }>> {
+        return apiClient.get('/auth/available-languages');
     }
 
     async logout(): Promise<void> {

@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import { TextInput, Button, Text, Menu, Chip } from 'react-native-paper';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -16,19 +17,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from '../../automic-elements/customButton';
 import { Category } from '../../data/momentCategories';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { LANGUAGES } from '../../constants/flag';
 // import CountryFlag from 'react-native-country-flag';
 import { useCreateMoment } from '../../hooks/useCreateMoment';
 import { useUpdateMoment } from '../../hooks/useUpdateMoment';
+import { useAvailableLanguages } from '../../hooks/useAuthQuery';
 import { authApi } from '../../api/authApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
-
-interface Language {
-  id: string;
-  name: string;
-  flagCode: string;
-}
+import { Language, getLanguagesByIds } from '../../utils/languageUtils';
 
 export const MomentCreatingForm = ({
   navigation,
@@ -41,6 +37,9 @@ export const MomentCreatingForm = ({
   const { mutate: createMoment, isPending: isCreating } = useCreateMoment();
   const { mutate: updateMoment, isPending: isUpdating } = useUpdateMoment();
   const isPending = isCreating || isUpdating;
+
+  // Fetch available languages (master data)
+  const { data: availableLanguages = [], isLoading: isLoadingLanguages } = useAvailableLanguages();
 
   // Default colors if no category selected (fallback)
   const primaryColor = category?.primaryColor || lightTheme.colors.wishesColor;
@@ -55,71 +54,51 @@ export const MomentCreatingForm = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguages, setSelectedLanguages] = useState<Language[]>([]);
   const [scheduledTime, setScheduledTime] = useState('');
+  const [isLoadingUserLanguages, setIsLoadingUserLanguages] = useState(true);
 
   useEffect(() => {
     const loadLanguages = async () => {
+      if (!availableLanguages || availableLanguages.length === 0) {
+        return;
+      }
+
       try {
-        const storedLanguages = await AsyncStorage.getItem(
-          StorageKeys.SELECTED_LANGUAGES,
-        );
-        if (storedLanguages) {
-          const parsedLanguages = JSON.parse(storedLanguages);
-          const mappedLanguages = LANGUAGES.filter(l =>
-            parsedLanguages.some(
-              (pl: string) => pl.toLowerCase() === l.name.toLowerCase(),
-            ),
-          );
+        setIsLoadingUserLanguages(true);
 
-          if (moment?.languages) {
-            const momentLangs = LANGUAGES.filter(l =>
-              moment.languages.some(
-                (ml: string) => ml.toLowerCase() === l.name.toLowerCase(),
-              ),
-            );
-            setSelectedLanguages(momentLangs);
-          } else {
-            setSelectedLanguages(mappedLanguages);
-          }
-        } else {
-          const response = await authApi.getLanguages();
-          if (response.data.success && response.data.languages) {
-            const serverLanguages = response.data.languages;
-            const mappedLanguages = LANGUAGES.filter(l =>
-              serverLanguages.some(
-                sl => sl.toLowerCase() === l.name.toLowerCase(),
-              ),
-            );
+        // If editing a moment, use the moment's languages
+        if (moment?.languages && Array.isArray(moment.languages)) {
+          // moment.languages should now be an array of IDs
+          const momentLangs = getLanguagesByIds(moment.languages, availableLanguages);
+          setSelectedLanguages(momentLangs);
+          setIsLoadingUserLanguages(false);
+          return;
+        }
 
-            if (moment?.languages) {
-              const momentLangs = LANGUAGES.filter(l =>
-                moment.languages.some(
-                  (ml: string) => ml.toLowerCase() === l.name.toLowerCase(),
-                ),
-              );
-              setSelectedLanguages(momentLangs);
-            } else {
-              setSelectedLanguages(mappedLanguages);
-            }
-            await AsyncStorage.setItem(
-              StorageKeys.SELECTED_LANGUAGES,
-              JSON.stringify(serverLanguages),
-            );
-          }
+        // Otherwise, fetch user's selected languages from the API
+        const response = await authApi.getLanguages();
+        if (response.data.success && response.data.languages) {
+          // response.data.languages is an array of language IDs
+          const languageIds = response.data.languages;
+          const mappedLanguages = getLanguagesByIds(languageIds, availableLanguages);
+          setSelectedLanguages(mappedLanguages);
         }
       } catch (error) {
         console.error('Failed to load languages', error);
+      } finally {
+        setIsLoadingUserLanguages(false);
       }
     };
+
     loadLanguages();
-  }, []);
+  }, [availableLanguages, moment]);
 
   /* FILTER LANGUAGES */
   const filteredLanguages = useMemo(() => {
-    if (!searchQuery) return LANGUAGES;
-    return LANGUAGES.filter(lang =>
+    if (!searchQuery) return availableLanguages;
+    return availableLanguages.filter(lang =>
       lang.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [searchQuery]);
+  }, [searchQuery, availableLanguages]);
 
   /* SELECT / UNSELECT LANGUAGE */
   const toggleLanguage = (language: Language) => {
@@ -138,7 +117,7 @@ export const MomentCreatingForm = ({
     if (moment) {
       const payload = {
         content: momentText,
-        languages: selectedLanguages.map(l => l.name),
+        languages: selectedLanguages.map(l => l.id), // Send language IDs
         subCategory: selectedSubCategory,
       };
 
@@ -162,7 +141,7 @@ export const MomentCreatingForm = ({
         category: category?.title.toLocaleLowerCase() || 'wishes',
         subCategory: selectedSubCategory || 'birthday',
         content: momentText,
-        languages: selectedLanguages.map(l => l.name),
+        languages: selectedLanguages.map(l => l.id), // Send language IDs
         scheduleType: 'immediate' as const,
         activeTime: 1440,
       };
@@ -293,6 +272,14 @@ export const MomentCreatingForm = ({
         >
           What language do you prefer?
         </FormLabel>
+
+        {/* Loading State */}
+        {(isLoadingLanguages || isLoadingUserLanguages) && (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color={primaryColor} />
+            <Text style={styles.loadingText}>Loading languages...</Text>
+          </View>
+        )}
 
         {/* SELECTED TAGS */}
         {selectedLanguages.length > 0 && (
@@ -539,5 +526,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF9C01', // Using a fixed color or could be primaryColor
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    gap: 12,
+  },
+  loadingText: {
+    fontSize: moderateScale(14),
+    color: '#6B7280',
+    fontFamily: 'Poppins-Regular',
   },
 });
