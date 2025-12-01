@@ -51,12 +51,12 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
 
     // If scrolling down and offset is significant, hide controls
     // Increased threshold from 5 to 20 to prevent flickering
-    if (diff > 20 && currentOffset > 50) {
+    if (diff > 1) {
       setControlsVisible(false);
     }
     // If scrolling up and offset is significant, show controls
     // Increased threshold from -5 to -20
-    else if (diff < -20) {
+    else if (diff < -1) {
       setControlsVisible(true);
     }
 
