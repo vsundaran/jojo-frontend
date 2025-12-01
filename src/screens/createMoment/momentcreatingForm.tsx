@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   loadingText: {
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(10),
     color: '#6B7280',
     fontFamily: 'Poppins-Regular',
   },

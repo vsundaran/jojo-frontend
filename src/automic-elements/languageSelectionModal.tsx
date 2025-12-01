@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, FlatList, TouchableOpacity, ScrollView, Activi
 import { Text, TextInput, Chip } from 'react-native-paper';
 import CustomModal from './customModal';
 // import CountryFlag from "react-native-country-flag";
-import { scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './customButton';
 import { lightTheme } from '../theme';
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     },
 
     loadingText: {
-        fontSize: 14,
+        fontSize: moderateScale(10),
         color: '#6B7280',
     },
 });

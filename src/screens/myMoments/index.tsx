@@ -186,16 +186,8 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
 
     if (moments.length === 0) {
         return (
-            <View style={styles.container}>
-                <FlatList
-                    data={[]}
-                    renderItem={null}
-                    contentContainerStyle={styles.scrollContent}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                    }
-                    ListEmptyComponent={<NoMoments onCreateMoment={onCreateMoment} />}
-                />
+            <View style={{ flex: 1, paddingHorizontal: scale(14) }}>
+                <NoMoments onCreateMoment={onCreateMoment} />
             </View>
         );
     }
@@ -224,10 +216,17 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
                 showsVerticalScrollIndicator={false}
                 onScroll={onScroll}
                 scrollEventThrottle={16}
+
+                /** 👇 Disable stretch/bounce animation (iOS + Android) */
+                bounces={false}
+                alwaysBounceVertical={false}
+                overScrollMode="never"
+
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             />
+
         </View>
     );
 }

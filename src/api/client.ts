@@ -7,7 +7,7 @@ const DEV = 'https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.n
 const local = 'http://10.0.2.2:3000/api'
 
 const apiClient = axios.create({
-  baseURL: local,
+  baseURL: PROD,
   headers: {
     'Content-Type': 'application/json',
   },

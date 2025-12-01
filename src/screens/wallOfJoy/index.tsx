@@ -302,7 +302,9 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
 
   if (moments.length === 0) {
     return (
-      <NoMoments onCreateMoment={onCreateMoment} />
+      <View style={{ flex: 1, paddingHorizontal: scale(14) }}>
+        <NoMoments onCreateMoment={onCreateMoment} />
+      </View>
     );
   }
 
@@ -312,6 +314,9 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
         data={moments}
         onScroll={onScroll}
         scrollEventThrottle={16}
+        bounces={false}
+        alwaysBounceVertical={false}
+        overScrollMode="never"
         keyExtractor={(item, index) => item._id || index.toString()}
         showsVerticalScrollIndicator={false}
         refreshControl={
