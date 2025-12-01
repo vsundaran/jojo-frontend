@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, RefreshControl, FlatList } from 'react-native';
+import { View, RefreshControl, FlatList, Animated } from 'react-native';
 import { Divider, Text } from 'react-native-paper';
-import LinearGradient from 'react-native-linear-gradient';
-import Header from '../../automic-elements/header';
 import { lightTheme } from '../../theme';
 import ScrollingCategory from './scrollingCategory';
-import Container from '../../automic-elements/container';
 import { WishCard } from '../../automic-elements/wishCard';
-import OTPVerification from '../otpVerification';
-import LoginScreen from '../login';
-import Signup from '../signup';
-import LanguageSelectionScreen from '../languageSelection';
 import CustomTabs from '../../automic-elements/customTabs';
 import MyMomentsScreen from '../myMoments';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -24,45 +17,18 @@ import { useAuth } from '../../context/AuthContext';
 import { NoMoments } from '../myMoments/NoMoments';
 
 import { useLayout } from '../../context/LayoutContext';
-import { Animated } from 'react-native';
 import JoinJojoContent from '../../automic-elements/joinJojoContent';
 
 export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment, onLoginRequest }: any) {
-  const [isLoginCompleted, setIsLoginCompleted] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab || route?.params?.initialTab || '1');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const { setControlsVisible, visibilityValue } = useLayout();
-  const lastContentOffset = React.useRef(0);
+  const { scrollY, headerTranslateY, headerHeight } = useLayout();
 
   useEffect(() => {
     if (initialTab) {
       setActiveTab(initialTab);
     }
   }, [initialTab, timestamp]);
-
-  // Reset visibility when tab changes or component mounts
-  useEffect(() => {
-    setControlsVisible(true);
-    return () => setControlsVisible(true);
-  }, [activeTab, setControlsVisible]);
-
-  const handleScroll = (event: any) => {
-    const currentOffset = event.nativeEvent.contentOffset.y;
-    const diff = currentOffset - lastContentOffset.current;
-
-    // If scrolling down and offset is significant, hide controls
-    // Increased threshold from 5 to 20 to prevent flickering
-    if (diff > 10) {
-      setControlsVisible(false);
-    }
-    // If scrolling up and offset is significant, show controls
-    // Increased threshold from -5 to -20
-    else if (diff < -10) {
-      setControlsVisible(true);
-    }
-
-    lastContentOffset.current = currentOffset;
-  };
 
   const tabs: any[] = [
     { key: '1', label: 'JoJo Moments', icon: 'creation' },
@@ -71,29 +37,23 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
 
   const { user } = useAuth();
 
-  const handleLoginComplete = () => {
-    setIsLoginCompleted(true);
-  };
-
-
-
-  const categoryMarginTop = visibilityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-60, 0], // Adjust based on actual category height
-  });
+  const contentPaddingTop = user ? verticalScale(180) : verticalScale(130);
 
   return (
     <View style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-      {/* Content fills entire screen */}
       <View style={{ flex: 1, paddingHorizontal: scale(6) }}>
         {!user ? (
           <View style={{ flex: 1 }}>
             <Animated.View
               style={{
-                marginTop: categoryMarginTop,
-                opacity: visibilityValue,
+                transform: [{ translateY: headerTranslateY }],
                 zIndex: 10,
                 backgroundColor: lightTheme.colors.background,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                paddingTop: verticalScale(55), // Adjust as needed
               }}
             >
               <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
@@ -110,17 +70,25 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
               category={selectedCategory}
               onCreateMoment={onNavigateToCreateMoment}
               onLoginRequest={onLoginRequest}
-              onScroll={handleScroll}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                { useNativeDriver: true }
+              )}
+              contentContainerStyle={{ paddingTop: contentPaddingTop }}
             />
           </View>
         ) : (
           <View style={{ flex: 1 }}>
             <Animated.View
               style={{
-                marginTop: categoryMarginTop,
-                opacity: visibilityValue,
+                transform: [{ translateY: headerTranslateY }],
                 zIndex: 10,
                 backgroundColor: lightTheme.colors.background,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                paddingTop: verticalScale(55),
               }}
             >
               <View style={{ paddingVertical: verticalScale(3), justifyContent: 'center', alignItems: 'center' }}>
@@ -132,30 +100,39 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
               <View style={{ marginBottom: verticalScale(4) }}>
                 <Divider />
               </View>
+              <CustomTabs
+                tabs={tabs}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              // We don't need visibilityValue here anymore as we handle animation in parent
+              // But CustomTabs expects it, so we might need to refactor CustomTabs or pass null
+              />
             </Animated.View>
-            <CustomTabs
-              tabs={tabs}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-              visibilityValue={visibilityValue}
-              renderContent={(key) => (
-                <View style={{ flex: 1 }}>
-                  {tabs.find((t) => t.key === key)?.label === 'JoJo Moments' ?
-                    <WallOfJoyContent
-                      category={selectedCategory}
-                      onCreateMoment={onNavigateToCreateMoment}
-                      onLoginRequest={onLoginRequest}
-                      onScroll={handleScroll}
-                    /> :
-                    <MyMomentsScreen
-                      category={selectedCategory}
-                      onCreateMoment={onNavigateToCreateMoment}
-                      onScroll={handleScroll}
-                    />
-                  }
-                </View>
-              )}
-            />
+
+            {/* Content needs to be padded by headerHeight via contentContainerStyle */}
+            <View style={{ flex: 1 }}>
+              {tabs.find((t) => t.key === activeTab)?.label === 'JoJo Moments' ?
+                <WallOfJoyContent
+                  category={selectedCategory}
+                  onCreateMoment={onNavigateToCreateMoment}
+                  onLoginRequest={onLoginRequest}
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: true }
+                  )}
+                  contentContainerStyle={{ paddingTop: contentPaddingTop }}
+                /> :
+                <MyMomentsScreen
+                  category={selectedCategory}
+                  onCreateMoment={onNavigateToCreateMoment}
+                  onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: true }
+                  )}
+                  contentContainerStyle={{ paddingTop: contentPaddingTop }}
+                />
+              }
+            </View>
           </View>
         )}
       </View>
@@ -163,15 +140,14 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
   );
 }
 
-const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest, onScroll }: { category: string, onCreateMoment: () => void, onLoginRequest?: () => void, onScroll?: (event: any) => void }) => {
+const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest, onScroll, contentContainerStyle }: { category: string, onCreateMoment: () => void, onLoginRequest?: () => void, onScroll?: (event: any) => void, contentContainerStyle?: any }) => {
   const { user } = useAuth();
   const {
     data,
     isLoading,
     refetch,
-    isRefetching,
-    fetchNextPage,
     hasNextPage,
+    fetchNextPage,
     isFetchingNextPage
   } = useActiveMoments(category === 'All' ? '' : category);
 
@@ -180,14 +156,11 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
 
   useEffect(() => {
     const handleMomentCreated = (payload: MomentEventPayload) => {
-      console.log('⚡ Socket event: moment:created', payload);
-      // Only add if category matches or we are in 'All'
       if (category !== 'All' && payload.category !== category) return;
 
       queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
         if (!oldData) return oldData;
         const newPages = [...oldData.pages];
-        // Add to the beginning of the first page
         if (newPages.length > 0) {
           newPages[0] = {
             ...newPages[0],
@@ -197,17 +170,12 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
             },
           };
         }
-        return {
-          ...oldData,
-          pages: newPages,
-        };
+        return { ...oldData, pages: newPages };
       });
     };
 
     const handleMomentUpdated = (payload: MomentEventPayload | any) => {
-      console.log('⚡ Socket event: moment:updated', payload);
       queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
-        console.log(oldData, "oldData")
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -225,7 +193,6 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
     };
 
     const handleMomentDeleted = (payload: MomentEventPayload) => {
-      console.log('⚡ Socket event: moment:deleted', payload);
       queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
         if (!oldData) return oldData;
         return {
@@ -242,7 +209,6 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
     };
 
     const handleHeartUpdated = (payload: MomentEventPayload) => {
-      console.log('⚡ Socket event: moment:heart:updated', payload);
       queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
         if (!oldData) return oldData;
         return {
@@ -276,11 +242,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
   }, [queryClient, queryKey, category]);
 
   const { toggleHeart } = useMomentInteractions();
-
   const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
-  // const moments = data?.pages.flatMap(page => page.moments || []) || [];
-
-  console.log(moments, "moments")
 
   const getCategoryColors = (categoryName: string) => {
     const category = MOMENT_CATEGORIES.find(
@@ -302,7 +264,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
 
   if (moments.length === 0) {
     return (
-      <View style={{ flex: 1, paddingHorizontal: scale(14) }}>
+      <View style={{ flex: 1, paddingHorizontal: scale(14), paddingTop: verticalScale(100) }}>
         <NoMoments onCreateMoment={onCreateMoment} />
       </View>
     );
@@ -310,14 +272,14 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
 
   return (
     <View style={{ flex: 1, paddingHorizontal: scale(14) }}>
-      <FlatList
+      <Animated.FlatList
         data={moments}
         onScroll={onScroll}
         scrollEventThrottle={16}
         bounces={false}
         alwaysBounceVertical={false}
         overScrollMode="never"
-        keyExtractor={(item, index) => item._id || index.toString()}
+        keyExtractor={(item: any, index) => item._id || index.toString()}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -327,11 +289,10 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
             tintColor={lightTheme.colors.primary}
           />
         }
-        contentContainerStyle={{
+        contentContainerStyle={[{
           paddingBottom: verticalScale(130),
-          paddingVertical: verticalScale(0),
           paddingHorizontal: scale(8),
-        }}
+        }, contentContainerStyle]}
         onEndReached={() => {
           if (hasNextPage) {
             fetchNextPage();
@@ -354,7 +315,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
             </View>
           ) : null
         }
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           const { primaryColor, borderColor } = getCategoryColors(item.category);
           return (
             <WishCard
@@ -384,7 +345,6 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
           );
         }}
       />
-
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator, RefreshControl, FlatList } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, RefreshControl, FlatList, Animated } from 'react-native';
 import { Text } from 'react-native-paper';
 import { lightTheme } from '../../theme';
 import { MomentCard, MomentVariant } from './components/MomentCard';
@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
 import { scale, verticalScale } from 'react-native-size-matters';
 
-export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: { onCreateMoment?: () => void, category?: string, onScroll?: (event: any) => void }) {
+export default function MyMomentsScreen({ onCreateMoment, category, onScroll, contentContainerStyle }: { onCreateMoment?: () => void, category?: string, onScroll?: (event: any) => void, contentContainerStyle?: any }) {
     const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -194,7 +194,7 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
 
     return (
         <View style={styles.container}>
-            <FlatList
+            <Animated.FlatList
                 data={moments}
                 renderItem={({ item: moment }) => (
                     <MomentCard
@@ -212,7 +212,7 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
                     />
                 )}
                 keyExtractor={(item) => item._id}
-                contentContainerStyle={styles.scrollContent}
+                contentContainerStyle={[styles.scrollContent, contentContainerStyle]}
                 showsVerticalScrollIndicator={false}
                 onScroll={onScroll}
                 scrollEventThrottle={16}

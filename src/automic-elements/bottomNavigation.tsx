@@ -16,22 +16,7 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
   const [index, setIndex] = useState(0);
   const { user } = useAuth();
   const navigation = useNavigation<any>();
-  const { visibilityValue } = useLayout();
-
-  const translateY = visibilityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [80, 0],
-  });
-
-  const paddingTop = visibilityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 70], // Header height
-  });
-
-  const paddingBottom = visibilityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 80], // Footer height
-  });
+  const { footerTranslateY } = useLayout();
 
   const [routes] = useState([
     { key: 'home', title: 'Wall of Joy', icon: 'home-outline' },
@@ -100,14 +85,13 @@ export default function FooterNavigation({ initialTab, timestamp, footerSlectedI
 
   return (
     <View style={{ flex: 1 }}>
-      <Animated.View style={{ flex: 1, paddingTop, paddingBottom }}>
+      <View style={{ flex: 1 }}>
         {renderScene({ route: routes[index] })}
-      </Animated.View>
+      </View>
       <Animated.View
         style={{
           height: 80,
-          transform: [{ translateY }],
-          opacity: visibilityValue,
+          transform: [{ translateY: footerTranslateY }],
           zIndex: 20,
           position: 'absolute',
           bottom: 0,

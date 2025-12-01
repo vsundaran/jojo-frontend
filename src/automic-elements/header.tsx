@@ -62,19 +62,13 @@ export default function Header({ onLoginRequest }: { onLoginRequest?: () => void
 
   const name = getInitials(user?.name);
 
-  const { visibilityValue } = useLayout();
-
-  const translateY = visibilityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-70, 0],
-  });
+  const { headerTranslateY } = useLayout();
 
   return (
     <Animated.View
       style={{
         height: 70,
-        transform: [{ translateY }],
-        opacity: visibilityValue,
+        transform: [{ translateY: headerTranslateY }],
         zIndex: 20,
         position: 'absolute',
         top: 0,

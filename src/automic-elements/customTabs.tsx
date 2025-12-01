@@ -12,7 +12,6 @@ interface CustomTabsProps {
     activeTab: string;
     onTabChange: (key: string) => void;
     renderContent?: (activeTab: string) => React.ReactNode;
-    visibilityValue?: Animated.Value;
 }
 
 const CustomTabs: React.FC<CustomTabsProps> = ({
@@ -20,25 +19,12 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
     activeTab,
     onTabChange,
     renderContent,
-    visibilityValue,
 }) => {
-    const marginTop = visibilityValue?.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-60, 0], // Increased slightly to ensure full hide
-    });
-
-    const TabsContainer = visibilityValue ? Animated.View : View;
-    const animatedStyle = visibilityValue ? {
-        marginTop: marginTop,
-        opacity: visibilityValue,
-    } : {};
-
     return (
         <View style={styles.container}>
             {/* Tabs positioned relatively at top */}
-            <TabsContainer
+            <View
                 style={[
-                    animatedStyle,
                     {
                         zIndex: 15,
                         backgroundColor: lightTheme.colors.background,
@@ -102,7 +88,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
                     })}
                 </View>
                 <Divider style={{ marginTop: verticalScale(4) }} />
-            </TabsContainer>
+            </View>
 
             {/* Content fills remaining space */}
             {renderContent && <View style={styles.contentContainer}>{renderContent(activeTab)}</View>}
