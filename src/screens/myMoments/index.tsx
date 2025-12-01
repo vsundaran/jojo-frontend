@@ -116,12 +116,9 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
         };
     }, [queryClient, queryKey, category]);
 
-    const [togglingId, setTogglingId] = React.useState<string | null>(null);
-
     const toggleMutation = useMutation({
         mutationFn: (momentId: string) => momentApi.toggleMoment(momentId),
         onMutate: async (momentId) => {
-            setTogglingId(momentId);
             await queryClient.cancelQueries({ queryKey });
             const previousData = queryClient.getQueryData<any>(queryKey);
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
@@ -145,9 +142,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         },
-        onSettled: () => {
-            setTogglingId(null);
-        }
     });
 
     const handleToggle = (momentId: string) => {
@@ -221,7 +215,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll }: 
                         isOn={moment.status === 'active'}
                         onToggle={() => handleToggle(moment._id)}
                         showToggle={moment.status !== 'expired'}
-                        isLoading={togglingId === moment._id}
                         onEdit={() => handleEdit(moment)}
                         expiryDate={moment.expiresAt || ""}
                     />

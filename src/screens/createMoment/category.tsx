@@ -62,11 +62,11 @@ export const CategoryCard: React.FC<WishCardProps> = ({
               source={
                 title == 'Motivation'
                   ? require('../../assets/fire.png')
-                  : title == 'Song'
+                  : title == 'Songs'
                     ? require('../../assets/song.png')
                     : title == 'Blessings'
                       ? require('../../assets/blessing.png')
-                      : title == 'Celebration'
+                      : title == 'Celebrations'
                         ? require('../../assets/celebration.png')
                         : require('../../assets/giftIcon.png')
               }

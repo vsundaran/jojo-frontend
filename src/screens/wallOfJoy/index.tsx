@@ -25,6 +25,7 @@ import { NoMoments } from '../myMoments/NoMoments';
 
 import { useLayout } from '../../context/LayoutContext';
 import { Animated } from 'react-native';
+import JoinJojoContent from '../../automic-elements/joinJojoContent';
 
 export default function WallOfJoyScreen({ route, initialTab, timestamp, onNavigateToCreateMoment, onLoginRequest }: any) {
   const [isLoginCompleted, setIsLoginCompleted] = useState(false);
@@ -51,12 +52,12 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
 
     // If scrolling down and offset is significant, hide controls
     // Increased threshold from 5 to 20 to prevent flickering
-    if (diff > 1) {
+    if (diff > 10) {
       setControlsVisible(false);
     }
     // If scrolling up and offset is significant, show controls
     // Increased threshold from -5 to -20
-    else if (diff < -1) {
+    else if (diff < -10) {
       setControlsVisible(true);
     }
 
@@ -274,7 +275,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
     };
   }, [queryClient, queryKey, category]);
 
-  const { toggleHeart, loadingMomentId } = useMomentInteractions();
+  const { toggleHeart } = useMomentInteractions();
 
   const moments = data?.pages.flatMap(page => page.data.moments || []) || [];
   // const moments = data?.pages.flatMap(page => page.moments || []) || [];
@@ -332,6 +333,9 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
           }
         }}
         onEndReachedThreshold={0.5}
+
+        ListHeaderComponent={user ? null : <JoinJojoContent />}
+
         ListFooterComponent={
           isFetchingNextPage ? (
             <View style={{ paddingVertical: 20 }}>
@@ -367,7 +371,6 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
               primaryColor={primaryColor}
               borderColor={borderColor}
-              isLoading={loadingMomentId === item._id}
               containerStyle={{
                 height: 'auto',
                 marginBottom: verticalScale(16),

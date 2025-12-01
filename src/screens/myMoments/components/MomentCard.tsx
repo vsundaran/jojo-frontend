@@ -203,18 +203,10 @@ export const MomentCard: React.FC<MomentCardProps> = ({
             style={[
               styles.toggleButton,
               { backgroundColor: isOn ? '#007C32' : '#EB4848' },
-              isLoading && { opacity: 0.7 },
             ]}
             onPress={onToggle}
-            disabled={isLoading}
           >
-            {isLoading ? (
-              <ActivityIndicator
-                size="small"
-                color="#FFFFFF"
-                style={{ marginRight: 0 }}
-              />
-            ) : isOn ? (
+            {isOn ? (
               <>
                 <Text style={styles.toggleText}>on</Text>
                 <View style={styles.toggleIconCircle}>

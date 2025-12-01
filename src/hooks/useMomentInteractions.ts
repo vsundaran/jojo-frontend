@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { wallOfJoyApi } from '../api/wallOfJoyApi';
 import { Moment } from '../types';
 
 export const useMomentInteractions = () => {
     const queryClient = useQueryClient();
-
-    const [loadingMomentId, setLoadingMomentId] = useState<string | null>(null);
 
     const addHeartMutation = useMutation({
         mutationFn: (momentId: string) => wallOfJoyApi.addHeart(momentId),
@@ -53,7 +50,6 @@ export const useMomentInteractions = () => {
             }
         },
         onSettled: () => {
-            setLoadingMomentId(null);
             queryClient.invalidateQueries({ queryKey: ['activeMoments'] });
         },
     });
@@ -99,13 +95,11 @@ export const useMomentInteractions = () => {
             }
         },
         onSettled: () => {
-            setLoadingMomentId(null);
             queryClient.invalidateQueries({ queryKey: ['activeMoments'] });
         },
     });
 
     const toggleHeart = (momentId: string, isLiked: boolean) => {
-        setLoadingMomentId(momentId);
         if (isLiked) {
             removeHeartMutation.mutate(momentId);
         } else {
@@ -117,6 +111,5 @@ export const useMomentInteractions = () => {
         toggleHeart,
         isAddingHeart: addHeartMutation.isPending,
         isRemovingHeart: removeHeartMutation.isPending,
-        loadingMomentId,
     };
 };
