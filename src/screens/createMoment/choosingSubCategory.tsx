@@ -55,7 +55,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
 
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: lightTheme.colors.background, paddingTop: verticalScale(55) }}>
       <Container style={{ paddingHorizontal: scale(17), display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", paddingVertical: verticalScale(4), backgroundColor: "#F4F9FF" }}>
         <TouchableOpacity onPress={() => {
           // If we have a moment, we came from the edit flow (MyMoments)
@@ -107,7 +107,7 @@ export const ChoosingSubCategory = ({ navigation, route }: any) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: scale(20),
-    paddingBottom: verticalScale(20),
+    paddingBottom: verticalScale(140),
     paddingTop: verticalScale(10),
   },
   title: {

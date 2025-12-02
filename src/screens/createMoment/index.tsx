@@ -13,7 +13,7 @@ export default function CreateMomentScreen({ navigation }: any) {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-      <Container style={{ flex: 1, }}>
+      <Container style={{ flex: 1, paddingTop: verticalScale(65) }}>
         <Text
           style={{
             color: lightTheme.colors.darkText,

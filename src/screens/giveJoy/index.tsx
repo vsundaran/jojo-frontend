@@ -6,7 +6,7 @@ import { lightTheme } from '../../theme';
 import GradientText from '../../automic-elements/gradientText';
 import { CountCard } from './countCard';
 import { useAvailableMomentsCount } from '../../hooks/useAvailableMomentsCount';
-import { verticalScale } from 'react-native-size-matters';
+import { scale, verticalScale } from 'react-native-size-matters';
 
 export default function Givejoy() {
   const { data, isLoading, isError } = useAvailableMomentsCount();
@@ -21,7 +21,7 @@ export default function Givejoy() {
   };
 
   return (
-    <Container style={{ paddingTop: 0, paddingBottom: 0, flex: 1, paddingHorizontal: 42 }}>
+    <Container style={{ paddingTop: verticalScale(55), paddingBottom: verticalScale(70), flex: 1, paddingHorizontal: scale(42) }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -215,7 +215,7 @@ export default function Givejoy() {
         </View>
       </ScrollView>
 
-      <Image
+      {/* <Image
         source={require('../../assets/pinkStar.png')}
         style={{
           width: 204,
@@ -226,7 +226,7 @@ export default function Givejoy() {
           top: -50,
           left: 230,
         }}
-      />
+      /> */}
     </Container>
   );
 }
