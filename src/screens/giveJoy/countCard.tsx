@@ -15,7 +15,7 @@ import { Button, Card, Chip } from 'react-native-paper';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { lightTheme } from '../../theme';
-import { scale } from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 
 export interface WishCardProps {
   title: string;
@@ -57,9 +57,9 @@ export const CountCard: React.FC<WishCardProps> = ({
       style={[
         styles.container,
         {
-          borderWidth: 2,
+          borderWidth: 1,
           borderLeftWidth: 5,
-          borderTopWidth: 2,
+          borderTopWidth: 1,
           borderColor: borderColor,
         },
         { ...containerStyle, elevation: 0 },
@@ -87,10 +87,8 @@ export const CountCard: React.FC<WishCardProps> = ({
           <Text
             style={{
               color: darkTextColor,
-              fontSize: scale(14),
-              fontWeight: 600,
-              lineHeight: 27,
-              fontFamily: 'Poppins-Medium',
+              fontSize: moderateScale(12),
+              fontFamily: 'Poppins-SemiBold',
             }}
           >
             {title}
@@ -98,10 +96,8 @@ export const CountCard: React.FC<WishCardProps> = ({
           <Text
             style={{
               color: lightTheme.colors.darkText,
-              fontSize: scale(12),
-              fontWeight: 400,
-              lineHeight: 20,
-              maxWidth: "90%",
+              fontSize: moderateScale(12),
+              maxWidth: "85%",
               fontFamily: 'Poppins-Regular',
             }}
           >
@@ -149,7 +145,6 @@ const styles = StyleSheet.create({
   headerSection: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: scale(7),
     gap: scale(12),
   },
   iconButton: {

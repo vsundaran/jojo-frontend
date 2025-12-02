@@ -13,7 +13,7 @@ export default function CreateMomentScreen({ navigation }: any) {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, backgroundColor: lightTheme.colors.background }}>
-      <Container style={{ flex: 1, paddingTop: verticalScale(65) }}>
+      <Container style={{ flex: 1, paddingTop: verticalScale(75) }}>
         <Text
           style={{
             color: lightTheme.colors.darkText,
@@ -36,7 +36,8 @@ export default function CreateMomentScreen({ navigation }: any) {
         >
           Create your moment to let someone share your Joy for 30 seconds.
         </Text>
-        <Divider />
+
+        <Divider style={{ height: verticalScale(1) }} />
 
         <Text
           style={{

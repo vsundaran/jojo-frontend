@@ -108,20 +108,6 @@ export const MomentCard: React.FC<MomentCardProps> = ({
           <View style={[styles.iconContainer, { backgroundColor: primary }]}>
             <Image source={icon} style={styles.iconImage} />
           </View>
-          {/* <View style={styles.tagsWrapper}>
-                        <Chip
-                            style={[styles.chip, { backgroundColor: primary, }]}
-                            textStyle={[styles.chipTextActive, { marginRight: 0, marginLeft: 0 }]}
-                        >
-                            {title}
-                        </Chip>
-                        <Chip
-                            style={[styles.chip, { borderColor: primary, borderWidth: 1, backgroundColor: 'transparent' }]}
-                            textStyle={[styles.chipTextInactive, { color: primary, marginRight: 0, marginLeft: 0 }]}
-                        >
-                            {subTag}
-                        </Chip>
-                    </View> */}
 
           <View style={styles.tagsContainer}>
             <Chip
@@ -249,10 +235,10 @@ export const MomentCard: React.FC<MomentCardProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: moderateScale(24),
     paddingVertical: verticalScale(8),
-    paddingHorizontal: scale(10),
-    borderWidth: 2,
+    paddingHorizontal: scale(12),
+    borderWidth: 1,
     borderTopWidth: 5,
     marginBottom: verticalScale(16),
   },
@@ -311,12 +297,14 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
   },
+
   chip: {
     borderRadius: moderateScale(20),
     height: verticalScale(22),
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   chipTextActive: {
     color: '#FFFFFF',
     fontSize: moderateScale(12),

@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
     lineHeight: verticalScale(18),
     marginVertical: 0,
     marginHorizontal: 0,
+    textTransform: 'capitalize',
   },
   contentSection: {
     marginBottom: verticalScale(7),

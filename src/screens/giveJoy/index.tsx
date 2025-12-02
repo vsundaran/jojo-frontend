@@ -21,8 +21,8 @@ export default function Givejoy() {
   };
 
   return (
-    <Container style={{ paddingTop: verticalScale(55), paddingBottom: verticalScale(70), flex: 1, paddingHorizontal: scale(42) }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <Container style={{ paddingTop: verticalScale(55), flex: 1, paddingHorizontal: scale(42) }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ paddingTop: verticalScale(15) }}>
         <View
           style={{
             flexDirection: 'row',
@@ -92,126 +92,127 @@ export default function Givejoy() {
         >
           Choose a category and connect with someone who needs your support
         </Text>
-
-        <View style={{ marginTop: verticalScale(2) }}>
-          <CountCard
-            title="Wishes"
-            description="Celebrate special moments with someone"
-            count={getCategoryCount('wishes')}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.wishesColor}
-            borderColor={lightTheme.colors.wishesBorderColor}
-            badgeColor="#F8E3FF"
-            darkTextColor="#AE1AE2"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: verticalScale(16),
-            }}
-            isLoading={isLoading}
-          />
-        </View>
-        <View style={{ marginTop: verticalScale(2) }}>
-          <CountCard
-            title="Motivation"
-            description="Motivate someone with your positive vibes"
-            count={getCategoryCount('motivation')}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.motivationColor}
-            borderColor={lightTheme.colors.motivationBorderColor}
-            badgeColor="#DDE8FF"
-            darkTextColor="#5E8EF1"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: verticalScale(16),
-            }}
-            isLoading={isLoading}
-          />
-        </View>
-        <View style={{ marginTop: verticalScale(2) }}>
-          <CountCard
-            title="Song"
-            description="Sing a song to a stranger to share a joy"
-            count={getCategoryCount('songs')}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.songColor}
-            borderColor={lightTheme.colors.songBorderColor}
-            badgeColor="#D2FFEE"
-            darkTextColor="#5ACEA1"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: verticalScale(16),
-            }}
-            isLoading={isLoading}
-          />
-        </View>
-        <View style={{ marginTop: verticalScale(2) }}>
-          <CountCard
-            title="Blessings"
-            description="Send spiritual warmth and good wishes"
-            count={getCategoryCount('blessings')}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.blessingsColor}
-            borderColor={lightTheme.colors.blessingsBorderColor}
-            badgeColor="#FFF3DC"
-            darkTextColor="#F0B847"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: verticalScale(16),
-            }}
-            isLoading={isLoading}
-          />
-        </View>
-        <View style={{ marginTop: verticalScale(2), marginBottom: verticalScale(20) }}>
-          <CountCard
-            title="Celebration"
-            description="Celebrate special moments with someone"
-            count={getCategoryCount('celebrations')}
-            callCount={15}
-            likeCount={12}
-            onIconPress={() => console.log('Icon pressed')}
-            onLikePress={() => console.log('Like pressed')}
-            onCallPress={() => console.log('Call pressed')}
-            onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-            primaryColor={lightTheme.colors.celebrationColor}
-            borderColor={lightTheme.colors.celebrationBorderColor}
-            badgeColor="#FFE0E0"
-            darkTextColor="#D34848"
-            containerStyle={{
-              height: 'auto',
-              minHeight: 110,
-              justifyContent: 'center',
-              marginTop: verticalScale(16),
-            }}
-            isLoading={isLoading}
-          />
+        <View style={{ marginBottom: verticalScale(75) }}>
+          <View style={{ marginTop: verticalScale(2) }}>
+            <CountCard
+              title="Wishes"
+              description="Celebrate special moments with someone"
+              count={getCategoryCount('wishes')}
+              callCount={15}
+              likeCount={12}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={lightTheme.colors.wishesColor}
+              borderColor={lightTheme.colors.wishesBorderColor}
+              badgeColor="#F8E3FF"
+              darkTextColor="#AE1AE2"
+              containerStyle={{
+                height: 'auto',
+                // minHeight: 110,
+                justifyContent: 'center',
+                marginTop: verticalScale(10),
+              }}
+              isLoading={isLoading}
+            />
+          </View>
+          <View style={{ marginTop: verticalScale(2) }}>
+            <CountCard
+              title="Motivation"
+              description="Motivate someone with your positive vibes"
+              count={getCategoryCount('motivation')}
+              callCount={15}
+              likeCount={12}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={lightTheme.colors.motivationColor}
+              borderColor={lightTheme.colors.motivationBorderColor}
+              badgeColor="#DDE8FF"
+              darkTextColor="#5E8EF1"
+              containerStyle={{
+                height: 'auto',
+                // minHeight: 110,
+                justifyContent: 'center',
+                marginTop: verticalScale(10),
+              }}
+              isLoading={isLoading}
+            />
+          </View>
+          <View style={{ marginTop: verticalScale(2) }}>
+            <CountCard
+              title="Song"
+              description="Sing a song to a stranger to share a joy"
+              count={getCategoryCount('songs')}
+              callCount={15}
+              likeCount={12}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={lightTheme.colors.songColor}
+              borderColor={lightTheme.colors.songBorderColor}
+              badgeColor="#D2FFEE"
+              darkTextColor="#5ACEA1"
+              containerStyle={{
+                height: 'auto',
+                //  minHeight: 110,
+                justifyContent: 'center',
+                marginTop: verticalScale(10),
+              }}
+              isLoading={isLoading}
+            />
+          </View>
+          <View style={{ marginTop: verticalScale(2) }}>
+            <CountCard
+              title="Blessings"
+              description="Send spiritual warmth and good wishes"
+              count={getCategoryCount('blessings')}
+              callCount={15}
+              likeCount={12}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={lightTheme.colors.blessingsColor}
+              borderColor={lightTheme.colors.blessingsBorderColor}
+              badgeColor="#FFF3DC"
+              darkTextColor="#F0B847"
+              containerStyle={{
+                height: 'auto',
+                // minHeight: 110,
+                justifyContent: 'center',
+                marginTop: verticalScale(10),
+              }}
+              isLoading={isLoading}
+            />
+          </View>
+          <View style={{ marginTop: verticalScale(2), marginBottom: verticalScale(20) }}>
+            <CountCard
+              title="Celebration"
+              description="Celebrate special moments with someone"
+              count={getCategoryCount('celebrations')}
+              callCount={15}
+              likeCount={12}
+              onIconPress={() => console.log('Icon pressed')}
+              onLikePress={() => console.log('Like pressed')}
+              onCallPress={() => console.log('Call pressed')}
+              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              primaryColor={lightTheme.colors.celebrationColor}
+              borderColor={lightTheme.colors.celebrationBorderColor}
+              badgeColor="#FFE0E0"
+              darkTextColor="#D34848"
+              containerStyle={{
+                height: 'auto',
+                // minHeight: 110,
+                justifyContent: 'center',
+                marginTop: verticalScale(10),
+              }}
+              isLoading={isLoading}
+            />
+          </View>
         </View>
       </ScrollView>
 
