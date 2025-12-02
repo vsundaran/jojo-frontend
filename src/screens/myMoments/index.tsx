@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
 import { scale, verticalScale } from 'react-native-size-matters';
 
-export default function MyMomentsScreen({ onCreateMoment, category, onScroll, contentContainerStyle }: { onCreateMoment?: () => void, category?: string, onScroll?: (event: any) => void, contentContainerStyle?: any }) {
+export default function MyMomentsScreen({ onCreateMoment, category, onScroll, contentContainerStyle, progressViewOffset }: { onCreateMoment?: () => void, category?: string, onScroll?: (event: any) => void, contentContainerStyle?: any, progressViewOffset?: number }) {
     const { data, isLoading, error, refetch } = useUserMoments(undefined, category);
     const queryClient = useQueryClient();
     const [refreshing, setRefreshing] = React.useState(false);
@@ -223,7 +223,7 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll, co
                 overScrollMode="never"
 
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} progressViewOffset={progressViewOffset} />
                 }
             />
 

@@ -75,6 +75,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
                 { useNativeDriver: true }
               )}
               contentContainerStyle={{ paddingTop: contentPaddingTop }}
+              progressViewOffset={contentPaddingTop}
             />
           </View>
         ) : (
@@ -121,6 +122,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
                     { useNativeDriver: true }
                   )}
                   contentContainerStyle={{ paddingTop: contentPaddingTop }}
+                  progressViewOffset={contentPaddingTop}
                 /> :
                 <MyMomentsScreen
                   category={selectedCategory}
@@ -130,6 +132,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
                     { useNativeDriver: true }
                   )}
                   contentContainerStyle={{ paddingTop: contentPaddingTop }}
+                  progressViewOffset={contentPaddingTop}
                 />
               }
             </View>
@@ -140,7 +143,7 @@ export default function WallOfJoyScreen({ route, initialTab, timestamp, onNaviga
   );
 }
 
-const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest, onScroll, contentContainerStyle }: { category: string, onCreateMoment: () => void, onLoginRequest?: () => void, onScroll?: (event: any) => void, contentContainerStyle?: any }) => {
+const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest, onScroll, contentContainerStyle, progressViewOffset }: { category: string, onCreateMoment: () => void, onLoginRequest?: () => void, onScroll?: (event: any) => void, contentContainerStyle?: any, progressViewOffset?: number }) => {
   const { user } = useAuth();
   const {
     data,
@@ -287,6 +290,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
             onRefresh={refetch}
             colors={[lightTheme.colors.primary]}
             tintColor={lightTheme.colors.primary}
+            progressViewOffset={progressViewOffset}
           />
         }
         contentContainerStyle={[{
