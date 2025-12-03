@@ -10,7 +10,7 @@ import SafePrivateScreen from '../screens/welcome/safePrivate';
 const { width } = Dimensions.get('window');
 
 const sliderItems = [
-  <View style={{ flex: 1, justifyContent: 'center', width: "100%", paddingHorizontal: 20 }}>
+  <View style={{ flex: 1, justifyContent: 'center', width: "100%", }}>
     <WelcomeScreen />
   </View>,
   <View style={{ flex: 1, justifyContent: 'center', width: "100%" }}>

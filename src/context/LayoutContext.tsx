@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useRef } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Platform } from 'react-native';
 
 interface LayoutContextType {
     scrollY: Animated.Value;
@@ -19,7 +19,11 @@ export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // and show it (move it down to 0) when scrolling up.
     const headerDiffClamp = Animated.diffClamp(scrollY, 0, headerHeight);
 
-    const footerHeight = 80; // Approximate footer height
+    const footerHeight = Platform.select({
+        ios: 120,
+        android: 80,
+        default: 115,
+    });
 
     const footerTranslateY = headerDiffClamp.interpolate({
         inputRange: [0, headerHeight],

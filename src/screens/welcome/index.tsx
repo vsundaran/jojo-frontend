@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../../constants/StorageKeys';
-import { Button, Surface, Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import { View } from 'react-native';
 import JojoCarousel from '../../automic-elements/slider';
@@ -10,8 +10,8 @@ export default function Welcome({ navigation }: any) {
   const carouselRef = useRef<any>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <Container>
-      <Surface
+    <View style={{ flex: 1 }}>
+      <View
         style={{
           flex: 1,
           backgroundColor: 'white',
@@ -20,10 +20,11 @@ export default function Welcome({ navigation }: any) {
           shadowOpacity: 0,
           shadowOffset: { width: 0, height: 0 },
           shadowRadius: 0,
-          paddingBottom: 40, // Add some padding at the bottom
+          paddingBottom: 40,
+
         }}
       >
-        <Surface
+        <View
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-end',
@@ -46,7 +47,7 @@ export default function Welcome({ navigation }: any) {
           >
             Skip
           </Button>
-        </Surface>
+        </View>
 
         <View
           style={{
@@ -83,7 +84,7 @@ export default function Welcome({ navigation }: any) {
             {currentIndex === 3 ? 'Get Started' : 'Next'}
           </Button>
         </View>
-      </Surface>
-    </Container>
+      </View>
+    </View>
   );
 }

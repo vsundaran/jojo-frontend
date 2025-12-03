@@ -85,119 +85,128 @@ export default function Header({ onLoginRequest }: { onLoginRequest?: () => void
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: lightTheme.spacing.md,
+          // paddingHorizontal: lightTheme.spacing.md,
           // borderWidth: 1,
           boxShadow: 'none',
           elevation: 0,
         }}
       >
-        <View
-          style={{ borderRadius: lightTheme.borderRadius.lg, overflow: 'hidden' }}
-        >
-          <Image source={logo} style={{ width: 50, height: 50 }} />
-        </View>
+        <View style={{
+          width: "100%",
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: lightTheme.spacing.md,
+        }}>
 
-        <>
-          <TouchableOpacity onPress={!user ? () => onLoginRequest && onLoginRequest() : openMenu} activeOpacity={0.7}>
-            <View
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 22,
-                gap: 1,
-                backgroundColor: lightTheme.colors.background,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-            >
-              <Text
+          <View
+            style={{ overflow: 'hidden', borderRadius: 10000, backgroundColor: lightTheme.colors.background, width: 50, height: 50 }}
+          >
+            <Image source={logo} style={{ width: 50, height: 50 }} />
+          </View>
+
+          <>
+            <TouchableOpacity onPress={!user ? () => onLoginRequest && onLoginRequest() : openMenu} activeOpacity={0.7}>
+              <View
                 style={{
-                  fontSize: scale(14),
-                  fontFamily: 'Poppins-SemiBold',
-                  color: lightTheme.colors.jojoLogoColor,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 22,
+                  gap: 1,
+                  backgroundColor: lightTheme.colors.background,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
                 }}
               >
-                {name.charAt(0)}
-              </Text>
-              {name.length > 1 && (
                 <Text
                   style={{
                     fontSize: scale(14),
                     fontFamily: 'Poppins-SemiBold',
-                    color: lightTheme.colors.darkText,
+                    color: lightTheme.colors.jojoLogoColor,
                   }}
                 >
-                  {name.charAt(1)}
+                  {name.charAt(0)}
                 </Text>
-              )}
-            </View>
-          </TouchableOpacity>
-
-          <Portal>
-            {menuVisible && (
-              <>
-                <Pressable
-                  onPress={closeMenu}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                  }}
-                />
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 70,
-                    right: 70,
-                    backgroundColor: lightTheme.colors.background,
-                    borderRadius: 10,
-                    paddingVertical: 0,
-                    paddingHorizontal: 0,
-                    elevation: 6,
-                    shadowColor: '#000',
-                    shadowOpacity: 0.2,
-                    shadowRadius: 10,
-                    width: 'auto',
-                  }}
-                >
-                  <Pressable
-                    onPress={showLogoutConfirmation}
-                    android_ripple={{ color: '#e0e0e0' }}
-                    style={({ pressed }) => ({
-                      paddingVertical: 4,
-                      paddingHorizontal: 4,
-                      backgroundColor: pressed ? '#f5f5f5' : 'transparent',
-                    })}
+                {name.length > 1 && (
+                  <Text
+                    style={{
+                      fontSize: scale(14),
+                      fontFamily: 'Poppins-SemiBold',
+                      color: lightTheme.colors.darkText,
+                    }}
                   >
-                    <View>
-                      <Button
-                        onPress={showLogoutConfirmation}
-                        textColor={lightTheme.colors.text}
-                        contentStyle={{ justifyContent: 'flex-start' }}
-                        labelStyle={{ fontSize: 16 }}
-                      >
-                        Logout
-                      </Button>
-                    </View>
-                  </Pressable>
-                </View>
-              </>
-            )}
-          </Portal>
-        </>
+                    {name.charAt(1)}
+                  </Text>
+                )}
+              </View>
+            </TouchableOpacity>
 
-        <ConfirmationModal
-          visible={logoutModalVisible}
-          onDismiss={() => setLogoutModalVisible(false)}
-          onConfirm={handleLogout}
-          title="Logout"
-          content="Are you sure you want to logout?"
-          confirmLabel="Logout"
-          cancelLabel="Cancel"
-        />
+            <Portal>
+              {menuVisible && (
+                <>
+                  <Pressable
+                    onPress={closeMenu}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
+                  <View
+                    style={{
+                      position: 'absolute',
+                      top: 70,
+                      right: 70,
+                      backgroundColor: lightTheme.colors.background,
+                      borderRadius: 10,
+                      paddingVertical: 0,
+                      paddingHorizontal: 0,
+                      elevation: 6,
+                      shadowColor: '#000',
+                      shadowOpacity: 0.2,
+                      shadowRadius: 10,
+                      width: 'auto',
+                    }}
+                  >
+                    <Pressable
+                      onPress={showLogoutConfirmation}
+                      android_ripple={{ color: '#e0e0e0' }}
+                      style={({ pressed }) => ({
+                        paddingVertical: 4,
+                        paddingHorizontal: 4,
+                        backgroundColor: pressed ? '#f5f5f5' : 'transparent',
+                      })}
+                    >
+                      <View>
+                        <Button
+                          onPress={showLogoutConfirmation}
+                          textColor={lightTheme.colors.text}
+                          contentStyle={{ justifyContent: 'flex-start' }}
+                          labelStyle={{ fontSize: 16 }}
+                        >
+                          Logout
+                        </Button>
+                      </View>
+                    </Pressable>
+                  </View>
+                </>
+              )}
+            </Portal>
+          </>
+
+          <ConfirmationModal
+            visible={logoutModalVisible}
+            onDismiss={() => setLogoutModalVisible(false)}
+            onConfirm={handleLogout}
+            title="Logout"
+            content="Are you sure you want to logout?"
+            confirmLabel="Logout"
+            cancelLabel="Cancel"
+          />
+        </View>
       </LinearGradient>
     </Animated.View>
   );
