@@ -47,12 +47,10 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll, co
 
         const handleMomentCreated = (payload: MomentEventPayload) => {
             if (!currentUserId || payload.creatorId !== currentUserId) return;
-            console.log('⚡ Socket event (MyMoments): moment:created', payload);
             queryClient.invalidateQueries({ queryKey: ['userMoments'] });
         };
 
         const handleMomentUpdated = (payload: MomentEventPayload) => {
-            console.log('⚡ Socket event (MyMoments): moment:updated', payload);
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
                 if (!oldData || !oldData.moments) return oldData;
                 return {
@@ -65,7 +63,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll, co
         };
 
         const handleMomentDeleted = (payload: MomentEventPayload) => {
-            console.log('⚡ Socket event (MyMoments): moment:deleted', payload);
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
                 if (!oldData || !oldData.moments) return oldData;
                 return {
@@ -76,7 +73,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll, co
         };
 
         const handleStatusChanged = (payload: MomentEventPayload) => {
-            console.log('⚡ Socket event (MyMoments): moment:status:changed', payload);
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
                 if (!oldData || !oldData.moments) return oldData;
                 return {
@@ -89,7 +85,6 @@ export default function MyMomentsScreen({ onCreateMoment, category, onScroll, co
         }
 
         const handleHeartUpdated = (payload: MomentEventPayload) => {
-            console.log('⚡ Socket event (MyMoments): moment:heart:updated', payload);
             queryClient.setQueryData<any>(queryKey, (oldData: any) => {
                 if (!oldData || !oldData.moments) return oldData;
                 return {
