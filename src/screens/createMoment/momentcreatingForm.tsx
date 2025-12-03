@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { TextInput, Button, Text, Menu, Chip } from 'react-native-paper';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -251,7 +252,11 @@ export const MomentCreatingForm = ({
             maxLength={60}
             multiline
             numberOfLines={5}
-            style={styles.textInput}
+            style={{
+              ...styles.textInput,
+              paddingVertical: Platform.OS === 'android' ? verticalScale(10) : undefined,
+              marginBottom: Platform.OS === 'ios' ? verticalScale(18) : undefined,
+            }}
             outlineStyle={styles.inputOutline}
             contentStyle={styles.inputContent}
             theme={{ colors: { primary: primaryColor, background: '#FFFFFF' } }}
@@ -387,7 +392,6 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: '#FFFFFF',
     fontSize: moderateScale(13),
-    paddingVertical: verticalScale(10),
   },
   inputOutline: {
     height: verticalScale(68),
