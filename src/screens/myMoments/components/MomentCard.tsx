@@ -136,16 +136,22 @@ export const MomentCard: React.FC<MomentCardProps> = ({
                 {
                   borderColor: primary,
                   backgroundColor: 'transparent',
-                },
-              ]}
-              textStyle={[
-                styles.chipText,
-                {
-                  color: primary,
+                  flexShrink: 1,
                 },
               ]}
             >
-              {subTag}
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={[
+                  styles.chipText,
+                  {
+                    color: primary,
+                  },
+                ]}
+              >
+                {subTag}
+              </Text>
             </Chip>
           </View>
         </View>
