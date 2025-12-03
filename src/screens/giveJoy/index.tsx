@@ -37,32 +37,43 @@ export default function Givejoy() {
               end={{ x: 1, y: 0 }}
               style={{
                 borderRadius: 100000,
-                paddingHorizontal: 8,
-                paddingVertical: 8,
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginTop: 20,
+                marginTop: verticalScale(20),
+                // Ensure the gradient container is also square if it's meant to be a circle
+                // The inner content will dictate the size, so we'll ensure the inner most circle is perfect.
               }}
             >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  padding: 15,
-                  borderColor: '#E9D4FF',
-                  borderWidth: 5,
-                  borderRadius: 100000,
-                  backgroundColor: 'white',
-                }}
-              >
-                <Image
-                  source={require('../../assets/loveHeart.png')}
+              <View style={{
+                paddingHorizontal: scale(8),
+                paddingVertical: scale(8), // Use scale for vertical padding too to maintain aspect ratio
+                borderRadius: 100000,
+                overflow: 'hidden',
+              }}>
+                <View
                   style={{
-                    width: 24,
-                    height: 24,
-                    resizeMode: 'contain',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center', // Center content vertically as well
+                    padding: scale(15),
+                    borderColor: '#E9D4FF',
+                    borderWidth: 5,
+                    borderRadius: 100000,
+                    backgroundColor: 'white',
+                    // Explicitly set width and height or use aspectRatio to ensure a perfect circle
+                    width: scale(22 + 15 * 2), // Image width + 2 * padding
+                    height: scale(22 + 15 * 2), // Image height + 2 * padding
                   }}
-                />
+                >
+                  <Image
+                    source={require('../../assets/loveHeart.png')}
+                    style={{
+                      width: scale(22),
+                      height: scale(22),
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
               </View>
             </LinearGradient>
           </View>

@@ -24,6 +24,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { lightTheme } from './src/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from './src/constants/StorageKeys';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+MaterialIcons.loadFont();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

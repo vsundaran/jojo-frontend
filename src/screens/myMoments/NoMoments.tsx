@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { lightTheme } from '../../theme';
 import CustomButton from '../../automic-elements/customButton';
@@ -70,7 +70,7 @@ export const NoMoments = ({ onCreateMoment }: NoMomentsProps) => {
                     <CustomButton
                         title='Create Your First Moment'
                         onPress={onCreateMoment || (() => { })}
-                        icon={() => <MaterialIcons name="add" size={scale(24)} color="#F7941D" />}
+                        icon={() => <MaterialIcons name="add" size={moderateScale(24)} color="#F7941D" />}
                     />
                 )}
         </View >
