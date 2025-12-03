@@ -178,6 +178,7 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
     };
 
     const handleMomentUpdated = (payload: MomentEventPayload | any) => {
+      console.log("handleMomentUpdated", payload);
       queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
         if (!oldData) return oldData;
         return {
@@ -231,16 +232,40 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
       });
     };
 
+    const handleStatusChanged = (payload: MomentEventPayload) => {
+      console.log('handleStatusChanged', payload);
+      queryClient.setQueryData<InfiniteData<any>>(queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: {
+              ...page.data,
+              moments: page.data.moments.map((moment: any) =>
+                moment._id === payload.momentId
+                  ? { ...moment, status: payload.status }
+                  : moment
+              ),
+            },
+          })),
+        };
+      });
+    };
+
     socketService.on('moment:created', handleMomentCreated);
     socketService.on('moment:updated', handleMomentUpdated);
     socketService.on('moment:deleted', handleMomentDeleted);
     socketService.on('moment:heart:updated', handleHeartUpdated);
+
+    socketService.on('moment:status:changed', handleStatusChanged);
 
     return () => {
       socketService.off('moment:created', handleMomentCreated);
       socketService.off('moment:updated', handleMomentUpdated);
       socketService.off('moment:deleted', handleMomentDeleted);
       socketService.off('moment:heart:updated', handleHeartUpdated);
+      socketService.off('moment:status:changed', handleStatusChanged);
     };
   }, [queryClient, queryKey, category]);
 
@@ -321,31 +346,34 @@ const WallOfJoyContent = ({ category, onCreateMoment = () => { }, onLoginRequest
         }
         renderItem={({ item }) => {
           const { primaryColor, borderColor } = getCategoryColors(item.category);
+          console.log('item', item);
           return (
-            <WishCard
-              title={item.category}
-              description={item.content}
-              tags={[item.category, item.subCategory]}
-              callCount={item.callCount || 0}
-              likeCount={item.hearts || 0}
-              isLiked={item.hasHearted}
-              onIconPress={() => console.log('Icon pressed')}
-              onLikePress={() => {
-                if (!user) {
-                  if (onLoginRequest) onLoginRequest();
-                } else {
-                  toggleHeart(item._id, item.hasHearted || false);
-                }
-              }}
-              onCallPress={() => console.log('Call pressed')}
-              onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
-              primaryColor={primaryColor}
-              borderColor={borderColor}
-              containerStyle={{
-                height: 'auto',
-                marginBottom: verticalScale(16),
-              }}
-            />
+            item.status === 'paused' ? null : (
+              <WishCard
+                title={item.category}
+                description={item.content}
+                tags={[item.category, item.subCategory]}
+                callCount={item.callCount || 0}
+                likeCount={item.hearts || 0}
+                isLiked={item.hasHearted}
+                onIconPress={() => console.log('Icon pressed')}
+                onLikePress={() => {
+                  if (!user) {
+                    if (onLoginRequest) onLoginRequest();
+                  } else {
+                    toggleHeart(item._id, item.hasHearted || false);
+                  }
+                }}
+                onCallPress={() => console.log('Call pressed')}
+                onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+                primaryColor={primaryColor}
+                borderColor={borderColor}
+                containerStyle={{
+                  height: 'auto',
+                  marginBottom: verticalScale(16),
+                }}
+              />
+            )
           );
         }}
       />

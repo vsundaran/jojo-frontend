@@ -1,7 +1,6 @@
 import io, { Socket } from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../constants/StorageKeys';
-
 // Define event types based on the backend service
 export type MomentEventPayload = {
     momentId: string;
@@ -12,10 +11,14 @@ export type MomentEventPayload = {
     status?: string;
 };
 
+const PROD = "https://jojo-prod-backend-hjhdf8dacjbuhyar.eastus-01.azurewebsites.net";
+const DEV = "https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.net";
+const local = "http://10.0.2.2:3000";
+
 class SocketService {
     private socket: Socket | null = null;
     private static instance: SocketService;
-    private url: string = 'http://10.0.2.2:3000'; // Default Android emulator localhost
+    private url: string = DEV;
 
     private constructor() { }
 
