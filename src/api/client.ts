@@ -1,13 +1,19 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../constants/StorageKeys';
+import { Platform } from 'react-native';
 
-export const PROD = 'https://jojo-prod-backend-hjhdf8dacjbuhyar.eastus-01.azurewebsites.net/api'
-export const DEV = 'https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.net/api'
-export const local = 'http://10.0.2.2:3000/api'
+export const PROD =
+  'https://jojo-prod-backend-hjhdf8dacjbuhyar.eastus-01.azurewebsites.net/api';
+export const DEV =
+  'https://jojo-dev-backend-f9a5bvgggchga4fw.eastus-01.azurewebsites.net/api';
+export const local =
+  Platform.OS === 'ios'
+    ? 'http://localhost:3000/api'
+    : 'http://10.0.2.2:3000/api';
 
 const apiClient = axios.create({
-  baseURL: DEV,
+  baseURL: local,
   headers: {
     'Content-Type': 'application/json',
   },
