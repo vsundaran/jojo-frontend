@@ -84,7 +84,7 @@ export const AppNavigator = ({
           }}
         >
           <Stack.Navigator
-            initialRouteName={'welcome'}
+            initialRouteName={initialRouteName}
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="home" component={HomeScreen} />
