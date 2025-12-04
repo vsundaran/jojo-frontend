@@ -21,6 +21,7 @@ import { StorageKeys } from '../constants/StorageKeys';
 import { View } from 'react-native';
 import { Image } from 'react-native';
 import { LayoutProvider } from '../context/LayoutContext';
+import VideoCallScreen from '../screens/videoCall';
 
 
 export const AppNavigator = ({
@@ -87,7 +88,7 @@ export const AppNavigator = ({
             }}
           >
             <Stack.Navigator
-              initialRouteName={"call-receiving"}
+              initialRouteName={initialRouteName}
               screenOptions={{ headerShown: false }}
             >
               <Stack.Screen name="home" component={HomeScreen} />
@@ -106,6 +107,7 @@ export const AppNavigator = ({
               <Stack.Screen name="otp-verification" component={OTPVerification} />
               <Stack.Screen name="locating-moment" component={CallInitiationScreen} />
               <Stack.Screen name="call-receiving" component={CallReceivingScreen} />
+              <Stack.Screen name="video-call" component={VideoCallScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
