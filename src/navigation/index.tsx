@@ -19,7 +19,6 @@ import { StorageKeys } from '../constants/StorageKeys';
 import { View } from 'react-native';
 import { Image } from 'react-native';
 
-import Toast from 'react-native-toast-message';
 
 export const AppNavigator = ({
   setCurrentRouteName,
@@ -73,7 +72,6 @@ export const AppNavigator = ({
 
   return (
     <AuthProvider>
-      <Toast />
       <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
         <NavigationContainer
           onStateChange={state => {

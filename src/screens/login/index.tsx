@@ -15,7 +15,6 @@ import CustomModal from '../../automic-elements/customModal';
 import CustomButton from '../../automic-elements/customButton';
 import { useSendOTP } from '../../hooks/useAuthQuery';
 
-import Toast from 'react-native-toast-message';
 
 const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber }: { isVisible?: boolean; onClose?: () => void; onSendOtpSuccess?: (data: { mobileNumber: string, isNewUser: boolean }) => void; initialMobileNumber?: string }) => {
   const [internalVisible, setInternalVisible] = useState(true);
@@ -74,11 +73,6 @@ const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber
               navigation.navigate('otp-verification', { mobileNumber: formattedNumber });
             }
           }
-
-          Toast.show({
-            type: 'success',
-            text1: 'OTP sent successfully',
-          });
         },
         onError: (error: any) => {
           console.error('Send OTP Error:', error);
