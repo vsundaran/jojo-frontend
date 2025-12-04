@@ -24,7 +24,7 @@ const local =
 class SocketService {
   private socket: Socket | null = null;
   private static instance: SocketService;
-  private url: string = DEV;
+  private url: string = local;
 
   private constructor() { }
 
