@@ -64,7 +64,7 @@ interface CallReceivingScreenProps {
 // ============================================================================
 
 // Drag threshold: How far user must drag before action triggers (in pixels after scaling)
-const DRAG_THRESHOLD = scale(100);
+const DRAG_THRESHOLD = scale(50);
 
 // Slider track height (visual reference, not enforced)
 const SLIDER_TRACK_HEIGHT = verticalScale(200);
@@ -185,8 +185,9 @@ export default function CallReceivingScreen({
     const handleAcceptCall = useCallback(() => {
         console.log('Call accepted');
         onAccept?.();
-        // Example: navigation.navigate('ActiveCall', { category });
-    }, [onAccept]);
+        // Navigate to video call screen
+        navigation.navigate('video-call');
+    }, [onAccept, navigation]);
 
     const handleDeclineCall = useCallback(() => {
         console.log('Call declined');

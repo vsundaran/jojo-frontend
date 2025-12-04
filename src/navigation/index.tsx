@@ -88,7 +88,7 @@ export const AppNavigator = ({
             }}
           >
             <Stack.Navigator
-              initialRouteName={initialRouteName}
+              initialRouteName={"call-receiving"}
               screenOptions={{ headerShown: false }}
             >
               <Stack.Screen name="home" component={HomeScreen} />
