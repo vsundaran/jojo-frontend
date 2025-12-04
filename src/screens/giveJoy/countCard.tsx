@@ -27,6 +27,7 @@ export interface WishCardProps {
   onLikePress?: () => void;
   onCallPress?: () => void;
   onTagPress?: (tag: string) => void;
+  onPress?: () => void;
   primaryColor?: string;
   borderColor?: string;
   badgeColor?: string;
@@ -45,6 +46,7 @@ export const CountCard: React.FC<WishCardProps> = ({
   onLikePress,
   onCallPress,
   onTagPress,
+  onPress,
   primaryColor = lightTheme.colors.wishesColor,
   borderColor = lightTheme.colors.wishesColor,
   badgeColor = '',
@@ -53,85 +55,91 @@ export const CountCard: React.FC<WishCardProps> = ({
   isLoading = false,
 }) => {
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          borderWidth: 1,
-          borderLeftWidth: 5,
-          borderTopWidth: 1,
-          borderColor: borderColor,
-        },
-        { ...containerStyle, elevation: 0 },
-      ]}
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      disabled={!onPress}
     >
-      <View style={styles.headerSection}>
-        <View style={[styles.iconButton, { backgroundColor: primaryColor }]}>
-          <Image
-            source={
-              title == 'Motivation'
-                ? require('../../assets/fire.png')
-                : title == 'Song'
-                  ? require('../../assets/song.png')
-                  : title == 'Blessings'
-                    ? require('../../assets/blessing.png')
-                    : title == 'Celebration'
-                      ? require('../../assets/celebration.png')
-                      : require('../../assets/giftIcon.png')
-            }
-            style={{ width: scale(18), height: scale(18) }}
-          />
-        </View>
-
-        <View>
-          <Text
-            style={{
-              color: darkTextColor,
-              fontSize: moderateScale(12),
-              fontFamily: 'Poppins-SemiBold',
-            }}
-          >
-            {title}
-          </Text>
-          <Text
-            style={{
-              color: lightTheme.colors.darkText,
-              fontSize: moderateScale(12),
-              maxWidth: "85%",
-              fontFamily: 'Poppins-Regular',
-            }}
-          >
-            {description}
-          </Text>
-
-        </View>
-      </View>
       <View
-        style={{
-          minWidth: 22,
-          height: 22,
-          width: 22,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 1000,
-          position: 'absolute',
-          right: 12,
-          top: 12,
-          backgroundColor: badgeColor,
-        }}
+        style={[
+          styles.container,
+          {
+            borderWidth: 1,
+            borderLeftWidth: 5,
+            borderTopWidth: 1,
+            borderColor: borderColor,
+          },
+          { ...containerStyle, elevation: 0 },
+        ]}
       >
-        <Text
+        <View style={styles.headerSection}>
+          <View style={[styles.iconButton, { backgroundColor: primaryColor }]}>
+            <Image
+              source={
+                title == 'Motivation'
+                  ? require('../../assets/fire.png')
+                  : title == 'Song'
+                    ? require('../../assets/song.png')
+                    : title == 'Blessings'
+                      ? require('../../assets/blessing.png')
+                      : title == 'Celebration'
+                        ? require('../../assets/celebration.png')
+                        : require('../../assets/giftIcon.png')
+              }
+              style={{ width: scale(18), height: scale(18) }}
+            />
+          </View>
+
+          <View>
+            <Text
+              style={{
+                color: darkTextColor,
+                fontSize: moderateScale(12),
+                fontFamily: 'Poppins-SemiBold',
+              }}
+            >
+              {title}
+            </Text>
+            <Text
+              style={{
+                color: lightTheme.colors.darkText,
+                fontSize: moderateScale(12),
+                maxWidth: "85%",
+                fontFamily: 'Poppins-Regular',
+              }}
+            >
+              {description}
+            </Text>
+
+          </View>
+        </View>
+        <View
           style={{
-            color: lightTheme.colors.text,
-            fontSize: scale(8),
-            fontFamily: 'Poppins-Bold',
+            minWidth: 22,
+            height: 22,
+            width: 22,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 1000,
+            position: 'absolute',
+            right: 12,
+            top: 12,
+            backgroundColor: badgeColor,
           }}
         >
-          {isLoading ? <ActivityIndicator /> : count}
-        </Text>
+          <Text
+            style={{
+              color: lightTheme.colors.text,
+              fontSize: scale(8),
+              fontFamily: 'Poppins-Bold',
+            }}
+          >
+            {isLoading ? <ActivityIndicator /> : count}
+          </Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -7,9 +7,11 @@ import GradientText from '../../automic-elements/gradientText';
 import { CountCard } from './countCard';
 import { useAvailableMomentsCount } from '../../hooks/useAvailableMomentsCount';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Givejoy() {
   const { data, isLoading, isError } = useAvailableMomentsCount();
+  const navigation = useNavigation<any>();
 
   // Helper function to get count for a specific category
   const getCategoryCount = (category: string): number => {
@@ -18,6 +20,17 @@ export default function Givejoy() {
       (item) => item._id.toLowerCase() === category.toLowerCase()
     );
     return categoryData?.count || 0;
+  };
+
+  // Navigation handler for category selection
+  const handleCategoryPress = (categoryData: {
+    title: string;
+    primaryColor: string;
+    borderColor: string;
+    badgeColor: string;
+    darkTextColor: string;
+  }) => {
+    navigation.navigate('locating-moment', { category: categoryData });
   };
 
   return (
@@ -115,6 +128,13 @@ export default function Givejoy() {
               onLikePress={() => console.log('Like pressed')}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              onPress={() => handleCategoryPress({
+                title: 'Wishes',
+                primaryColor: lightTheme.colors.wishesColor,
+                borderColor: lightTheme.colors.wishesBorderColor,
+                badgeColor: '#F8E3FF',
+                darkTextColor: '#AE1AE2',
+              })}
               primaryColor={lightTheme.colors.wishesColor}
               borderColor={lightTheme.colors.wishesBorderColor}
               badgeColor="#F8E3FF"
@@ -139,6 +159,13 @@ export default function Givejoy() {
               onLikePress={() => console.log('Like pressed')}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              onPress={() => handleCategoryPress({
+                title: 'Motivation',
+                primaryColor: lightTheme.colors.motivationColor,
+                borderColor: lightTheme.colors.motivationBorderColor,
+                badgeColor: '#DDE8FF',
+                darkTextColor: '#5E8EF1',
+              })}
               primaryColor={lightTheme.colors.motivationColor}
               borderColor={lightTheme.colors.motivationBorderColor}
               badgeColor="#DDE8FF"
@@ -163,6 +190,13 @@ export default function Givejoy() {
               onLikePress={() => console.log('Like pressed')}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              onPress={() => handleCategoryPress({
+                title: 'Song',
+                primaryColor: lightTheme.colors.songColor,
+                borderColor: lightTheme.colors.songBorderColor,
+                badgeColor: '#D2FFEE',
+                darkTextColor: '#5ACEA1',
+              })}
               primaryColor={lightTheme.colors.songColor}
               borderColor={lightTheme.colors.songBorderColor}
               badgeColor="#D2FFEE"
@@ -187,6 +221,13 @@ export default function Givejoy() {
               onLikePress={() => console.log('Like pressed')}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              onPress={() => handleCategoryPress({
+                title: 'Blessings',
+                primaryColor: lightTheme.colors.blessingsColor,
+                borderColor: lightTheme.colors.blessingsBorderColor,
+                badgeColor: '#FFF3DC',
+                darkTextColor: '#F0B847',
+              })}
               primaryColor={lightTheme.colors.blessingsColor}
               borderColor={lightTheme.colors.blessingsBorderColor}
               badgeColor="#FFF3DC"
@@ -211,6 +252,13 @@ export default function Givejoy() {
               onLikePress={() => console.log('Like pressed')}
               onCallPress={() => console.log('Call pressed')}
               onTagPress={tag => console.log(`Tag pressed: ${tag}`)}
+              onPress={() => handleCategoryPress({
+                title: 'Celebration',
+                primaryColor: lightTheme.colors.celebrationColor,
+                borderColor: lightTheme.colors.celebrationBorderColor,
+                badgeColor: '#FFE0E0',
+                darkTextColor: '#D34848',
+              })}
               primaryColor={lightTheme.colors.celebrationColor}
               borderColor={lightTheme.colors.celebrationBorderColor}
               badgeColor="#FFE0E0"

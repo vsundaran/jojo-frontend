@@ -12,12 +12,14 @@ import LoginScreen from '../screens/login';
 import LanguageSelectionScreen from '../screens/languageSelection';
 import OTPVerification from '../screens/otpVerification';
 import { AuthProvider } from '../context/AuthContext';
+import CallInitiationScreen from '../screens/locatingMoment';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { StorageKeys } from '../constants/StorageKeys';
 import { View } from 'react-native';
 import { Image } from 'react-native';
+import { LayoutProvider } from '../context/LayoutContext';
 
 
 export const AppNavigator = ({
@@ -72,36 +74,40 @@ export const AppNavigator = ({
 
   return (
     <AuthProvider>
-      <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
-        <NavigationContainer
-          onStateChange={state => {
-            const currentRouteName = state?.routes[state.index].name;
-            if (setCurrentRouteName && currentRouteName) {
-              setCurrentRouteName(currentRouteName);
-            }
-          }}
-        >
-          <Stack.Navigator
-            initialRouteName={initialRouteName}
-            screenOptions={{ headerShown: false }}
+      <LayoutProvider>
+
+        <View style={{ flex: 1, elevation: 0, boxShadow: 'none' }}>
+          <NavigationContainer
+            onStateChange={state => {
+              const currentRouteName = state?.routes[state.index].name;
+              if (setCurrentRouteName && currentRouteName) {
+                setCurrentRouteName(currentRouteName);
+              }
+            }}
           >
-            <Stack.Screen name="home" component={HomeScreen} />
-            <Stack.Screen name="welcome" component={Welcome} />
-            <Stack.Screen name="app-layout" component={AppLayout} />
-            <Stack.Screen
-              name="moment-creating-form"
-              component={MomentCreatingForm}
-            />
-            <Stack.Screen name="signup" component={Signup} />
-            <Stack.Screen
-              name="language-selection"
-              component={LanguageSelectionScreen}
-            />
-            <Stack.Screen name="login" component={LoginScreen} />
-            <Stack.Screen name="otp-verification" component={OTPVerification} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+            <Stack.Navigator
+              initialRouteName={initialRouteName}
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="home" component={HomeScreen} />
+              <Stack.Screen name="welcome" component={Welcome} />
+              <Stack.Screen name="app-layout" component={AppLayout} />
+              <Stack.Screen
+                name="moment-creating-form"
+                component={MomentCreatingForm}
+              />
+              <Stack.Screen name="signup" component={Signup} />
+              <Stack.Screen
+                name="language-selection"
+                component={LanguageSelectionScreen}
+              />
+              <Stack.Screen name="login" component={LoginScreen} />
+              <Stack.Screen name="otp-verification" component={OTPVerification} />
+              <Stack.Screen name="locating-moment" component={CallInitiationScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </LayoutProvider>
     </AuthProvider>
   );
 };
