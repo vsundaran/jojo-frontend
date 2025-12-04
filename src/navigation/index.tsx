@@ -13,6 +13,7 @@ import LanguageSelectionScreen from '../screens/languageSelection';
 import OTPVerification from '../screens/otpVerification';
 import { AuthProvider } from '../context/AuthContext';
 import CallInitiationScreen from '../screens/callInitiation';
+import CallReceivingScreen from '../screens/callReceiving';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -86,7 +87,7 @@ export const AppNavigator = ({
             }}
           >
             <Stack.Navigator
-              initialRouteName={initialRouteName}
+              initialRouteName={"call-receiving"}
               screenOptions={{ headerShown: false }}
             >
               <Stack.Screen name="home" component={HomeScreen} />
@@ -104,6 +105,7 @@ export const AppNavigator = ({
               <Stack.Screen name="login" component={LoginScreen} />
               <Stack.Screen name="otp-verification" component={OTPVerification} />
               <Stack.Screen name="locating-moment" component={CallInitiationScreen} />
+              <Stack.Screen name="call-receiving" component={CallReceivingScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
