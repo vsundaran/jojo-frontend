@@ -12,7 +12,7 @@ import LoginScreen from '../screens/login';
 import LanguageSelectionScreen from '../screens/languageSelection';
 import OTPVerification from '../screens/otpVerification';
 import { AuthProvider } from '../context/AuthContext';
-import CallInitiationScreen from '../screens/locatingMoment';
+import CallInitiationScreen from '../screens/callInitiation';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
