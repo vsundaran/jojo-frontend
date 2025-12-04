@@ -5,7 +5,6 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert,
 } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
@@ -14,9 +13,11 @@ import { lightTheme } from '../../theme';
 import CustomModal from '../../automic-elements/customModal';
 import CustomButton from '../../automic-elements/customButton';
 import { useSendOTP } from '../../hooks/useAuthQuery';
+import { useMessage } from '../../context/MessageContext';
 
 
 const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber }: { isVisible?: boolean; onClose?: () => void; onSendOtpSuccess?: (data: { mobileNumber: string, isNewUser: boolean }) => void; initialMobileNumber?: string }) => {
+  const { showMessage } = useMessage();
   const [internalVisible, setInternalVisible] = useState(true);
   const visible = isVisible !== undefined ? isVisible : internalVisible;
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -56,7 +57,7 @@ const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber
       { mobileNumber: formattedNumber },
       {
         onSuccess: (response) => {
-          console.log('Send OTP Success:', response.data);
+
           const { isNewUser } = response.data;
 
           if (onSendOtpSuccess) {
@@ -76,7 +77,10 @@ const LoginScreen = ({ isVisible, onClose, onSendOtpSuccess, initialMobileNumber
         },
         onError: (error: any) => {
           console.error('Send OTP Error:', error);
-          Alert.alert('Error', error.response?.data?.message || 'Failed to send OTP');
+          showMessage({
+            type: 'error',
+            message: error.response?.data?.message || 'Failed to send OTP',
+          });
         },
       }
     );

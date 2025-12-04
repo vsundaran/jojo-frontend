@@ -2,6 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StorageKeys } from '../constants/StorageKeys';
 import { Platform } from 'react-native';
+import MessageService from '../services/messageService';
 
 export const PROD =
   'https://jojo-prod-backend-hjhdf8dacjbuhyar.eastus-01.azurewebsites.net/api';
@@ -13,7 +14,7 @@ export const local =
     : 'http://10.0.2.2:3000/api';
 
 const apiClient = axios.create({
-  baseURL: DEV,
+  baseURL: local,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -65,11 +66,23 @@ apiClient.interceptors.response.use(
         status: error.response.status,
         data: error.response.data,
       });
+
+      // Global error message
+      const errorMessage = error.response.data?.message || 'Something went wrong';
+      MessageService.showMessage({
+        type: 'error',
+        message: errorMessage,
+      });
     } else {
       console.log(
         '📥 [API RESPONSE ERROR] Network Error or other issue',
         error.message,
       );
+
+      MessageService.showMessage({
+        type: 'error',
+        message: error.message || 'Network Error',
+      });
     }
     return Promise.reject(error);
   },

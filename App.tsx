@@ -15,6 +15,8 @@ import { PaperProvider } from 'react-native-paper';
 import { paperTheme } from './src/theme/paperTheme';
 import { socketService } from './src/services/socketService';
 import React, { useEffect, useState } from 'react';
+import { MessageProvider } from './src/context/MessageContext';
+import { MessageBar } from './src/automic-elements/messageBar';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -42,7 +44,10 @@ function App() {
   return (
     <PaperProvider theme={paperTheme}>
       <SafeAreaProvider>
-        <AppContent />
+        <MessageProvider>
+          <MessageBar />
+          <AppContent />
+        </MessageProvider>
       </SafeAreaProvider>
     </PaperProvider>
   );
