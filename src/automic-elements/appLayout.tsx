@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from './header';
@@ -8,6 +8,8 @@ import OTPVerification from '../screens/otpVerification';
 import Signup from '../screens/signup';
 import LanguageSelectionScreen from '../screens/languageSelection';
 import { LayoutProvider } from '../context/LayoutContext';
+import { socketService } from '../services/socketService';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AppLayout({ route }: any) {
   const initialTab = route?.params?.initialTab;
@@ -15,6 +17,26 @@ export default function AppLayout({ route }: any) {
   const timestamp = route?.params?.timestamp;
   const [authStep, setAuthStep] = useState<'NONE' | 'LOGIN' | 'OTP' | 'SIGNUP' | 'LANGUAGE'>('NONE');
   const [authData, setAuthData] = useState<{ mobileNumber: string; isNewUser: boolean }>({ mobileNumber: '', isNewUser: false });
+  const navigation = useNavigation<any>();
+
+  useEffect(() => {
+    // Initialize socket connection
+    socketService.initialize();
+
+    // Listen for incoming calls
+    const handleCallInitiated = (payload: any) => {
+      console.log('📞 Incoming call received:', payload);
+      if (payload && payload.callData) {
+        navigation.navigate('call-receiving', payload.callData);
+      }
+    };
+
+    socketService.on('call:initiated', handleCallInitiated);
+
+    return () => {
+      socketService.off('call:initiated', handleCallInitiated);
+    };
+  }, [navigation]);
 
   const handleLoginRequest = () => {
     setAuthStep('LOGIN');

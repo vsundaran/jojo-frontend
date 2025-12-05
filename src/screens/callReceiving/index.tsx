@@ -50,6 +50,7 @@ interface RouteParams {
         darkTextColor: string;
     };
     callerName?: string;
+    callData?: any; // Add callData to route params
 }
 
 interface CallReceivingScreenProps {
@@ -99,7 +100,7 @@ export default function CallReceivingScreen({
     const navigation = navProp || navigationHook;
     const route = routeProp || routeHook;
 
-    const { category, callerName } = (route.params as RouteParams) || {};
+    const { category, callerName, callData } = (route.params as RouteParams) || {};
 
     // ========================================================================
     // ANIMATION VALUES
@@ -186,8 +187,8 @@ export default function CallReceivingScreen({
         console.log('Call accepted');
         onAccept?.();
         // Navigate to video call screen
-        navigation.navigate('video-call');
-    }, [onAccept, navigation]);
+        navigation.navigate('video-call', { callData });
+    }, [onAccept, navigation, callData]);
 
     const handleDeclineCall = useCallback(() => {
         console.log('Call declined');
