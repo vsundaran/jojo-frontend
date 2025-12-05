@@ -27,7 +27,7 @@ export default function AppLayout({ route }: any) {
     const handleCallInitiated = (payload: any) => {
       console.log('📞 Incoming call received:', payload);
       if (payload && payload.callData) {
-        navigation.navigate('call-receiving', payload.callData);
+        navigation.replace('video-call', { callData: payload.callData });
       }
     };
 
