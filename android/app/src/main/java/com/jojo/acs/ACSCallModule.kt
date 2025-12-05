@@ -19,6 +19,12 @@ import com.azure.android.communication.calling.DeviceManager
 import com.azure.android.communication.calling.GroupCallLocator
 import com.azure.android.communication.calling.MediaStreamType
 import com.azure.android.communication.common.CommunicationTokenCredential
+import com.azure.android.communication.common.CommunicationIdentifier
+import com.azure.android.communication.common.CommunicationUserIdentifier
+import com.azure.android.communication.common.PhoneNumberIdentifier
+import com.azure.android.communication.common.MicrosoftTeamsUserIdentifier
+import android.media.AudioManager
+import android.content.Context
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -153,6 +159,10 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
             params.putString("state", currentCall!!.state.toString())
             sendEvent("onCallStateChanged", params)
             
+            if (currentCall!!.state == CallState.CONNECTED) {
+                setSpeakerPhone(true)
+            }
+            
             if (currentCall!!.state == CallState.DISCONNECTED) {
                 cleanup()
             }
@@ -169,14 +179,14 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     private fun handleRemoteParticipant(participant: RemoteParticipant) {
+        val id = getParticipantId(participant.identifier)
         val params = Arguments.createMap()
-        params.putString("participantId", participant.identifier.toString()) // Simplified ID
+        params.putString("participantId", id)
         sendEvent("onParticipantJoined", params)
 
         participant.addOnVideoStreamsUpdatedListener { event ->
             for (stream in event.addedRemoteVideoStreams) {
                 if (stream.mediaStreamType == MediaStreamType.VIDEO) {
-                    val id = participant.identifier.toString() // Use proper ID mapping in production
                     remoteVideoStreams[id] = stream
                     val videoParams = Arguments.createMap()
                     videoParams.putString("participantId", id)
@@ -185,6 +195,21 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
                 }
             }
         }
+    }
+
+    private fun getParticipantId(identifier: CommunicationIdentifier): String {
+        return when (identifier) {
+            is CommunicationUserIdentifier -> identifier.id
+            is PhoneNumberIdentifier -> identifier.phoneNumber
+            is MicrosoftTeamsUserIdentifier -> identifier.userId
+            else -> identifier.toString()
+        }
+    }
+
+    private fun setSpeakerPhone(on: Boolean) {
+        val audioManager = reactApplicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+        audioManager.isSpeakerphoneOn = on
     }
 
     @ReactMethod

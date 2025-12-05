@@ -35,7 +35,7 @@ class ACSVideoViewManager : SimpleViewManager<FrameLayout>() {
                 val renderer = VideoStreamRenderer(localStream, view.context)
                 val rendererView = renderer.createView()
                 view.removeAllViews()
-                view.addView(rendererView)
+                view.addView(rendererView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -49,7 +49,7 @@ class ACSVideoViewManager : SimpleViewManager<FrameLayout>() {
                 val renderer = VideoStreamRenderer(stream, view.context)
                 val rendererView = renderer.createView(com.azure.android.communication.calling.CreateViewOptions(ScalingMode.CROP))
                 view.removeAllViews()
-                view.addView(rendererView)
+                view.addView(rendererView, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
             } catch (e: Exception) {
                 e.printStackTrace()
             }

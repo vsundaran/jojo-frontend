@@ -16,6 +16,7 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
 
     const [isCallConnected, setIsCallConnected] = useState(false);
     const [remoteParticipantId, setRemoteParticipantId] = useState<string | null>(null);
+    const [remoteStreamId, setRemoteStreamId] = useState<number | null>(null);
     const [isMicMuted, setIsMicMuted] = useState(false);
     const [isCameraOn, setIsCameraOn] = useState(true);
     const [countdown, setCountdown] = useState(30);
@@ -85,6 +86,7 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
                     console.log("Remote Video Added:", event);
                     // Force re-render or update state if needed, but the view should handle stream rendering by ID
                     setRemoteParticipantId(event.participantId);
+                    setRemoteStreamId(event.streamId);
                 });
 
                 // Join Call
@@ -176,7 +178,11 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
             {/* Remote Video (Full Screen) */}
             {remoteParticipantId ? (
                 <View style={styles.remoteVideoContainer}>
-                    <ACSVideoView participantId={remoteParticipantId} style={styles.remoteVideo} />
+                    <ACSVideoView
+                        key={remoteStreamId ? `remote-${remoteStreamId}` : `remote-${remoteParticipantId}`}
+                        participantId={remoteParticipantId}
+                        style={styles.remoteVideo}
+                    />
                 </View>
             ) : (
                 <View style={styles.centerSection}>
