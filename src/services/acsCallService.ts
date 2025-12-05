@@ -50,6 +50,17 @@ class ACSCallServiceImpl implements ACSCallServiceType {
         return false;
     }
 
+    async isLocalVideoActive(): Promise<boolean> {
+        if (Platform.OS === 'android') {
+            try {
+                return await ACSCallModule.isLocalVideoActive();
+            } catch (e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     addListener(eventName: string, callback: (event: any) => void) {
         const subscription = eventEmitter.addListener(eventName, callback);
         return () => {

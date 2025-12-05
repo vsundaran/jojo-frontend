@@ -80,10 +80,20 @@ android {
     namespace "com.jojo"
     defaultConfig {
         applicationId "com.jojo.arus.social"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 26  // ACS Video requires API 26+
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true  // Required for ACS SDK
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
+    kotlinOptions {
+        jvmTarget = '17'
     }
     signingConfigs {
     release {
@@ -116,7 +126,15 @@ dependencies {
         implementation jscFlavor
     }
 
+    // Azure Communication Services (includes WebRTC internally)
     implementation 'com.azure.android:azure-communication-calling:2.9.0'
+    
+    // Kotlin Coroutines (required by ACS SDK)
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    
+    // MultiDex support
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
 
 android {

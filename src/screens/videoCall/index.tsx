@@ -18,7 +18,8 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
     const [remoteParticipantId, setRemoteParticipantId] = useState<string | null>(null);
     const [remoteStreamId, setRemoteStreamId] = useState<number | null>(null);
     const [isMicMuted, setIsMicMuted] = useState(false);
-    const [isCameraOn, setIsCameraOn] = useState(true);
+    const [isCameraOn, setIsCameraOn] = useState(false); // Start with camera off
+    const [isLocalVideoReady, setIsLocalVideoReady] = useState(false);
     const [countdown, setCountdown] = useState(30);
     const [callStatus, setCallStatus] = useState("Connecting...");
 
@@ -62,48 +63,63 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
                     return;
                 }
                 await ACSCallService.init(token);
+                console.log("[VideoCall] ACS initialized successfully");
 
                 // Setup listeners
                 const removeStateListener = ACSCallService.addListener('onCallStateChanged', (event) => {
-                    console.log("Call State:", event.state);
+                    console.log("[VideoCall] Call State:", event.state);
                     setCallStatus(event.state);
                     if (event.state === 'CONNECTED') {
                         setIsCallConnected(true);
-                        // Stop countdown when connected? Or keep it as per requirement?
-                        // Requirement: "If countdown reaches 0: Do NOT automatically end the call. Countdown is only a UI element"
+                        console.log("[VideoCall] Call connected, starting camera");
+                        // Start camera after call is connected
+                        ACSCallService.toggleCamera(true)
+                            .then(() => {
+                                console.log("[VideoCall] Camera started successfully");
+                                setIsCameraOn(true);
+                            })
+                            .catch((err) => {
+                                console.error("[VideoCall] Failed to start camera:", err);
+                            });
                     } else if (event.state === 'DISCONNECTED') {
                         handleCallEnded();
                     }
                 });
 
                 const removeParticipantListener = ACSCallService.addListener('onParticipantJoined', (event) => {
-                    console.log("Participant Joined:", event.participantId);
-                    // For 1:1 call, we assume the first remote participant is the one we want to show
+                    console.log("[VideoCall] Participant Joined:", event.participantId);
                     setRemoteParticipantId(event.participantId);
                 });
 
                 const removeVideoListener = ACSCallService.addListener('onRemoteVideoAdded', (event) => {
-                    console.log("Remote Video Added:", event);
-                    // Force re-render or update state if needed, but the view should handle stream rendering by ID
+                    console.log("[VideoCall] Remote Video Added:", event);
                     setRemoteParticipantId(event.participantId);
                     setRemoteStreamId(event.streamId);
                 });
 
-                // Join Call
-                await ACSCallService.joinCall(callData.callId, "User"); // Replace "User" with actual display name if available
+                const removeLocalVideoListener = ACSCallService.addListener('onLocalVideoReady', (event) => {
+                    console.log("[VideoCall] Local Video Ready:", event);
+                    setIsLocalVideoReady(true);
+                });
 
-                // Start local video
-                await ACSCallService.toggleCamera(true);
+                // Join Call
+                console.log("[VideoCall] Joining call:", callData.callId);
+                await ACSCallService.joinCall(callData.callId, "User"); // Replace "User" with actual display name if available
+                console.log("[VideoCall] Call joined successfully");
+
+                // DO NOT start camera here - wait for call to connect
+                // Camera will be started in the onCallStateChanged listener when state is CONNECTED
 
                 return () => {
                     removeStateListener();
                     removeParticipantListener();
                     removeVideoListener();
+                    removeLocalVideoListener();
                 };
 
             } catch (error) {
-                console.error("Call Initialization Error:", error);
-                Alert.alert("Error", "Failed to join call");
+                console.error("[VideoCall] Call Initialization Error:", error);
+                Alert.alert("Error", `Failed to join call: ${error}`);
                 navigation.goBack();
             }
         };
@@ -154,15 +170,28 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
     };
 
     const toggleMic = async () => {
-        const newMutedState = !isMicMuted;
-        await ACSCallService.toggleMic(newMutedState);
-        setIsMicMuted(newMutedState);
+        try {
+            const newMutedState = !isMicMuted;
+            console.log("[VideoCall] Toggling mic:", newMutedState ? 'muted' : 'unmuted');
+            await ACSCallService.toggleMic(newMutedState);
+            setIsMicMuted(newMutedState);
+        } catch (error) {
+            console.error("[VideoCall] Failed to toggle mic:", error);
+        }
     };
 
     const toggleCamera = async () => {
-        const newCameraState = !isCameraOn;
-        await ACSCallService.toggleCamera(newCameraState);
-        setIsCameraOn(newCameraState);
+        try {
+            const newCameraState = !isCameraOn;
+            console.log("[VideoCall] Toggling camera:", newCameraState ? 'on' : 'off');
+            await ACSCallService.toggleCamera(newCameraState);
+            setIsCameraOn(newCameraState);
+            if (!newCameraState) {
+                setIsLocalVideoReady(false);
+            }
+        } catch (error) {
+            console.error("[VideoCall] Failed to toggle camera:", error);
+        }
     };
 
     const formatCountdown = (seconds: number): string => {
@@ -196,7 +225,11 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
             {/* Local Video (Floating) */}
             {isCameraOn && (
                 <View style={styles.localVideoContainer}>
-                    <ACSVideoView participantId="local" style={styles.localVideo} />
+                    <ACSVideoView
+                        key={`local-${isLocalVideoReady ? 'ready' : 'loading'}`}
+                        participantId="local"
+                        style={styles.localVideo}
+                    />
                 </View>
             )}
 

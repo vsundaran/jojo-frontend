@@ -1,5 +1,7 @@
 package com.jojo.acs
 
+import android.util.Log
+
 import com.azure.android.communication.calling.Call
 import com.azure.android.communication.calling.CallAgent
 import com.azure.android.communication.calling.CallClient
@@ -41,6 +43,7 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     private var localVideoStream: LocalVideoStream? = null
 
     companion object {
+        private const val TAG = "ACSCallModule"
         var instance: ACSCallModule? = null
         var remoteVideoStreams = mutableMapOf<String, RemoteVideoStream>()
         var localVideoStreamRenderer: VideoStreamRenderer? = null
@@ -48,6 +51,7 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
     init {
         instance = this
+        Log.d(TAG, "ACSCallModule initialized")
     }
 
     override fun getName(): String {
@@ -63,23 +67,29 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun init(token: String, promise: Promise) {
         try {
+            Log.d(TAG, "Initializing ACS with token length: ${token.length}")
+            
             if (callClient == null) {
                 callClient = CallClient()
+                Log.d(TAG, "CallClient created")
             }
+            
             val credential = CommunicationTokenCredential(token)
             val options = CallAgentOptions()
             options.displayName = "User" // Default name, can be passed from JS if needed
 
             callClient!!.createCallAgent(reactApplicationContext.applicationContext, credential, options).whenComplete { agent: CallAgent?, error: Throwable? ->
                 if (error != null) {
+                    Log.e(TAG, "Failed to create CallAgent: ${error.message}", error)
                     promise.reject("INIT_FAILED", error)
                 } else {
                     callAgent = agent
-                    // Listen for incoming calls if needed (not implemented for this task)
+                    Log.d(TAG, "CallAgent created successfully")
                     promise.resolve(true)
                 }
             }
         } catch (e: Exception) {
+            Log.e(TAG, "Init error: ${e.message}", e)
             promise.reject("INIT_ERROR", e)
         }
     }
@@ -123,15 +133,31 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun joinCall(callId: String, displayName: String, promise: Promise) {
         if (callAgent == null) {
+            Log.e(TAG, "Cannot join call: CallAgent not initialized")
             promise.reject("AGENT_NOT_INITIALIZED", "CallAgent is not initialized")
             return
         }
 
         try {
-            callClient!!.getDeviceManager(reactApplicationContext).whenComplete { deviceManager: DeviceManager?, _: Throwable? ->
+            Log.d(TAG, "Joining call: $callId")
+            
+            callClient!!.getDeviceManager(reactApplicationContext).whenComplete { deviceManager: DeviceManager?, error: Throwable? ->
+                if (error != null) {
+                    Log.e(TAG, "Failed to get DeviceManager: ${error.message}", error)
+                    promise.reject("DEVICE_MANAGER_FAILED", error)
+                    return@whenComplete
+                }
+                
                 val camera = deviceManager?.cameras?.firstOrNull()
+                if (camera != null) {
+                    Log.d(TAG, "Camera found: ${camera.name}")
+                } else {
+                    Log.w(TAG, "No camera found on device")
+                }
+                
                 val videoOptions = if (camera != null) {
                     localVideoStream = LocalVideoStream(camera, reactApplicationContext)
+                    Log.d(TAG, "Local video stream created")
                     VideoOptions(arrayOf(localVideoStream))
                 } else {
                     null
@@ -145,54 +171,94 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
                 val locator = GroupCallLocator(UUID.fromString(callId))
                 currentCall = callAgent!!.join(reactApplicationContext, locator, joinCallOptions)
                 
+                Log.d(TAG, "Call joined, setting up listeners")
                 setupCallListeners()
                 promise.resolve(currentCall!!.id)
             }
         } catch (e: Exception) {
+            Log.e(TAG, "Join call failed: ${e.message}", e)
             promise.reject("JOIN_CALL_FAILED", e)
         }
     }
 
     private fun setupCallListeners() {
+        Log.d(TAG, "Setting up call listeners")
+        
         currentCall?.addOnStateChangedListener {
+            val state = currentCall!!.state.toString()
+            Log.d(TAG, "Call state changed: $state")
+            
             val params = Arguments.createMap()
-            params.putString("state", currentCall!!.state.toString())
+            params.putString("state", state)
             sendEvent("onCallStateChanged", params)
             
             if (currentCall!!.state == CallState.CONNECTED) {
+                Log.d(TAG, "Call connected, enabling speakerphone")
                 setSpeakerPhone(true)
+                
+                // Notify React Native that local video is ready
+                if (localVideoStream != null) {
+                    val videoParams = Arguments.createMap()
+                    videoParams.putBoolean("isReady", true)
+                    sendEvent("onLocalVideoReady", videoParams)
+                    Log.d(TAG, "Local video ready event sent")
+                }
             }
             
             if (currentCall!!.state == CallState.DISCONNECTED) {
+                Log.d(TAG, "Call disconnected, cleaning up")
                 cleanup()
             }
         }
 
         currentCall?.addOnRemoteParticipantsUpdatedListener { event ->
+            Log.d(TAG, "Remote participants updated: ${event.addedParticipants.size} added")
             for (participant in event.addedParticipants) {
                 handleRemoteParticipant(participant)
             }
         }
         
         // Handle existing participants
-        currentCall?.remoteParticipants?.forEach { handleRemoteParticipant(it) }
+        currentCall?.remoteParticipants?.forEach { 
+            Log.d(TAG, "Handling existing participant")
+            handleRemoteParticipant(it) 
+        }
     }
 
     private fun handleRemoteParticipant(participant: RemoteParticipant) {
         val id = getParticipantId(participant.identifier)
+        Log.d(TAG, "Remote participant joined: $id")
+        
         val params = Arguments.createMap()
         params.putString("participantId", id)
         sendEvent("onParticipantJoined", params)
 
         participant.addOnVideoStreamsUpdatedListener { event ->
+            Log.d(TAG, "Video streams updated for participant $id: ${event.addedRemoteVideoStreams.size} added")
+            
             for (stream in event.addedRemoteVideoStreams) {
                 if (stream.mediaStreamType == MediaStreamType.VIDEO) {
                     remoteVideoStreams[id] = stream
+                    Log.d(TAG, "Remote video stream added: streamId=${stream.id}, participantId=$id")
+                    
                     val videoParams = Arguments.createMap()
                     videoParams.putString("participantId", id)
                     videoParams.putInt("streamId", stream.id)
                     sendEvent("onRemoteVideoAdded", videoParams)
                 }
+            }
+        }
+        
+        // Check for existing video streams
+        participant.videoStreams.forEach { stream ->
+            if (stream.mediaStreamType == MediaStreamType.VIDEO) {
+                remoteVideoStreams[id] = stream
+                Log.d(TAG, "Existing remote video stream found: streamId=${stream.id}, participantId=$id")
+                
+                val videoParams = Arguments.createMap()
+                videoParams.putString("participantId", id)
+                videoParams.putInt("streamId", stream.id)
+                sendEvent("onRemoteVideoAdded", videoParams)
             }
         }
     }
@@ -240,37 +306,80 @@ class ACSCallModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun toggleCamera(isCameraOn: Boolean, promise: Promise) {
         if (currentCall == null) {
+            Log.e(TAG, "Cannot toggle camera: No active call")
             promise.reject("NO_CALL", "No active call")
             return
         }
         
+        Log.d(TAG, "Toggle camera: $isCameraOn")
+        
         if (isCameraOn) {
-            if (localVideoStream != null) return // Already on
+            if (localVideoStream != null) {
+                Log.d(TAG, "Camera already on")
+                promise.resolve(true)
+                return
+            }
             
-            callClient!!.getDeviceManager(reactApplicationContext).whenComplete { deviceManager: DeviceManager?, _: Throwable? ->
+            callClient!!.getDeviceManager(reactApplicationContext).whenComplete { deviceManager: DeviceManager?, error: Throwable? ->
+                if (error != null) {
+                    Log.e(TAG, "Failed to get DeviceManager: ${error.message}", error)
+                    promise.reject("DEVICE_MANAGER_FAILED", error)
+                    return@whenComplete
+                }
+                
                 val camera = deviceManager?.cameras?.firstOrNull()
                 if (camera != null) {
+                    Log.d(TAG, "Starting camera: ${camera.name}")
                     localVideoStream = LocalVideoStream(camera, reactApplicationContext)
-                    currentCall!!.startVideo(reactApplicationContext, localVideoStream).whenComplete { _: Void?, _: Throwable? ->
-                        promise.resolve(true)
+                    
+                    currentCall!!.startVideo(reactApplicationContext, localVideoStream).whenComplete { _: Void?, videoError: Throwable? ->
+                        if (videoError != null) {
+                            Log.e(TAG, "Failed to start video: ${videoError.message}", videoError)
+                            localVideoStream = null
+                            promise.reject("START_VIDEO_FAILED", videoError)
+                        } else {
+                            Log.d(TAG, "Camera started successfully")
+                            
+                            // Notify React Native that local video is ready
+                            val videoParams = Arguments.createMap()
+                            videoParams.putBoolean("isReady", true)
+                            sendEvent("onLocalVideoReady", videoParams)
+                            
+                            promise.resolve(true)
+                        }
                     }
                 } else {
+                    Log.e(TAG, "No camera found on device")
                     promise.reject("NO_CAMERA", "No camera found")
                 }
             }
         } else {
-            if (localVideoStream == null) return // Already off
-            currentCall!!.stopVideo(reactApplicationContext, localVideoStream).whenComplete { _: Void?, _: Throwable? ->
-                localVideoStream = null
+            if (localVideoStream == null) {
+                Log.d(TAG, "Camera already off")
                 promise.resolve(true)
+                return
+            }
+            
+            Log.d(TAG, "Stopping camera")
+            currentCall!!.stopVideo(reactApplicationContext, localVideoStream).whenComplete { _: Void?, error: Throwable? ->
+                if (error != null) {
+                    Log.e(TAG, "Failed to stop video: ${error.message}", error)
+                    promise.reject("STOP_VIDEO_FAILED", error)
+                } else {
+                    localVideoStream = null
+                    Log.d(TAG, "Camera stopped successfully")
+                    promise.resolve(true)
+                }
             }
         }
     }
 
     private fun cleanup() {
+        Log.d(TAG, "Cleaning up call resources")
         localVideoStream = null
         currentCall = null
         remoteVideoStreams.clear()
+        Log.d(TAG, "Cleanup complete")
     }
     
     fun getLocalVideoStream(): LocalVideoStream? {
