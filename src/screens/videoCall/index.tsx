@@ -1,32 +1,13 @@
-/**
- * VideoCallScreen Component
- * 
- * A static UI for an active video call screen with:
- * - Top countdown timer (30 seconds → 0)
- * - User indicator badge ("J")
- * - Center placeholder avatar (MaterialIcons person icon)
- * - Bottom control bar with mic, call end, and video toggle buttons
- * 
- * This is a STATIC UI implementation - no ACS logic, navigation, or state management.
- */
 
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { scale, verticalScale } from 'react-native-size-matters';
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 import { useRoute } from "@react-navigation/native";
 import { Call } from "../../types";
 
 interface VideoCallScreenProps { }
-
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
 
 export default function VideoCallScreen({ }: VideoCallScreenProps) {
     const route = useRoute();
@@ -38,15 +19,7 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
             console.log("VideoCallScreen received call data:", callData.callId);
         }
     }, [callData]);
-    // ========================================================================
-    // STATE - Countdown Timer
-    // ========================================================================
-
     const [countdown, setCountdown] = useState(30);
-
-    // ========================================================================
-    // EFFECTS - Countdown Logic
-    // ========================================================================
 
     useEffect(() => {
         if (countdown <= 0) return;
@@ -64,20 +37,11 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
         return () => clearInterval(timer);
     }, [countdown]);
 
-    // ========================================================================
-    // HELPERS
-    // ========================================================================
-
-    // Format countdown as "0:30", "0:29", ..., "0:00"
     const formatCountdown = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
-
-    // ========================================================================
-    // RENDER
-    // ========================================================================
 
     return (
         <View style={styles.container}>
@@ -119,20 +83,12 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
     );
 }
 
-// ============================================================================
-// STYLES
-// ============================================================================
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#414042',
     },
-
-    // ========================================================================
-    // TOP BAR
-    // ========================================================================
-
     topBar: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -185,9 +141,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Bold',
     },
 
-    // ========================================================================
-    // CENTER SECTION
-    // ========================================================================
 
     centerSection: {
         flex: 1,
@@ -204,10 +157,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: verticalScale(20),
     },
-
-    // ========================================================================
-    // BOTTOM CONTROL BAR
-    // ========================================================================
 
     bottomControlBar: {
         borderTopLeftRadius: scale(30),
