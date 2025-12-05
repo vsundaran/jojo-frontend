@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Text } from 'react-native-paper';
 import Container from '../../automic-elements/container';
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,6 +6,8 @@ import { lightTheme } from '../../theme';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Header from '../../automic-elements/header';
+import { useEffect } from 'react';
+import { useInitiateCall } from '../../hooks/useInitiateCall';
 
 interface RouteParams {
     category: {
@@ -21,6 +23,28 @@ export default function CallInitiationScreen() {
     const navigation = useNavigation<any>();
     const route = useRoute();
     const { category } = (route.params as RouteParams) || {};
+    const { mutate: initiateCall } = useInitiateCall();
+
+    useEffect(() => {
+        const categoryName = category?.title?.toLowerCase() || 'wishes';
+
+        initiateCall({ category: categoryName }, {
+            onSuccess: (response) => {
+                console.log(response, "response");
+                if (response.success && response.call) {
+                    navigation.replace('video-call', { callData: response.call });
+                }
+            },
+            onError: (error) => {
+                console.log('Call initiation failed:', error);
+                Alert.alert(
+                    "Connection Failed",
+                    "Unable to initiate call. Please try again later.",
+                    [{ text: "OK", onPress: () => navigation.goBack() }]
+                );
+            }
+        });
+    }, [category, navigation, initiateCall]);
 
     return (
         <Container style={{ paddingTop: 0, paddingHorizontal: 0, padding: 0 }}>

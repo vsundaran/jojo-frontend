@@ -19,6 +19,9 @@ import { scale, verticalScale } from 'react-native-size-matters';
 // TYPES
 // ============================================================================
 
+import { useRoute } from "@react-navigation/native";
+import { Call } from "../../types";
+
 interface VideoCallScreenProps { }
 
 // ============================================================================
@@ -26,6 +29,15 @@ interface VideoCallScreenProps { }
 // ============================================================================
 
 export default function VideoCallScreen({ }: VideoCallScreenProps) {
+    const route = useRoute();
+    const { callData } = (route.params as { callData: Call }) || {};
+
+    // Log to verify data reception (can be removed later or used for logic)
+    useEffect(() => {
+        if (callData) {
+            console.log("VideoCallScreen received call data:", callData.callId);
+        }
+    }, [callData]);
     // ========================================================================
     // STATE - Countdown Timer
     // ========================================================================

@@ -8,7 +8,8 @@ export interface InitiateCallRequest {
 
 class CallApi {
     async initiateCall(data: InitiateCallRequest): Promise<ApiResponse<{ call: Call }>> {
-        return apiClient.post('/calls/initiate', data);
+        const response = await apiClient.post('/calls/initiate', data);
+        return response.data;
     }
 
     async endCall(callId: string): Promise<ApiResponse<{ call: Call }>> {
