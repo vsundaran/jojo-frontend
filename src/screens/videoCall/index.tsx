@@ -17,6 +17,7 @@ import { Call } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { useAgoraToken } from "../../hooks/useAgoraToken";
 
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 interface VideoCallScreenProps { }
 
 export default function VideoCallScreen({ }: VideoCallScreenProps) {
@@ -80,6 +81,27 @@ export default function VideoCallScreen({ }: VideoCallScreenProps) {
                 return false;
             }
         }
+        if (Platform.OS === 'ios') {
+            try {
+                const cameraStatus = await request(PERMISSIONS.IOS.CAMERA);
+                const micStatus = await request(PERMISSIONS.IOS.MICROPHONE);
+
+                if (
+                    cameraStatus === RESULTS.GRANTED &&
+                    micStatus === RESULTS.GRANTED
+                ) {
+                    console.log('iOS permissions granted');
+                    return true;
+                } else {
+                    console.log('iOS permissions denied');
+                    return false;
+                }
+            } catch (err) {
+                console.warn('iOS Permission error:', err);
+                return false;
+            }
+        }
+
         return true;
     };
 
