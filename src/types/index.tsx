@@ -41,9 +41,7 @@ export interface Call {
   startTime: string;
   endTime?: string;
   duration: number;
-  creatorToken?: string;
-  participantToken?: string;
-  azureCallConnectionId?: string;
+  agoraChannel?: string;
 }
 
 export interface Review {

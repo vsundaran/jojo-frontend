@@ -187,7 +187,8 @@ export default function CallReceivingScreen({
         console.log('Call accepted');
         onAccept?.();
         // Navigate to video call screen
-        navigation.navigate('video-call', { callData });
+        console.log('callData on accept screen', callData);
+        navigation.navigate('video-call', { callData: callData });
     }, [onAccept, navigation, callData]);
 
     const handleDeclineCall = useCallback(() => {
