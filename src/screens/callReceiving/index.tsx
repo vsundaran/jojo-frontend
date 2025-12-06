@@ -308,6 +308,24 @@ export default function CallReceivingScreen({
     return (
         <Container style={{ paddingTop: 0, paddingHorizontal: 0, padding: 0 }}>
             <Header />
+            <View style={{ ...styles.iconContainer, position: 'absolute', top: 100, zIndex: 1, transform: [{ translateX: scale(105) }], }}>
+                <View style={styles.outerCircle}>
+                    <LinearGradient
+                        colors={['#E9D4FF', '#FFE0E0', '#FFF0D0']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                        style={styles.gradientCircle}
+                    >
+                        <View style={styles.innerCircle}>
+                            <Image
+                                source={require('../../assets/loveHeart.png')}
+                                style={styles.heartIcon}
+                            />
+                        </View>
+                    </LinearGradient>
+                </View>
+            </View>
+
             <LinearGradient
                 colors={lightTheme.colors.gradientColors}
                 start={{ x: 0, y: 0 }}
@@ -315,26 +333,9 @@ export default function CallReceivingScreen({
                 style={styles.gradientContainer}
             >
                 {/* Heart Icon with Circular Background */}
-                <View style={styles.iconContainer}>
-                    <View style={styles.outerCircle}>
-                        <LinearGradient
-                            colors={['#E9D4FF', '#FFE0E0', '#FFF0D0']}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 1 }}
-                            style={styles.gradientCircle}
-                        >
-                            <View style={styles.innerCircle}>
-                                <Image
-                                    source={require('../../assets/loveHeart.png')}
-                                    style={styles.heartIcon}
-                                />
-                            </View>
-                        </LinearGradient>
-                    </View>
-                </View>
 
                 {/* Caller Name */}
-                <Text style={styles.callerText}>{callerName || 'JoJo'} calling</Text>
+                <Text style={{ ...styles.callerText, marginTop: verticalScale(200) }}>{callerName || 'JoJo'} calling</Text>
 
                 {/* Slider Container */}
                 <View style={styles.sliderContainer}>
@@ -429,8 +430,7 @@ const styles = StyleSheet.create({
     gradientContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: scale(42),
+        alignItems: 'center'
     },
 
     // Heart icon styles (reused from CallInitiationScreen)
@@ -449,7 +449,6 @@ const styles = StyleSheet.create({
         borderRadius: scale(70),
         justifyContent: 'center',
         alignItems: 'center',
-        padding: scale(8),
     },
     innerCircle: {
         width: scale(100),
@@ -495,6 +494,7 @@ const styles = StyleSheet.create({
         borderRadius: scale(2),
         top: '50%',
         marginTop: -SLIDER_TRACK_HEIGHT / 2,
+        opacity: 0
     },
 
     // Accept/Decline labels
